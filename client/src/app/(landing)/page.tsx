@@ -1,7 +1,13 @@
 import React from "react";
 
+import Hero from "@/components/shared/pages/home/Hero";
+
 const Home = () => {
-  return <div>Home</div>;
+  return (
+    <article>
+      <Hero />
+    </article>
+  );
 };
 
 export default Home;

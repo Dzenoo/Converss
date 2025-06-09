@@ -9,7 +9,7 @@ const Header = () => {
         <Logo />
       </div>
 
-      <nav>
+      <nav className="relative left-6">
         <NavList />
       </nav>
 

@@ -78,10 +78,12 @@
 :root {
   /* MY VARIABLES */
   --primary-blue: #007aff;
+  --primary-blue-muted: #007bff31;
   --secondary-blue: #3b82f6;
   --primary-black: #1e1e1e;
   --primary-gray: #757575;
   --secondary-gray: #b3b3b3;
+  --primary-green: #009951;
 
   /* SHADCN VARIABLES */
   --radius: 0.625rem;
