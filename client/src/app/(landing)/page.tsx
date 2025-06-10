@@ -3,6 +3,7 @@ import React from "react";
 import Hero from "@/components/shared/pages/home/Hero";
 import Features from "@/components/shared/pages/home/Features";
 import HowItWorks from "@/components/shared/pages/home/HowItWorks";
+import Pricing from "@/components/shared/pages/home/Pricing";
 
 const Home = () => {
   return (
@@ -10,6 +11,7 @@ const Home = () => {
       <Hero />
       <Features />
       <HowItWorks />
+      <Pricing />
     </article>
   );
 };
