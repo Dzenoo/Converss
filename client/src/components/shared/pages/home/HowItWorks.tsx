@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
@@ -63,6 +62,88 @@ const HowItWorks = () => {
       </div>
 
       <div className="relative mt-16 h-[600px] md:h-[700px]">
+        <svg
+          className="pointer-events-none absolute inset-0 h-full w-full"
+          viewBox="0 0 100 100"
+          preserveAspectRatio="none"
+        >
+          <defs>
+            <linearGradient
+              id="lineGradient"
+              x1="0%"
+              y1="0%"
+              x2="100%"
+              y2="100%"
+            >
+              <stop
+                offset="0%"
+                stopColor="var(--primary-blue)"
+                stopOpacity="0.9"
+              />
+              <stop
+                offset="50%"
+                stopColor="var(--primary-blue)"
+                stopOpacity="0.7"
+              />
+              <stop
+                offset="100%"
+                stopColor="var(--primary-blue)"
+                stopOpacity="0.5"
+              />
+            </linearGradient>
+          </defs>
+
+          <path
+            d={`
+              M ${timelineData[0].position.x + 2} ${timelineData[0].position.y + 4}
+              C ${timelineData[0].position.x + 12} ${timelineData[0].position.y - 8}
+                ${timelineData[1].position.x - 8} ${timelineData[1].position.y - 12}
+                ${timelineData[1].position.x + 2} ${timelineData[1].position.y + 4}
+              C ${timelineData[1].position.x + 15} ${timelineData[1].position.y + 20}
+                ${timelineData[2].position.x - 15} ${timelineData[2].position.y + 25}
+                ${timelineData[2].position.x + 2} ${timelineData[2].position.y + 4}
+            `}
+            stroke="url(#lineGradient)"
+            strokeWidth="1.2"
+            fill="none"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="drop-shadow-lg"
+          />
+
+          <circle r="0.4" fill="var(--primary-blue)" opacity="0.8">
+            <animateMotion
+              dur="6s"
+              repeatCount="indefinite"
+              path={`
+                M ${timelineData[0].position.x + 2} ${timelineData[0].position.y + 4}
+                C ${timelineData[0].position.x + 12} ${timelineData[0].position.y - 8}
+                  ${timelineData[1].position.x - 8} ${timelineData[1].position.y - 12}
+                  ${timelineData[1].position.x + 2} ${timelineData[1].position.y + 4}
+                C ${timelineData[1].position.x + 15} ${timelineData[1].position.y + 20}
+                  ${timelineData[2].position.x - 15} ${timelineData[2].position.y + 25}
+                  ${timelineData[2].position.x + 2} ${timelineData[2].position.y + 4}
+              `}
+            />
+          </circle>
+          <circle r="0.3" fill="var(--primary-blue)" opacity="0.6">
+            <animateMotion
+              dur="6s"
+              begin="1s"
+              repeatCount="indefinite"
+              path={`
+                M ${timelineData[0].position.x + 2} ${timelineData[0].position.y + 4}
+                C ${timelineData[0].position.x + 12} ${timelineData[0].position.y - 8}
+                  ${timelineData[1].position.x - 8} ${timelineData[1].position.y - 12}
+                  ${timelineData[1].position.x + 2} ${timelineData[1].position.y + 4}
+                C ${timelineData[1].position.x + 15} ${timelineData[1].position.y + 20}
+                  ${timelineData[2].position.x - 15} ${timelineData[2].position.y + 25}
+                  ${timelineData[2].position.x + 2} ${timelineData[2].position.y + 4}
+              `}
+            />
+          </circle>
+        </svg>
+
         {timelineData.map((item, index) => (
           <div
             key={item.id}
@@ -76,7 +157,9 @@ const HowItWorks = () => {
             <TimelineDot />
 
             <div className="flex flex-col items-end justify-end gap-5">
-              <div className="relative right-20">
+              <div
+                className={`relative right-20 ${item.id === 2 && "right-72"}`}
+              >
                 <span className="text-9xl font-bold text-[var(--tertiary-gray)]">
                   {item.id}
                 </span>
@@ -110,8 +193,8 @@ const TimelineDot = ({
     <div
       {...props}
       className={cn(
-        "flex h-16 w-16 items-center justify-center rounded-full bg-white drop-shadow drop-shadow-blue-100",
-        "transition-all hover:scale-105",
+        "relative z-20 flex h-16 w-16 items-center justify-center rounded-full bg-white drop-shadow drop-shadow-blue-100",
+        "border-2 border-white/50 shadow-lg transition-all hover:scale-105",
         className,
       )}
     >
