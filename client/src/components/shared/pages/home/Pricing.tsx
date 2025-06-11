@@ -1,95 +1,13 @@
-import React from "react";
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { PremiumPlanFeatures, StarterPlanFeatures } from "@/constants";
 
 import { Button } from "@/components/ui/buttons/button";
 
-const StarterPlanFeatures = [
-  {
-    id: 1,
-    title: "✅ 1 AI Assistant",
-  },
-  {
-    id: 2,
-    title: "✅ 20 messages/month",
-  },
-  {
-    id: 3,
-    title: "✅ Embed on your website",
-  },
-  {
-    id: 4,
-    title: "✅ Custom tone & personality",
-  },
-  {
-    id: 5,
-    title: "✅ Add/edit FAQs",
-  },
-  {
-    id: 6,
-    title: "✅ Live chat preview inside dashboard",
-  },
-  {
-    id: 7,
-    title: "✅ Access to chat history",
-  },
-  {
-    id: 8,
-    title: "✅ Basic bot analytics",
-  },
-  {
-    id: 9,
-    title: "✅ Edit assistant anytime",
-  },
-];
-
-const PremiumPlanFeatures = [
-  {
-    id: 1,
-    title: "🚀 Unlimited messages per month",
-  },
-  {
-    id: 2,
-    title: "🚀 Multiple assistants",
-  },
-  {
-    id: 3,
-    title: "🚀 Lead capture",
-  },
-  {
-    id: 4,
-    title: "🚀 Integrate booking tools",
-  },
-  {
-    id: 5,
-    title: "🚀 Omnichannel support",
-  },
-  {
-    id: 6,
-    title: "🚀 Priority support",
-  },
-  {
-    id: 7,
-    title: "🚀 Advanced analytics",
-  },
-  {
-    id: 8,
-    title: "🚀 Conversation export/download",
-  },
-  {
-    id: 9,
-    title: "🚀 Customize chat widget color/logo",
-  },
-  {
-    id: 10,
-    title: "🚀 Early access to new features",
-  },
-];
-
 const Pricing = () => {
   return (
-    <section className="space-y-20 pt-72">
+    <section id="pricing" className="space-y-20 pt-72">
       <div className="flex flex-col items-center justify-center space-y-4">
         <div>
           <h2 className="text-center text-4xl leading-12 font-semibold">

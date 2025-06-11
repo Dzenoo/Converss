@@ -1,7 +1,5 @@
 "use client";
-import React from "react";
 import Link from "next/link";
-import { motion } from "motion/react";
 
 import { cn } from "@/lib/utils";
 
@@ -32,7 +30,7 @@ const HowItWorks = () => {
   ];
 
   return (
-    <section className="space-y-20">
+    <section id="how-it-works" className="space-y-20">
       <div className="space-y-4">
         <div className="w-fit rounded-full bg-[var(--primary-blue-muted)] px-4 py-2">
           <span className="text-sm text-[var(--primary-blue)] uppercase">

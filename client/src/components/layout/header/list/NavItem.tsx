@@ -1,20 +1,24 @@
-import React from "react";
-import Link from "next/link";
-
 import { Button } from "@/components/ui/buttons/button";
 
 const NavItem: React.FC<{
   title: string;
   tag: string;
 }> = ({ title, tag }) => {
+  function scrollToSection() {
+    const element = document.getElementById(tag);
+    if (!element) return;
+    element.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   return (
     <li>
-      <Link
-        href={tag}
-        className="text-sm font-medium transition-all hover:text-[var(--primary-gray)]"
+      <Button
+        variant="ghost"
+        className="text-sm font-medium"
+        onClick={scrollToSection}
       >
-        <Button variant="ghost">{title}</Button>
-      </Link>
+        {title}
+      </Button>
     </li>
   );
 };

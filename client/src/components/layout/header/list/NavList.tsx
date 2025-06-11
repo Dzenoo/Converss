@@ -5,7 +5,7 @@ const NavListData = [
   {
     id: 1,
     title: "Home",
-    tag: "",
+    tag: "hero",
   },
   {
     id: 2,

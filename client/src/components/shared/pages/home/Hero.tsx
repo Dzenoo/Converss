@@ -7,7 +7,10 @@ import { Button } from "@/components/ui/buttons/button";
 
 const Hero = () => {
   return (
-    <section className="flex flex-col items-center justify-center space-y-5">
+    <section
+      id="hero"
+      className="flex flex-col items-center justify-center space-y-5"
+    >
       <div className="w-fit rounded-full bg-[var(--primary-blue-muted)] px-4 py-2">
         <span className="text-sm text-[var(--primary-blue)] uppercase">
           💬 24/7 Website Assistant{" "}
