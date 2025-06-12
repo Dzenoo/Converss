@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 
-import { cn } from "@/lib/utils";
+import { cn, scrollToSection } from "@/lib/utils";
 import { FooterLinks } from "@/constants";
 
 import Logo from "../header/Logo";
@@ -67,16 +67,25 @@ function renderFooterLinks<
       </div>
       <div>
         <ul className="flex flex-col gap-2">
-          {links.map((link) => (
-            <li key={link.id}>
-              <Link
-                href={link.href}
+          {links.map((link) => {
+            return (
+              <li
+                key={link.id}
                 className="text-sm text-[var(--primary-gray)] transition-all hover:text-black dark:hover:text-white"
               >
-                {link.name}
-              </Link>
-            </li>
-          ))}
+                {link.href.includes("/") ? (
+                  <Link href={link.href}>{link.name}</Link>
+                ) : (
+                  <button
+                    onClick={() => scrollToSection(link.href)}
+                    className="cursor-pointer"
+                  >
+                    {link.name}
+                  </button>
+                )}
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>
