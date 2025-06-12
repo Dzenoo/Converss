@@ -18,13 +18,13 @@ const Faq = () => {
           </span>
         </div>
         <div>
-          <h1 className="text-center text-4xl font-semibold">
+          <h1 className="text-center text-2xl font-semibold lg:text-4xl">
             Frequently Asked{" "}
             <span className="text-[var(--primary-blue)]">Questions</span>
           </h1>
         </div>
         <div className="max-w-2xl">
-          <p className="text-center text-[var(--primary-gray)]">
+          <p className="text-center text-sm text-[var(--primary-gray)] md:text-base">
             We know bringing AI into your business might feel new — so we’ve put
             together answers to the most common questions to help you feel
             confident and informed.
@@ -32,7 +32,7 @@ const Faq = () => {
         </div>
       </div>
 
-      <div className="px-36">
+      <div className="lg:px-36">
         <Accordion type="single" collapsible>
           {FaqData.map(({ id, title, description }) => (
             <AccordionItem
@@ -40,7 +40,7 @@ const Faq = () => {
               key={id}
               value={`item-${id}`}
             >
-              <AccordionTrigger className="pb-0 text-left text-base font-semibold">
+              <AccordionTrigger className="pb-0 text-left text-sm font-semibold sm:text-base">
                 {title}
               </AccordionTrigger>
               <AccordionContent className="pb-0 text-[var(--primary-gray)]">
@@ -53,12 +53,12 @@ const Faq = () => {
 
       <div className="flex flex-col items-center justify-center space-y-5">
         <div>
-          <h1 className="text-center text-4xl font-semibold">
+          <h1 className="text-center text-2xl font-semibold lg:text-4xl">
             Still Have Questions?
           </h1>
         </div>
         <div className="max-w-2xl">
-          <p className="text-center text-[var(--primary-gray)]">
+          <p className="text-center text-sm text-[var(--primary-gray)] md:text-base">
             If you have any further questions or concerns, please don't hesitate
             to reach out to us. Our dedicated support team is always ready to
             assist you with any inquiries you may have.

@@ -7,21 +7,21 @@ import { Button } from "@/components/ui/buttons/button";
 
 const Pricing = () => {
   return (
-    <section id="pricing" className="space-y-20 pt-72">
-      <div className="flex flex-col items-center justify-center space-y-4">
+    <section id="pricing" className="space-y-20 md:pt-72">
+      <div className="flex flex-col items-center justify-center space-y-2">
         <div>
-          <h2 className="text-center text-4xl leading-12 font-semibold">
+          <h2 className="text-center text-2xl leading-12 font-semibold lg:text-4xl">
             Choose Your <span className="text-[var(--primary-blue)]">Plan</span>
           </h2>
         </div>
         <div>
-          <p className="text-center text-[var(--primary-gray)]">
+          <p className="text-center text-sm text-[var(--primary-gray)] md:text-base">
             Create Your AI Assistant Today, No Credit Card Needed
           </p>
         </div>
       </div>
 
-      <div className="flex items-center justify-center gap-5">
+      <div className="flex flex-col items-center justify-center gap-5 md:flex-row">
         <Plan
           title="Starter"
           price="0"

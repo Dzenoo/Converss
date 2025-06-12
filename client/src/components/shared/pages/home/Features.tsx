@@ -21,7 +21,7 @@ const Features = () => {
         </div>
       </div>
 
-      <div className="mx-2 grid grid-cols-1 gap-10 sm:mx-10 md:grid-cols-2 xl:mx-52 [1200px]:mx-72">
+      <div className="grid grid-cols-1 gap-10 sm:mx-10 md:grid-cols-2 xl:mx-52 2xl:mx-96">
         {FeaturesData.map((f) => (
           <div key={f.id} className="max-w-xl space-y-2 rounded-xl border p-7">
             <div>
