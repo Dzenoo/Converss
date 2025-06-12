@@ -1,4 +1,8 @@
+import * as motion from "motion/react-client";
+
 import { cn } from "@/lib/utils";
+
+const MotionDiv = motion.div;
 
 const TimelineDot = ({
   className = "",
@@ -7,17 +11,19 @@ const TimelineDot = ({
   className?: string;
 }) => {
   return (
-    <div
-      {...props}
-      className={cn(
-        "relative z-20 flex items-center justify-center rounded-full bg-white drop-shadow drop-shadow-blue-100",
-        "border-2 border-white/50 shadow-lg transition-all hover:scale-105",
-        "h-16 w-16",
-        className,
-      )}
-    >
-      <div className="h-5 w-5 rounded-full bg-[var(--secondary-gray)]"></div>
-    </div>
+    <MotionDiv whileHover={{ scale: 1.1 }}>
+      <div
+        {...props}
+        className={cn(
+          "relative z-20 flex items-center justify-center rounded-full bg-white drop-shadow drop-shadow-blue-100",
+          "border-2 border-white/50 shadow-lg transition-all",
+          "h-16 w-16",
+          className,
+        )}
+      >
+        <div className="h-5 w-5 rounded-full bg-[var(--secondary-gray)]"></div>
+      </div>
+    </MotionDiv>
   );
 };
 

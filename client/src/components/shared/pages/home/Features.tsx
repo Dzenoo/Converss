@@ -1,10 +1,14 @@
-import { FeaturesData } from "@/constants";
+import * as motion from "motion/react-client";
+
+import { FeaturesData, popIn, staggerContainer } from "@/constants";
+
+const MotionDiv = motion.div;
 
 const Features = () => {
   return (
     <section
       id="features"
-      className="flex flex-col items-center justify-center gap-16 space-y-5"
+      className="flex flex-col items-center justify-center gap-16 px-4"
     >
       <div className="space-y-5">
         <div>
@@ -21,15 +25,22 @@ const Features = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-10 sm:mx-10 md:grid-cols-2 xl:mx-52 2xl:mx-96">
+      <MotionDiv
+        initial="offscreen"
+        whileInView="onscreen"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+        className="grid grid-cols-1 gap-10 sm:mx-10 md:grid-cols-2 xl:mx-52 2xl:mx-96"
+      >
         {FeaturesData.map((f) => (
-          <div key={f.id} className="max-w-xl space-y-2 rounded-xl border p-7">
+          <MotionDiv
+            key={f.id}
+            variants={popIn}
+            className="max-w-xl space-y-2 rounded-xl border bg-white p-7 shadow-sm"
+            whileHover={{ scale: 1.1 }}
+          >
             <div>
-              <f.icon
-                style={{
-                  color: f.color,
-                }}
-              />
+              <f.icon style={{ color: f.color }} />
             </div>
             <div className="pt-2">
               <h2 className="text-base leading-7 font-semibold">{f.title}</h2>
@@ -39,9 +50,9 @@ const Features = () => {
                 {f.description}
               </p>
             </div>
-          </div>
+          </MotionDiv>
         ))}
-      </div>
+      </MotionDiv>
     </section>
   );
 };

@@ -1,9 +1,17 @@
 import Link from "next/link";
+import * as motion from "motion/react-client";
 
 import { cn } from "@/lib/utils";
-import { PremiumPlanFeatures, StarterPlanFeatures } from "@/constants";
+import {
+  fadeUp,
+  PremiumPlanFeatures,
+  staggerContainer,
+  StarterPlanFeatures,
+} from "@/constants";
 
 import { Button } from "@/components/ui/buttons/button";
+
+const MotionDiv = motion.div;
 
 const Pricing = () => {
   return (
@@ -21,23 +29,33 @@ const Pricing = () => {
         </div>
       </div>
 
-      <div className="flex flex-col items-center justify-center gap-5 md:flex-row">
-        <Plan
-          title="Starter"
-          price="0"
-          headline="Perfect for testing"
-          features={StarterPlanFeatures}
-          href="/"
-          popular
-        />
-        <Plan
-          title="Proffesional"
-          price="49.99"
-          headline="For growing businesses"
-          features={PremiumPlanFeatures}
-          href="/"
-        />
-      </div>
+      <MotionDiv
+        initial="offscreen"
+        whileInView="onscreen"
+        viewport={{ once: true }}
+        variants={staggerContainer}
+        className="flex flex-col items-center justify-center gap-5 md:flex-row"
+      >
+        <MotionDiv variants={fadeUp}>
+          <Plan
+            title="Starter"
+            price="0"
+            headline="Perfect for testing"
+            features={StarterPlanFeatures}
+            href="/"
+            popular
+          />
+        </MotionDiv>
+        <MotionDiv variants={fadeUp}>
+          <Plan
+            title="Proffesional"
+            price="49.99"
+            headline="For growing businesses"
+            features={PremiumPlanFeatures}
+            href="/"
+          />
+        </MotionDiv>
+      </MotionDiv>
     </section>
   );
 };
