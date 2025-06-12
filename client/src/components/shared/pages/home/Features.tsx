@@ -8,20 +8,20 @@ const Features = () => {
     >
       <div className="space-y-5">
         <div>
-          <h1 className="text-center text-4xl font-semibold">
+          <h1 className="text-center text-2xl font-semibold lg:text-4xl">
             Why Choose{" "}
             <span className="text-[var(--primary-blue)]">Converss?</span>
           </h1>
         </div>
         <div className="max-w-xl">
-          <p className="text-center text-[var(--primary-gray)]">
+          <p className="text-center text-sm text-[var(--primary-gray)] md:text-base">
             Everything you need to create, deploy, and manage AI chat assistants
             that delight your customers and grow your business.
           </p>
         </div>
       </div>
 
-      <div className="mx-96 grid grid-cols-2 gap-10">
+      <div className="mx-2 grid grid-cols-1 gap-10 sm:mx-10 md:grid-cols-2 xl:mx-52 [1200px]:mx-72">
         {FeaturesData.map((f) => (
           <div key={f.id} className="max-w-xl space-y-2 rounded-xl border p-7">
             <div>

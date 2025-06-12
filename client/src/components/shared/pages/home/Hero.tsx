@@ -18,8 +18,8 @@ const Hero = () => {
       </div>
 
       <div>
-        <h1 className="text-center text-5xl leading-16 font-bold">
-          Let AI Talk to Your Customers - <br />
+        <h1 className="text-center text-2xl font-bold sm:text-3xl md:text-4xl md:leading-12 lg:text-5xl lg:leading-16">
+          Let AI Talk to Your Customers - <br className="[400px]:hidden" />
           <span className="text-[var(--primary-blue)]">
             So You Dont Have To
           </span>
@@ -27,7 +27,7 @@ const Hero = () => {
       </div>
 
       <div className="max-w-2xl">
-        <p className="text-center text-[var(--primary-gray)]">
+        <p className="text-center text-sm text-[var(--primary-gray)] sm:text-base">
           Give your customers instant answers, book appointments, and more —
           with a smart chatbot that works 24/7. No technical skills needed.
         </p>
@@ -45,7 +45,7 @@ const Hero = () => {
         </Link>
       </div>
 
-      <div className="flex items-center gap-10 pt-10">
+      <div className="flex flex-col items-center gap-10 pt-10 sm:flex-row">
         {["No credit card required", "Setup in 5 minutes", "24/7 support"].map(
           (item, i) => (
             <div key={i} className="flex items-center gap-2">

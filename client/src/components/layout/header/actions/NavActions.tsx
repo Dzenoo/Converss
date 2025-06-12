@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/buttons/button";
 const NavActions = () => {
   return (
     <div className="flex items-center gap-2">
-      <Link href="/">
+      <Link href="/" className="hidden md:block">
         <Button variant="outline" size="lg">
           Get Started
         </Button>
