@@ -1,17 +1,16 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { EmailAuthSchema } from "@/lib/zod/auth.zod";
-
-import GoogleAuth from "./GoogleAuth";
+import { cn } from "@/lib/utils";
 
 import { Input } from "@/components/ui/form/input";
 import { Button } from "@/components/ui/buttons/button";
-import { DividerWithText } from "@/components/ui/info/divider";
 import {
   Form,
   FormControl,
@@ -19,7 +18,6 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form/form";
-import { cn } from "@/lib/utils";
 
 type AuthProps = {
   isLogin: boolean;
@@ -34,12 +32,16 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     },
   });
 
-  const onSubmit = async (data: z.infer<typeof EmailAuthSchema>) => {
+  const handleSubmit = async (data: z.infer<typeof EmailAuthSchema>) => {
     if (isLogin) {
       console.log("Login");
     } else {
       console.log("Register");
     }
+  };
+
+  const handleGoogleAuth = () => {
+    // window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (
@@ -54,7 +56,10 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
 
       <div className={cn("space-y-6", !isLogin && "px-10")}>
         <Form {...form}>
-          <form className="space-y-5" onSubmit={form.handleSubmit(onSubmit)}>
+          <form
+            className="space-y-5"
+            onSubmit={form.handleSubmit(handleSubmit)}
+          >
             <FormField
               control={form.control}
               name="email"
@@ -77,9 +82,28 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
           </form>
         </Form>
 
-        <DividerWithText text={isLogin ? "or sign in with" : "or"} />
+        <div className="my-4 flex w-full items-center">
+          <hr className="flex-grow border-t border-gray-300" />
+          <span className="mx-4 text-sm text-gray-500 uppercase">
+            {isLogin ? "or sign in with" : "or"}
+          </span>
+          <hr className="flex-grow border-t border-gray-300" />
+        </div>
 
-        <GoogleAuth>Sign {isLogin ? "in" : "up"} with Google</GoogleAuth>
+        <Button
+          variant="outline"
+          className="flex w-full items-center justify-center"
+          type="button"
+          onClick={() => handleGoogleAuth()}
+        >
+          <Image
+            src="/assets/icons/google-icon-logo-transparent.png"
+            alt="google-logo"
+            width={40}
+            height={40}
+          />
+          Sign {isLogin ? "in" : "up"} with Google
+        </Button>
       </div>
 
       <div>
