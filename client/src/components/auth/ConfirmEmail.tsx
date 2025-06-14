@@ -45,12 +45,12 @@ const ConfirmEmail = () => {
     <div className="space-y-10 text-center">
       <div className="space-y-4">
         <div>
-          <h1 className="text-3xl font-semibold">
+          <h1 className="text-2xl font-semibold md:text-3xl">
             Enter the code sent to your email
           </h1>
         </div>
         <div>
-          <p className="font-light">
+          <p className="text-sm font-light md:text-base">
             We sent an email to you. Enter the code here to continue. <br />
             <span>If you dont see it, check your spam or junk folder.</span>
           </p>

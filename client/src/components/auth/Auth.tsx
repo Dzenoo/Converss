@@ -47,7 +47,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
   return (
     <div className="space-y-10 text-center">
       <div>
-        <h1 className="text-3xl font-semibold">
+        <h1 className="text-2xl font-semibold md:text-3xl">
           {isLogin
             ? "Enter your email to sign in"
             : "Create your account with email"}
