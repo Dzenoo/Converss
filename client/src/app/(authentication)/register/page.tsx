@@ -1,7 +1,7 @@
-import Register from "@/components/auth/register/Register";
+import Auth from "@/components/auth/Auth";
 
 const RegisterPage = () => {
-  return <Register />;
+  return <Auth isLogin={false} />;
 };
 
 export default RegisterPage;
