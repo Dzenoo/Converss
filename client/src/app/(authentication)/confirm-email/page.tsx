@@ -1,7 +1,7 @@
-import React from "react";
+import ConfirmEmail from "@/components/auth/ConfirmEmail";
 
 const ConfirmEmailPage = () => {
-  return <div>ConfirmEmailPage</div>;
+  return <ConfirmEmail />;
 };
 
 export default ConfirmEmailPage;

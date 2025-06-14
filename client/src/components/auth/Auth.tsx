@@ -106,16 +106,14 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
         </Button>
       </div>
 
-      <div>
-        <p className="text-sm">
-          {isLogin ? "Dont" : "Already"} have account?{" "}
-          <Link
-            href={isLogin ? "/register" : "/login"}
-            className="text-[var(--primary-blue)]"
-          >
-            {isLogin ? "Register" : "Login"}
-          </Link>
-        </p>
+      <div className="text-sm">
+        {isLogin ? "Dont" : "Already"} have account?{" "}
+        <Link
+          href={isLogin ? "/register" : "/login"}
+          className="text-[var(--primary-blue)]"
+        >
+          {isLogin ? "Register" : "Login"}
+        </Link>
       </div>
     </div>
   );
