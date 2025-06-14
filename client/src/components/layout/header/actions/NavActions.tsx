@@ -12,7 +12,7 @@ const NavActions = () => {
         </Button>
       </Link>
 
-      <Link href="/">
+      <Link href="/login">
         <Button
           className="bg-[var(--primary-blue)] hover:bg-[var(--secondary-blue)]"
           size="lg"
