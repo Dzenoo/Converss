@@ -2,7 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { useZoomLevel } from "@/hooks/core/useZoomLevel";
-import Logo from "@/components/layout/header/Logo";
+import Logo from "@/components/shared/Logo";
 
 const AuthLayoutWrapper: React.FC<{
   children: React.ReactNode;

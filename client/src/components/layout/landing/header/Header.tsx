@@ -1,4 +1,4 @@
-import Logo from "./Logo";
+import Logo from "../../../shared/Logo";
 import NavList from "./list/NavList";
 import NavActions from "./actions/NavActions";
 

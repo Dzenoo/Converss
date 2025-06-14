@@ -2,8 +2,8 @@
 
 import { useZoomLevel } from "@/hooks/core/useZoomLevel";
 
-import Header from "@/components/layout/header/Header";
-import Footer from "@/components/layout/footer/Footer";
+import Header from "@/components/layout/landing/header/Header";
+import Footer from "@/components/layout/landing/footer/Footer";
 
 const LandingLayoutWrapper = ({ children }: { children: React.ReactNode }) => {
   const isZoomedOut = useZoomLevel();
