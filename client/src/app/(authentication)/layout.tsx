@@ -10,7 +10,7 @@ import AuthLayoutWrapper from "./_AuthLayoutWrapper";
 export const metadata: Metadata = {
   icons: "favicon.ico",
   title: {
-    default: "Converss | Auth",
+    default: "Converss | Authentication",
     template: "%s | Converss",
   },
 };

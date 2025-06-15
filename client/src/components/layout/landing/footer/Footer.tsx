@@ -5,7 +5,7 @@ import Link from "next/link";
 import { cn, scrollToSection } from "@/lib/utils";
 import { FooterLinks } from "@/constants";
 
-import Logo from "../landing/header/Logo";
+import Logo from "@/components/shared/Logo";
 
 const Footer = () => {
   return (
