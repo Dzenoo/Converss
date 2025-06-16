@@ -33,7 +33,7 @@ const OnboardingSteps = () => {
           key={step.id}
           title={step.title}
           description={step.description}
-          index={i}
+          index={i + 1}
           status={
             currentStep === i
               ? "active"
