@@ -2,7 +2,7 @@
 
 import { ChangeEvent, useCallback, useState } from "react";
 import { useFieldArray, Control } from "react-hook-form";
-import { Trash2, ChevronDown } from "lucide-react";
+import { Trash2 } from "lucide-react";
 
 import { OnboardingValues } from "./forms/OnboardingForm";
 
@@ -37,7 +37,15 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
   );
 
   function isValid() {
-    return question.trim().length >= 10 && answer.trim().length >= 50;
+    const questionField = question.trim();
+    const answerField = answer.trim();
+
+    return (
+      questionField.length >= 10 &&
+      answerField.length >= 30 &&
+      questionField.length <= 50 &&
+      answerField.length <= 100
+    );
   }
 
   function handleAdd() {
@@ -61,6 +69,10 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
             onChange={handleOnChange}
             placeholder="Enter question..."
           />
+          <p className="text-sm text-[var(--primary-gray)]">
+            Question must be 10 to 50 characters long. Current: (
+            {question.trim().length})
+          </p>
         </div>
         <div className="space-y-4">
           <Label>Answer</Label>
@@ -69,8 +81,12 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
             value={answer}
             onChange={handleOnChange}
             placeholder="Enter answer..."
-            className="min-h-36 resize-none"
+            className="max-h-36 min-h-36 resize-none"
           />
+          <p className="text-sm text-[var(--primary-gray)]">
+            Answer must be 30 to 100 characters long. Current: (
+            {answer.trim().length})
+          </p>
         </div>
         <div className="self-end">
           <Button
@@ -84,14 +100,14 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
         </div>
       </div>
 
-      <div className="space-y-4">
+      <div className="h-full max-h-52 space-y-4 overflow-y-auto">
         {fields.map((field, index) => (
           <div key={field.id} className="group relative rounded-md border p-4">
             <div className="mb-1">
-              <h2 className="text-sm font-medium">{field.question}</h2>
+              <h2 className="text-sm font-medium">Q: {field.question}</h2>
             </div>
             <div>
-              <p className="text-muted-foreground text-sm">{field.answer}</p>
+              <p className="text-muted-foreground text-sm">A: {field.answer}</p>
             </div>
             <div className="absolute top-2 right-2 flex gap-2 opacity-0 transition-opacity group-hover:opacity-100">
               <Button
