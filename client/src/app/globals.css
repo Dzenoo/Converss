@@ -231,4 +231,17 @@
   .base-padding {
     @apply px-28 max-xl:px-10 max-lg:px-5 max-md:px-2;
   }
+
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .custom-scrollbar {
+    scrollbar-width: thin;
+  }
+
+  .hide-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
 }

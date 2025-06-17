@@ -13,6 +13,7 @@ import AssistantCustomizer from "../AssistantCustomizer";
 
 import { Button } from "@/components/ui/buttons/button";
 import { Form } from "@/components/ui/form/form";
+import { Loader } from "@/components/ui/info/loader";
 
 export type OnboardingValues = z.infer<typeof OnboardingCreateAssistantSchema>;
 
@@ -20,8 +21,8 @@ const OnboardingForm = () => {
   const { currentStep, nextStep, prevStep } = useOnboardingStore();
 
   const form = useForm<OnboardingValues>({
+    mode: "all",
     resolver: zodResolver(OnboardingCreateAssistantSchema),
-    mode: "onChange",
     defaultValues: {
       businessName: "",
       businessDescription: "",
@@ -33,6 +34,15 @@ const OnboardingForm = () => {
       fallbackMessage: "",
     },
   });
+
+  const isLoading = false;
+
+  async function handleNext() {
+    const fields = stepFields[currentStep];
+    const valid = await form.trigger(fields as any, { shouldFocus: true });
+    if (!valid) return;
+    nextStep();
+  }
 
   function renderComponent() {
     const components = [
@@ -47,26 +57,9 @@ const OnboardingForm = () => {
     console.log(values);
   }
 
-  const stepDetails = [
-    {
-      title: "Tell us about your business",
-      description:
-        "This helps your assistant talk about your business naturally.",
-    },
-    {
-      title: "What questions do people often ask?",
-      description: "Add 3-5 questions your customers often ask.",
-    },
-    {
-      title: "Choose your assistant tone",
-      description:
-        "Select the personality or tone the assistant uses to respond.",
-    },
-  ];
-
   return (
     <div className="relative flex h-full flex-col justify-between p-10">
-      <div className="mx-52 space-y-12">
+      <div className="hide-scrollbar max-h-[75vh] min-h-[75vh] space-y-12 overflow-auto px-52">
         <div className="space-y-2">
           <h1 className="text-4xl font-semibold">
             {stepDetails[currentStep].title}
@@ -85,14 +78,11 @@ const OnboardingForm = () => {
             {currentStep === 2 && (
               <div className="absolute right-10 bottom-10 flex justify-end gap-3">
                 <Button type="submit" variant="default" size="lg">
-                  Create Assistant
-                  {/* **
-              {isLoading ? (
-                <Loader type="ScaleLoader" height={10} />
-              ) : (
-                "Submit"
-              )}
-                */}
+                  {isLoading ? (
+                    <Loader type="ScaleLoader" height={10} />
+                  ) : (
+                    "Create Assistant"
+                  )}
                 </Button>
               </div>
             )}
@@ -112,7 +102,7 @@ const OnboardingForm = () => {
           </Button>
         )}
         {currentStep <= 1 && (
-          <Button onClick={nextStep} size="lg">
+          <Button onClick={handleNext} size="lg">
             Next
           </Button>
         )}
@@ -120,5 +110,28 @@ const OnboardingForm = () => {
     </div>
   );
 };
+
+const stepDetails = [
+  {
+    title: "Tell us about your business",
+    description:
+      "This helps your assistant talk about your business naturally.",
+  },
+  {
+    title: "What questions do people often ask?",
+    description: "Add 3-5 questions your customers often ask.",
+  },
+  {
+    title: "Choose your assistant tone",
+    description:
+      "Select the personality or tone the assistant uses to respond.",
+  },
+];
+
+const stepFields = [
+  ["businessName", "businessDescription", "industry"],
+  ["faq"],
+  ["assistantTone", "primaryRole", "greetingMessage", "fallbackMessage"],
+];
 
 export default OnboardingForm;
