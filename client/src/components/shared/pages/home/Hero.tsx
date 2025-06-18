@@ -61,7 +61,7 @@ const Hero = () => {
       </MotionDiv>
 
       <MotionDiv
-        className="flex flex-col items-center gap-4 pt-6 sm:flex-row"
+        className="flex items-center gap-4 pt-6 max-[320px]:flex-col"
         variants={staggerContainer}
         initial="offscreen"
         whileInView="onscreen"

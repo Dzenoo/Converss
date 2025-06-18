@@ -54,7 +54,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
         </h1>
       </div>
 
-      <div className={cn("space-y-6", !isLogin && "px-10")}>
+      <div className={cn("space-y-6", !isLogin && "px-5 sm:px-10")}>
         <Form {...form}>
           <form
             className="space-y-5"

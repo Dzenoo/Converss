@@ -3,42 +3,71 @@
 import { useState } from "react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
 import { vscDarkPlus } from "react-syntax-highlighter/dist/esm/styles/prism";
-import { Copy } from "lucide-react";
+import { Copy, Check } from "lucide-react";
 
 import { Button } from "@/components/ui/buttons/button";
 
-const CodeSyntax: React.FC<{
+interface CodeSyntaxProps {
   codeSnippet: string;
-}> = ({ codeSnippet }) => {
+  language?: string;
+  showLineNumbers?: boolean;
+  maxHeight?: string;
+}
+
+const CodeSyntax: React.FC<CodeSyntaxProps> = ({
+  codeSnippet,
+  language = "html",
+  showLineNumbers = false,
+  maxHeight = "400px",
+}) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
-    try {
-      await navigator.clipboard.writeText(codeSnippet);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1500);
-    } catch (err) {
-      console.error("Failed to copy!", err);
-    }
+    await navigator.clipboard.writeText(codeSnippet);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="relative rounded-md bg-gray-900 p-6">
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={handleCopy}
-        className="absolute top-1 right-1 z-10 p-2 text-xs text-white"
-      >
-        {copied ? "Copied!" : <Copy size={10} />}
-      </Button>
-      <SyntaxHighlighter
-        language="html"
-        style={vscDarkPlus}
-        customStyle={{ margin: 0, background: "transparent" }}
-      >
-        {codeSnippet}
-      </SyntaxHighlighter>
+    <div className="relative w-full">
+      <div className="relative overflow-hidden rounded-lg border border-gray-700 bg-gray-900 shadow-lg">
+        <div className="flex items-center justify-between border-b border-gray-700 bg-gray-800 px-4 py-2">
+          <span className="font-mono text-xs tracking-wide text-gray-400 uppercase">
+            {language}
+          </span>
+          <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleCopy}
+            disabled={copied}
+            className="h-8 px-3 text-xs text-gray-300 transition-colors duration-200 hover:bg-gray-700 hover:text-white"
+          >
+            {copied ? (
+              <>
+                <Check size={14} className="mr-1" />
+                Copied!
+              </>
+            ) : (
+              <>
+                <Copy size={14} className="mr-1" />
+                Copy
+              </>
+            )}
+          </Button>
+        </div>
+
+        <div className="overflow-auto" style={{ maxHeight }}>
+          <SyntaxHighlighter
+            language={language}
+            style={vscDarkPlus}
+            showLineNumbers={showLineNumbers}
+            wrapLines={false}
+            wrapLongLines={false}
+          >
+            {codeSnippet}
+          </SyntaxHighlighter>
+        </div>
+      </div>
     </div>
   );
 };

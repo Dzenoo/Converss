@@ -101,7 +101,7 @@ const AssistantCustomizer: React.FC<AssistantCustomizerProps> = ({
         )}
       />
 
-      <div className="flex gap-5">
+      <div className="flex gap-5 max-md:flex-col">
         <FormField
           control={control}
           name="greetingMessage"

@@ -58,10 +58,10 @@ const OnboardingForm = () => {
   }
 
   return (
-    <div className="relative flex h-full flex-col justify-between p-10">
-      <div className="hide-scrollbar max-h-[75vh] min-h-[75vh] space-y-12 overflow-auto px-52">
+    <div className="relative flex h-full flex-col justify-between p-10 max-md:p-5">
+      <div className="hide-scrollbar max-h-[75vh] min-h-[75vh] space-y-12 overflow-auto px-52 max-[1480px]:px-16 max-xl:px-8 max-lg:px-4 max-sm:px-1">
         <div className="space-y-2">
-          <h1 className="text-4xl font-semibold">
+          <h1 className="text-4xl font-semibold max-md:text-2xl">
             {stepDetails[currentStep].title}
           </h1>
           <p className="text-[var(--primary-gray)]">
@@ -96,7 +96,11 @@ const OnboardingForm = () => {
             onClick={prevStep}
             size="lg"
             variant="outline"
-            className={currentStep === 2 ? "relative right-44" : ""}
+            className={
+              currentStep === 2
+                ? "relative right-44 max-md:right-48 max-md:bottom-5"
+                : ""
+            }
           >
             Back
           </Button>

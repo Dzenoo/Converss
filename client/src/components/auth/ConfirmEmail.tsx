@@ -42,7 +42,7 @@ const ConfirmEmail = () => {
   }, [code, form, handleSubmit]);
 
   return (
-    <div className="space-y-10 text-center">
+    <div className="space-y-10 text-center max-sm:px-5">
       <div className="space-y-4">
         <div>
           <h1 className="text-2xl font-semibold md:text-3xl">

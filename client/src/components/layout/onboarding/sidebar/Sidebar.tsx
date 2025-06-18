@@ -1,13 +1,19 @@
 import Link from "next/link";
 import { CirclePower } from "lucide-react";
 
+import { cn } from "@/lib/utils";
+
 import OnboardingSteps from "./OnboardingSteps";
 
 import { Button } from "@/components/ui/buttons/button";
 
 const Sidebar = () => {
   return (
-    <aside className="flex basis-[25%] flex-col justify-between gap-10 border-l border-[var(--tertiary-gray)] p-10">
+    <aside
+      className={cn(
+        "flex min-w-[350px] basis-[25%] flex-col justify-between gap-10 border-l border-[var(--tertiary-gray)] p-10 max-lg:hidden",
+      )}
+    >
       <OnboardingSteps />
 
       <div className="space-y-2">
