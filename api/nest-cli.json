@@ -1,0 +1,10 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "src",
+  "compilerOptions": {
+    "assets": ["common/modules/email/templates/**/*"],
+    "tsConfigPath": "tsconfig.build.json",
+    "deleteOutDir": true
+  }
+}
