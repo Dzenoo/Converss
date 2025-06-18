@@ -49,10 +49,10 @@ const ConfirmEmail = () => {
             Enter the code sent to your email
           </h1>
         </div>
-        <div>
+        <div className="max-w-xl">
           <p className="text-sm font-light md:text-base">
-            We sent an email to you. Enter the code here to continue. <br />
-            <span>If you dont see it, check your spam or junk folder.</span>
+            We sent an email to you. Enter the code here to continue. If you
+            dont see it, check your spam or junk folder.
           </p>
         </div>
       </div>

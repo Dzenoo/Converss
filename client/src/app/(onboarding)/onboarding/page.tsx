@@ -57,7 +57,7 @@ import OnboardingForm from "@/components/onboarding/forms/OnboardingForm";
 // Remove this comment after implementing the persistent onboarding check.
 
 const OnboardingPage = () => {
-  return <OnboardingForm />;
+  return <FinishOnboarding />;
 };
 
 export default OnboardingPage;

@@ -28,13 +28,8 @@ const FinishOnboarding = () => {
 
       <div className="space-y-5">
         <p className="font-medium">👉 Next, install it on your website:</p>
-        <div className="mx-auto w-full max-w-sm">
-          <CodeSyntax
-            codeSnippet={codeSnippet}
-            language="html"
-            showLineNumbers={false}
-            maxHeight="200px"
-          />
+        <div className="max-sm:max-w-xl">
+          <CodeSyntax codeSnippet={codeSnippet} language="html" />
         </div>
         <p className="font-medium">
           💡 Paste this code before the head tag of your site.
