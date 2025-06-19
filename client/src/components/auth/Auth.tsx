@@ -2,12 +2,15 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { EmailAuthSchema } from "@/lib/zod/auth.zod";
 import { cn } from "@/lib/utils";
+import { requestCode } from "@/lib/actions/auth.actions";
 
 import { Input } from "@/components/ui/form/input";
 import { Button } from "@/components/ui/buttons/button";
@@ -18,12 +21,15 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form/form";
+import { Loader } from "../ui/info/loader";
 
 type AuthProps = {
   isLogin: boolean;
 };
 
 const Auth: React.FC<AuthProps> = ({ isLogin }) => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof EmailAuthSchema>>({
     resolver: zodResolver(EmailAuthSchema),
     mode: "onChange",
@@ -32,16 +38,24 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     },
   });
 
+  const { mutateAsync: requestMagicCode, isPending } = useMutation({
+    mutationFn: requestCode,
+    onSuccess: ({ isSent }) => {
+      if (isSent) {
+        router.push("/confirm-email");
+      }
+    },
+    onError: (error) => {},
+  });
+
   const handleSubmit = async (data: z.infer<typeof EmailAuthSchema>) => {
-    if (isLogin) {
-      console.log("Login");
-    } else {
-      console.log("Register");
-    }
+    localStorage.setItem("email", data.email);
+    await requestMagicCode(data);
   };
 
   const handleGoogleAuth = () => {
-    // window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
+    if (form.formState.isSubmitting) return;
+    window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
   return (
@@ -77,7 +91,13 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
               )}
             />
             <Button type="submit" className="w-full">
-              {isLogin ? "Sign In With Email" : "Continue"}
+              {isPending ? (
+                <Loader type="ScaleLoader" height={10} color="#ffffff" />
+              ) : isLogin ? (
+                "Sign In With Email"
+              ) : (
+                "Continue"
+              )}
             </Button>
           </form>
         </Form>

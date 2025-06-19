@@ -64,6 +64,7 @@ export class GoogleAuthService {
       message: "User created successfully",
       accessToken,
       refreshToken,
+      isOnboarding: newUser.isOnboarding,
     };
   }
 
@@ -100,6 +101,7 @@ export class GoogleAuthService {
       message: "User logged in successfully",
       accessToken,
       refreshToken,
+      isOnboarding: existingUser.isOnboarding,
     };
   }
 }

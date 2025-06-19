@@ -1,20 +1,18 @@
 import { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 
-import { QueryContextProvider } from "@/context/react-query-client";
-
 import "../globals.css";
-import AuthLayoutWrapper from "./_AuthLayoutWrapper";
+import DashboardWrapper from "./_DashboardWrapper";
 
 export const metadata: Metadata = {
   icons: "favicon.ico",
   title: {
-    default: "Converss | Authentication",
+    default: "Converss | Dashboard",
     template: "%s | Converss",
   },
 };
 
-export default function AuthLayout({
+export default function DashboardLayout({
   children,
 }: {
   children: React.ReactNode;
@@ -22,9 +20,7 @@ export default function AuthLayout({
   return (
     <html lang="en">
       <body className={GeistSans.className}>
-        <QueryContextProvider>
-          <AuthLayoutWrapper>{children}</AuthLayoutWrapper>
-        </QueryContextProvider>
+        <DashboardWrapper>{children}</DashboardWrapper>
       </body>
     </html>
   );

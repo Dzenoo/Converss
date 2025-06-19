@@ -43,12 +43,16 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     try {
-      const { accessToken, refreshToken } =
+      const { accessToken, refreshToken, isOnboarding } =
         await this.googleAuthService.googleAuth(req);
 
       this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
-      res.redirect(`${process.env.FRONTEND_URL}/`);
+      if (isOnboarding) {
+        res.redirect(`${process.env.FRONTEND_URL}/onboarding`);
+      } else {
+        res.redirect(`${process.env.FRONTEND_URL}/dashboard`);
+      }
     } catch (error) {
       const message = encodeURIComponent(error.message);
       return res.redirect(`${process.env.FRONTEND_URL}/login?error=${message}`);
@@ -71,7 +75,7 @@ export class AuthController {
       }
     );
 
-    return { message: "Magic code sent to email" };
+    return { message: "Magic code sent to email", isSent: true };
   }
 
   @Post("magic/verify")
@@ -99,9 +103,9 @@ export class AuthController {
 
     this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: "Logged in successfully" });
+    return {
+      redirectUrl: user.isOnboarding ? "onboarding" : "dashboard",
+    };
   }
 
   @Post("refresh")
@@ -122,7 +126,7 @@ export class AuthController {
 
       this.cookieService.setAuthCookies(res, accessToken, newRefreshToken);
 
-      return res.json({ accessToken, refreshToken: newRefreshToken });
+      return { accessToken, refreshToken: newRefreshToken };
     } catch (error) {}
   }
 
@@ -130,9 +134,9 @@ export class AuthController {
   async logout(@Res() res: Response) {
     this.cookieService.clearAuthCookies(res);
 
-    return res
-      .status(HttpStatus.OK)
-      .json({ message: "Logged out successfully" });
+    return {
+      message: "Logged out successfully",
+    };
   }
 
   @Get("csrf-token")

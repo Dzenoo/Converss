@@ -1,11 +1,13 @@
 "use client";
 
-import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ConfirmEmailCodeSchema } from "@/lib/zod/auth.zod";
+import { verifyCode } from "@/lib/actions/auth.actions";
 
 import {
   InputOTP,
@@ -19,8 +21,12 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form/form";
+import { Button } from "../ui/buttons/button";
+import { Loader } from "../ui/info/loader";
 
 const ConfirmEmail = () => {
+  const router = useRouter();
+
   const form = useForm<z.infer<typeof ConfirmEmailCodeSchema>>({
     resolver: zodResolver(ConfirmEmailCodeSchema),
     mode: "onChange",
@@ -29,17 +35,22 @@ const ConfirmEmail = () => {
     },
   });
 
-  const code = form.watch("code");
+  const { mutateAsync: verifyMagicCode, isPending } = useMutation({
+    mutationFn: verifyCode,
+    onSuccess: ({ redirectUrl }) => {
+      console.log(redirectUrl);
+
+      localStorage.removeItem("email");
+      router.push(`/${redirectUrl}`);
+    },
+    onError: (error) => {},
+  });
 
   const handleSubmit = async (data: z.infer<typeof ConfirmEmailCodeSchema>) => {
-    console.log(data);
+    const email = localStorage.getItem("email");
+    if (!email) return;
+    await verifyMagicCode({ email, code: data.code });
   };
-
-  useEffect(() => {
-    if (code.length === 6) {
-      form.handleSubmit(handleSubmit)();
-    }
-  }, [code, form, handleSubmit]);
 
   return (
     <div className="space-y-10 text-center max-sm:px-5">
@@ -58,7 +69,10 @@ const ConfirmEmail = () => {
       </div>
       <div className="justify-self-center">
         <Form {...form}>
-          <form className="space-y-5">
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="space-y-5"
+          >
             <FormField
               control={form.control}
               name="code"
@@ -80,15 +94,22 @@ const ConfirmEmail = () => {
                 </FormItem>
               )}
             />
+            <Button type="submit" disabled={!form.formState.isValid}>
+              {isPending ? (
+                <Loader type="ScaleLoader" height={10} color="#ffffff" />
+              ) : (
+                "Verify"
+              )}
+            </Button>
           </form>
         </Form>
       </div>
-      <div className="text-sm">
+      {/* <div className="text-sm">
         Cant find code?{" "}
         <button className="cursor-pointer text-[var(--primary-blue)]">
           Resend
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };
