@@ -7,6 +7,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { EmailAuthSchema } from "@/lib/zod/auth.zod";
 import { cn } from "@/lib/utils";
@@ -45,7 +46,9 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
         router.push("/confirm-email");
       }
     },
-    onError: (error) => {},
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
+    },
   });
 
   const handleSubmit = async (data: z.infer<typeof EmailAuthSchema>) => {

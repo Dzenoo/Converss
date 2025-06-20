@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException } from "@nestjs/common";
+import {
+  Injectable,
+  NotAcceptableException,
+  UnauthorizedException,
+} from "@nestjs/common";
 
 import { UserService } from "@/models/user/user.service";
 import { TokenService } from "./token.service";
@@ -34,6 +38,10 @@ export class GoogleAuthService {
 
     const existingUser = await this.userService.findOne({ email });
 
+    if (!existingUser?.isGoogleAccount) {
+      throw new UnauthorizedException("Please use your email to login");
+    }
+
     if (existingUser) {
       throw new UnauthorizedException("User already exists, please login");
     }
@@ -65,6 +73,7 @@ export class GoogleAuthService {
       accessToken,
       refreshToken,
       isOnboarding: newUser.isOnboarding,
+      userId: newUser._id,
     };
   }
 
@@ -102,6 +111,7 @@ export class GoogleAuthService {
       accessToken,
       refreshToken,
       isOnboarding: existingUser.isOnboarding,
+      userId: existingUser._id,
     };
   }
 }

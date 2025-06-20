@@ -16,7 +16,7 @@ export const verifyCode = async (
   data: VerifyCodeDto,
 ): Promise<
   ServerResponse<{
-    redirectUrl: string;
+    redirectTo: string;
   }>
 > => {
   return await postApiHandler("auth/magic/verify", data);

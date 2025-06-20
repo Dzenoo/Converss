@@ -3,6 +3,7 @@ import {
   Controller,
   Get,
   HttpStatus,
+  NotAcceptableException,
   Post,
   Req,
   Res,
@@ -43,9 +44,10 @@ export class AuthController {
   @UseGuards(GoogleOAuthGuard)
   async googleAuthRedirect(@Req() req: Request, @Res() res: Response) {
     try {
-      const { accessToken, refreshToken, isOnboarding } =
+      const { accessToken, refreshToken, isOnboarding, userId } =
         await this.googleAuthService.googleAuth(req);
 
+      await this.storeRefreshToken(userId.toString(), refreshToken);
       this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
       if (isOnboarding) {
@@ -62,6 +64,16 @@ export class AuthController {
   @Post("magic/request")
   async requestCode(@Body() body: MagicRequestDto) {
     const { email } = body;
+
+    const existingUser = await this.userService.findOne({
+      email: email,
+    });
+
+    if (existingUser?.isGoogleAccount) {
+      throw new NotAcceptableException(
+        "This account is registered via google. Please continue with google"
+      );
+    }
 
     const code = await this.magicCodeService.generateCode(email);
 
@@ -101,11 +113,13 @@ export class AuthController {
         email: user.email,
       });
 
+    await this.storeRefreshToken(user._id.toString(), refreshToken);
     this.cookieService.setAuthCookies(res, accessToken, refreshToken);
 
-    return {
-      redirectUrl: user.isOnboarding ? "onboarding" : "dashboard",
-    };
+    return res.status(200).json({
+      message: "Verified successfully",
+      redirectTo: user.isOnboarding ? "/onboarding" : "/dashboard",
+    });
   }
 
   @Post("refresh")
@@ -124,6 +138,7 @@ export class AuthController {
           email: payload.email,
         });
 
+      await this.storeRefreshToken(payload._id, newRefreshToken);
       this.cookieService.setAuthCookies(res, accessToken, newRefreshToken);
 
       return { accessToken, refreshToken: newRefreshToken };
@@ -142,5 +157,13 @@ export class AuthController {
   @Get("csrf-token")
   getCsrfToken(@Req() req: any) {
     return { csrfToken: req.csrfToken };
+  }
+
+  private async storeRefreshToken(userId: string, rawToken: string) {
+    const hashedToken = await this.tokenService.hashToken(rawToken);
+    await this.userService.findAndUpdateOne(
+      { _id: userId },
+      { refreshToken: hashedToken }
+    );
   }
 }

@@ -14,18 +14,17 @@ const apiClient = axios.create({
 
 let csrfToken: string | null = null;
 async function fetchCsrfToken() {
-  if (!csrfToken) {
-    try {
-      const response = await apiClient.get<{ csrfToken: string }>(
-        "/auth/csrf-token",
-      );
-      csrfToken = response.data.csrfToken;
-    } catch (error) {
-      console.error("Failed to fetch CSRF token:", error);
-      throw error;
-    }
+  try {
+    const response = await apiClient.get<{ csrfToken: string }>(
+      "/auth/csrf-token",
+    );
+    csrfToken = response.data.csrfToken;
+    return csrfToken;
+  } catch (error) {
+    csrfToken = null;
+    console.error("❌ Failed to fetch CSRF token:", error);
+    throw error;
   }
-  return csrfToken;
 }
 
 apiClient.interceptors.request.use(

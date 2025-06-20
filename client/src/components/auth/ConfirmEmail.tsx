@@ -5,6 +5,7 @@ import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import { ConfirmEmailCodeSchema } from "@/lib/zod/auth.zod";
 import { verifyCode } from "@/lib/actions/auth.actions";
@@ -37,13 +38,12 @@ const ConfirmEmail = () => {
 
   const { mutateAsync: verifyMagicCode, isPending } = useMutation({
     mutationFn: verifyCode,
-    onSuccess: ({ redirectUrl }) => {
-      console.log(redirectUrl);
-
-      localStorage.removeItem("email");
-      router.push(`/${redirectUrl}`);
+    onSuccess: ({ redirectTo }) => {
+      router.push(redirectTo);
     },
-    onError: (error) => {},
+    onError: (error: any) => {
+      toast.error(error.response.data.message);
+    },
   });
 
   const handleSubmit = async (data: z.infer<typeof ConfirmEmailCodeSchema>) => {
@@ -104,12 +104,6 @@ const ConfirmEmail = () => {
           </form>
         </Form>
       </div>
-      {/* <div className="text-sm">
-        Cant find code?{" "}
-        <button className="cursor-pointer text-[var(--primary-blue)]">
-          Resend
-        </button>
-      </div> */}
     </div>
   );
 };
