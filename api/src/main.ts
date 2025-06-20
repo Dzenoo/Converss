@@ -5,8 +5,8 @@ import helmet from "helmet";
 import { NestFactory } from "@nestjs/core";
 import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
-// import { CsrfMiddleware } from "./authentication/middlewares/csrf.middleware";
-// import { CsrfCheckMiddleware } from "./authentication/middlewares/csrf-check.middleware";
+import { CsrfMiddleware } from "./authentication/middlewares/csrf.middleware";
+import { CsrfCheckMiddleware } from "./authentication/middlewares/csrf-check.middleware";
 
 async function initializeServer() {
   const app = await NestFactory.create(AppModule);
@@ -20,8 +20,8 @@ async function initializeServer() {
 
   app.use(helmet());
   app.use(cookieParser());
-  // app.use(new CsrfMiddleware().use);
-  // app.use(new CsrfCheckMiddleware().use);
+  app.use(new CsrfMiddleware().use);
+  app.use(new CsrfCheckMiddleware().use);
   app.use(compression());
   app.useGlobalPipes(
     new ValidationPipe({
