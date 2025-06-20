@@ -39,6 +39,24 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error),
 );
 
+apiClient.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      try {
+        await apiClient.post("/auth/refresh");
+        return apiClient(originalRequest);
+      } catch (refreshError) {
+        window.location.href = "/auth";
+        return Promise.reject(refreshError);
+      }
+    }
+    return Promise.reject(error);
+  },
+);
+
 async function request<T>(
   method: HttpMethod,
   url: string,
@@ -75,13 +93,3 @@ export const patchApiHandler = <T>(
 
 export const deleteApiHandler = <T>(url: string, config?: AxiosRequestConfig) =>
   request<T>("DELETE", url, undefined, config);
-
-export const getCurrentUser = async () => {
-  return getApiHandler<{
-    userId: string;
-    email: string;
-    username: string;
-    isOnboarding: boolean;
-    isGoogleAccount: boolean;
-  }>("/user/me");
-};
