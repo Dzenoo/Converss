@@ -52,7 +52,7 @@ const Auth = () => {
   });
 
   const handleSubmit = async (data: z.infer<typeof EmailAuthSchema>) => {
-    localStorage.setItem("email", data.email);
+    sessionStorage.setItem("email", data.email);
     await requestMagicCode(data);
   };
 
@@ -90,6 +90,7 @@ const Auth = () => {
                     <Input
                       type="email"
                       placeholder="Enter your email address..."
+                      aria-label="Email address"
                       {...field}
                     />
                   </FormControl>
@@ -118,6 +119,7 @@ const Auth = () => {
           className="flex w-full items-center justify-center"
           type="button"
           onClick={() => handleGoogleAuth()}
+          aria-label="Continue with Google"
         >
           <Image
             src="/assets/icons/google-icon-logo-transparent.png"

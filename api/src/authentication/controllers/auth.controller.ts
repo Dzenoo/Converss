@@ -144,8 +144,17 @@ export class AuthController {
   }
 
   @Post("logout")
-  async logout(@Res() res: Response) {
+  async logout(@Req() req: Request, @Res() res: Response) {
     this.cookieService.clearAuthCookies(res);
+
+    const refreshToken = req.cookies["refreshToken"];
+    if (refreshToken) {
+      const payload = await this.tokenService.verifyRefreshToken(refreshToken);
+      await this.userService.findAndUpdateOne(
+        { _id: payload._id },
+        { refreshToken: null }
+      );
+    }
 
     return {
       message: "Logged out successfully",

@@ -47,7 +47,7 @@ const ConfirmEmail = () => {
   });
 
   const handleSubmit = async (data: z.infer<typeof ConfirmEmailCodeSchema>) => {
-    const email = localStorage.getItem("email");
+    const email = sessionStorage.getItem("email");
     if (!email) return;
     await verifyMagicCode({ email, code: data.code });
   };
