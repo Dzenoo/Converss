@@ -57,7 +57,7 @@ export class AuthController {
       }
     } catch (error) {
       const message = encodeURIComponent(error.message);
-      return res.redirect(`${process.env.FRONTEND_URL}/login?error=${message}`);
+      return res.redirect(`${process.env.FRONTEND_URL}/auth?error=${message}`);
     }
   }
 
@@ -129,20 +129,18 @@ export class AuthController {
       throw new UnauthorizedException("Refresh token is required");
     }
 
-    try {
-      const payload = await this.tokenService.verifyRefreshToken(refreshToken);
+    const payload = await this.tokenService.verifyRefreshToken(refreshToken);
 
-      const { accessToken, refreshToken: newRefreshToken } =
-        await this.tokenService.generateTokens({
-          _id: payload._id,
-          email: payload.email,
-        });
+    const { accessToken, refreshToken: newRefreshToken } =
+      await this.tokenService.generateTokens({
+        _id: payload._id,
+        email: payload.email,
+      });
 
-      await this.storeRefreshToken(payload._id, newRefreshToken);
-      this.cookieService.setAuthCookies(res, accessToken, newRefreshToken);
+    await this.storeRefreshToken(payload._id, newRefreshToken);
+    this.cookieService.setAuthCookies(res, accessToken, newRefreshToken);
 
-      return { accessToken, refreshToken: newRefreshToken };
-    } catch (error) {}
+    return { accessToken, refreshToken: newRefreshToken };
   }
 
   @Post("logout")

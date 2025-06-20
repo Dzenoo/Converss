@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useZoomLevel } from "@/hooks/core/useZoomLevel";
+import { useZoomLevel } from "@/hooks/core/useZoomLevel.hook";
 
 const DashboardWrapper: React.FC<{
   children: React.ReactNode;

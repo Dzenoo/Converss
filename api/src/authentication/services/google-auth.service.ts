@@ -38,10 +38,6 @@ export class GoogleAuthService {
 
     const existingUser = await this.userService.findOne({ email });
 
-    if (!existingUser?.isGoogleAccount) {
-      throw new UnauthorizedException("Please use your email to login");
-    }
-
     if (existingUser) {
       throw new UnauthorizedException("User already exists, please login");
     }

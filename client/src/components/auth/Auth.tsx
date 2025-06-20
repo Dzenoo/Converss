@@ -1,8 +1,8 @@
 "use client";
 
-import Link from "next/link";
+import { useEffect } from "react";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -12,6 +12,7 @@ import { toast } from "sonner";
 import { EmailAuthSchema } from "@/lib/zod/auth.zod";
 import { cn } from "@/lib/utils";
 import { requestCode } from "@/lib/actions/auth.actions";
+import { useMounted } from "@/hooks/core/useMounted.hook";
 
 import { Input } from "@/components/ui/form/input";
 import { Button } from "@/components/ui/buttons/button";
@@ -24,12 +25,11 @@ import {
 } from "@/components/ui/form/form";
 import { Loader } from "../ui/info/loader";
 
-type AuthProps = {
-  isLogin: boolean;
-};
-
-const Auth: React.FC<AuthProps> = ({ isLogin }) => {
+const Auth = () => {
+  const { isMounted } = useMounted();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const error = searchParams.get("error");
 
   const form = useForm<z.infer<typeof EmailAuthSchema>>({
     resolver: zodResolver(EmailAuthSchema),
@@ -43,7 +43,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     mutationFn: requestCode,
     onSuccess: ({ isSent }) => {
       if (isSent) {
-        router.push("/confirm-email");
+        router.push("/auth/confirm-email");
       }
     },
     onError: (error: any) => {
@@ -61,17 +61,21 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
     window.location.href = `${process.env.NEXT_PUBLIC_API_URL}/auth/google`;
   };
 
+  useEffect(() => {
+    if (!isMounted || !error) return;
+    toast.error(decodeURIComponent(error));
+    router.replace("/auth");
+  }, [isMounted, error, toast]);
+
   return (
     <div className="space-y-10 text-center">
       <div>
         <h1 className="text-2xl font-semibold md:text-3xl">
-          {isLogin
-            ? "Enter your email to sign in"
-            : "Create your account with email"}
+          Enter your email to sign in
         </h1>
       </div>
 
-      <div className={cn("space-y-6", !isLogin && "px-5 sm:px-10")}>
+      <div className={cn("space-y-6")}>
         <Form {...form}>
           <form
             className="space-y-5"
@@ -96,8 +100,6 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
             <Button type="submit" className="w-full">
               {isPending ? (
                 <Loader type="ScaleLoader" height={10} color="#ffffff" />
-              ) : isLogin ? (
-                "Sign In With Email"
               ) : (
                 "Continue"
               )}
@@ -107,9 +109,7 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
 
         <div className="my-4 flex w-full items-center">
           <hr className="flex-grow border-t border-gray-300" />
-          <span className="mx-4 text-sm text-gray-500 uppercase">
-            {isLogin ? "or sign in with" : "or"}
-          </span>
+          <span className="mx-4 text-sm text-gray-500 uppercase">or</span>
           <hr className="flex-grow border-t border-gray-300" />
         </div>
 
@@ -125,18 +125,8 @@ const Auth: React.FC<AuthProps> = ({ isLogin }) => {
             width={40}
             height={40}
           />
-          Sign {isLogin ? "in" : "up"} with Google
+          Continue with Google
         </Button>
-      </div>
-
-      <div className="text-sm">
-        {isLogin ? "Dont" : "Already"} have account?{" "}
-        <Link
-          href={isLogin ? "/register" : "/login"}
-          className="text-[var(--primary-blue)]"
-        >
-          {isLogin ? "Register" : "Login"}
-        </Link>
       </div>
     </div>
   );

@@ -75,3 +75,13 @@ export const patchApiHandler = <T>(
 
 export const deleteApiHandler = <T>(url: string, config?: AxiosRequestConfig) =>
   request<T>("DELETE", url, undefined, config);
+
+export const getCurrentUser = async () => {
+  return getApiHandler<{
+    userId: string;
+    email: string;
+    username: string;
+    isOnboarding: boolean;
+    isGoogleAccount: boolean;
+  }>("/user/me");
+};

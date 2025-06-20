@@ -1,7 +1,7 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { useZoomLevel } from "@/hooks/core/useZoomLevel";
+import { useZoomLevel } from "@/hooks/core/useZoomLevel.hook";
 import Header from "@/components/layout/onboarding/header/Header";
 import Sidebar from "@/components/layout/onboarding/sidebar/Sidebar";
 

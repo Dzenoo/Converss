@@ -1,6 +1,6 @@
 "use client";
 
-import { useZoomLevel } from "@/hooks/core/useZoomLevel";
+import { useZoomLevel } from "@/hooks/core/useZoomLevel.hook";
 
 import Header from "@/components/layout/landing/header/Header";
 import Footer from "@/components/layout/landing/footer/Footer";
