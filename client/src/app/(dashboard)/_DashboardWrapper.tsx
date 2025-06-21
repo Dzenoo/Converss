@@ -2,11 +2,13 @@
 
 import { cn } from "@/lib/utils";
 import { useZoomLevel } from "@/hooks/core/useZoomLevel.hook";
+import { useSyncUser } from "@/hooks/core/useSyncUser.hook";
 
 const DashboardWrapper: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const isZoomedOut = useZoomLevel();
+  useSyncUser();
 
   return (
     <div className={cn(isZoomedOut && "m-auto max-w-screen-2xl")}>

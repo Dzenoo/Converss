@@ -6,56 +6,10 @@ const DEFAULT_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
 const apiClient = axios.create({
   baseURL: DEFAULT_API_URL,
-  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
-
-let csrfToken: string | null = null;
-async function fetchCsrfToken() {
-  try {
-    const response = await apiClient.get<{ csrfToken: string }>(
-      "/auth/csrf-token",
-    );
-    csrfToken = response.data.csrfToken;
-    return csrfToken;
-  } catch (error) {
-    csrfToken = null;
-    console.error("❌ Failed to fetch CSRF token:", error);
-    throw error;
-  }
-}
-
-apiClient.interceptors.request.use(
-  async (config) => {
-    const method = config.method?.toUpperCase();
-    if (method === "POST" || method === "PATCH" || method === "DELETE") {
-      const token = await fetchCsrfToken();
-      config.headers["X-CSRF-Token"] = token;
-    }
-    return config;
-  },
-  (error) => Promise.reject(error),
-);
-
-apiClient.interceptors.response.use(
-  (response) => response,
-  async (error) => {
-    const originalRequest = error.config;
-    if (error.response?.status === 401 && !originalRequest._retry) {
-      originalRequest._retry = true;
-      try {
-        await apiClient.post("/auth/refresh");
-        return apiClient(originalRequest);
-      } catch (refreshError) {
-        window.location.href = "/auth";
-        return Promise.reject(refreshError);
-      }
-    }
-    return Promise.reject(error);
-  },
-);
 
 async function request<T>(
   method: HttpMethod,

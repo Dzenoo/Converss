@@ -1,5 +1,6 @@
 import { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
+import { ClerkProvider } from "@clerk/nextjs";
 
 import "../globals.css";
 import OnboardingWrapper from "./_OnboardingWrapper";
@@ -18,10 +19,12 @@ export default function OnboardingLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
-      <body className={GeistSans.className}>
-        <OnboardingWrapper>{children}</OnboardingWrapper>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en">
+        <body className={GeistSans.className}>
+          <OnboardingWrapper>{children}</OnboardingWrapper>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }

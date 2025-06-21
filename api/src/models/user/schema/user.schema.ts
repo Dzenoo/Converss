@@ -7,6 +7,9 @@ import { nameRegex } from "@/common/constants";
   timestamps: true,
 })
 export class User {
+  @Prop({ required: true, unique: true })
+  clerkId: string;
+
   @Prop({
     type: String,
     required: true,
@@ -34,15 +37,6 @@ export class User {
     default: true,
   })
   isOnboarding: boolean;
-
-  @Prop({
-    type: Boolean,
-    default: false,
-  })
-  isGoogleAccount?: boolean;
-
-  @Prop()
-  refreshToken?: string;
 }
 
 export type UserDocument = HydratedDocument<User>;

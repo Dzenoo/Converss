@@ -1,26 +1,16 @@
-import {
-  Controller,
-  Get,
-  Req,
-  UnauthorizedException,
-  UseGuards,
-} from "@nestjs/common";
-
-import { Request } from "express";
-
+import { Controller, Post, Req, UseGuards } from "@nestjs/common";
+import { ClerkAuthGuard } from "../../common/guards/clerk-auth.guard";
 import { UserService } from "./user.service";
-
-import { JwtAuthGuard } from "@/authentication/guards/jwt-auth.guard";
 
 @Controller("user")
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Get("me")
-  @UseGuards(JwtAuthGuard)
-  async getCurrentUser(@Req() request: Request) {
-    const user = request.user;
-    if (!user) throw new UnauthorizedException("Unauthorized!");
-    return { user };
+  @Post("sync")
+  @UseGuards(ClerkAuthGuard)
+  async syncUser(@Req() req) {
+    const clerkUser = req["clerkUser"];
+    const user = await this.userService.syncUserFromClerk(clerkUser);
+    return { isOnboarding: user.isOnboarding };
   }
 }
