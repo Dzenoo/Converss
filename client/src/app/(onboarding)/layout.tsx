@@ -2,8 +2,10 @@ import { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { ClerkProvider } from "@clerk/nextjs";
 
-import "../globals.css";
+import { QueryContextProvider } from "@/context/react-query-client";
 import OnboardingWrapper from "./_OnboardingWrapper";
+
+import "../globals.css";
 
 export const metadata: Metadata = {
   icons: "favicon.ico",
@@ -22,7 +24,9 @@ export default function OnboardingLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={GeistSans.className}>
-          <OnboardingWrapper>{children}</OnboardingWrapper>
+          <QueryContextProvider>
+            <OnboardingWrapper>{children}</OnboardingWrapper>
+          </QueryContextProvider>
         </body>
       </html>
     </ClerkProvider>

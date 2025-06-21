@@ -6,7 +6,7 @@ export const OnboardingCreateAssistantSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   businessDescription: z.string().min(10, "Please provide a brief description"),
   industry: z.enum(industries, { message: "Please select a valid industry" }),
-  faq: z
+  faqs: z
     .array(
       z.object({
         question: z.string().min(1, "Question cannot be empty"),
@@ -14,7 +14,7 @@ export const OnboardingCreateAssistantSchema = z.object({
       }),
     )
     .min(1, "Please provide at least one FAQ"),
-  assistantTone: z.enum(tones, { message: "Please select a tone" }),
+  tone: z.enum(tones, { message: "Please select a tone" }),
   primaryRole: z
     .string()
     .min(

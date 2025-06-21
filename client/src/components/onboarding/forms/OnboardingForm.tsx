@@ -3,9 +3,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import { toast } from "sonner";
 
 import { useOnboardingStore } from "@/stores/onboarding-store";
 import { OnboardingCreateAssistantSchema } from "@/lib/zod/onboarding";
+import {
+  useBotMutation,
+  BotMutationType,
+} from "@/hooks/mutations/useBot.mutation";
 
 import BasicInfo from "../BasicInfo";
 import Details from "../Details";
@@ -27,15 +32,25 @@ const OnboardingForm = () => {
       businessName: "",
       businessDescription: "",
       industry: "",
-      faq: [],
-      assistantTone: "",
+      faqs: [],
+      tone: "",
       primaryRole: "",
       greetingMessage: "",
       fallbackMessage: "",
     },
   });
 
-  const isLoading = false;
+  const botMutation = useBotMutation({
+    onSuccess: (response) => {
+      form.reset();
+      toast.success(response.message);
+    },
+    onError: (error: any) => {
+      toast(error.response.data.message);
+    },
+  });
+
+  const isLoading = botMutation.status === "pending";
 
   async function handleNext() {
     const fields = stepFields[currentStep];
@@ -53,8 +68,11 @@ const OnboardingForm = () => {
     return components[currentStep];
   }
 
-  function handleFinishOnboarding(values: OnboardingValues) {
-    console.log(values);
+  async function handleFinishOnboarding(values: OnboardingValues) {
+    return await botMutation.mutateAsync({
+      type: BotMutationType.CREATE,
+      data: { body: values },
+    });
   }
 
   return (
@@ -79,7 +97,7 @@ const OnboardingForm = () => {
               <div className="absolute right-10 bottom-10 flex justify-end gap-3">
                 <Button type="submit" variant="default" size="lg">
                   {isLoading ? (
-                    <Loader type="ScaleLoader" height={10} />
+                    <Loader type="ScaleLoader" height={10} color="#ffffff" />
                   ) : (
                     "Create Assistant"
                   )}
@@ -134,7 +152,7 @@ const stepDetails = [
 
 const stepFields = [
   ["businessName", "businessDescription", "industry"],
-  ["faq"],
+  ["faqs"],
   ["assistantTone", "primaryRole", "greetingMessage", "fallbackMessage"],
 ];
 

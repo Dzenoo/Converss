@@ -26,7 +26,7 @@ const AssistantCustomizer: React.FC<AssistantCustomizerProps> = ({
     <>
       <FormField
         control={control}
-        name="assistantTone"
+        name="tone"
         render={({ field }) => (
           <FormItem className="space-y-2">
             <FormLabel>Assistant Tone</FormLabel>

@@ -23,7 +23,7 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
 
   const { fields, append, remove } = useFieldArray({
     control,
-    name: "faq",
+    name: "faqs",
   });
 
   const handleOnChange = useCallback(
