@@ -6,3 +6,7 @@ export enum ToneType {
   Empathetic = "empathetic",
   Supportive = "supportive",
 }
+
+export type ClerkUserType = {
+  sub: string;
+};

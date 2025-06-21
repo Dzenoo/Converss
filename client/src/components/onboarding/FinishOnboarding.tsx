@@ -1,28 +1,47 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 import { finishOnboarding } from "@/lib/actions/bot.actions";
 
-import CodeSyntax from "../shared/CodeSyntax";
+import CodeSyntax from "@/components/shared/CodeSyntax";
 
 import { Button } from "@/components/ui/buttons/button";
+import { Loader } from "@/components/ui/info/loader";
 
-const FinishOnboarding = ({ token }: { token: string }) => {
-  // This would typically come from props or context in a real app
-  const assistantId = "xyz"; // Replace with actual assistant ID
-  const widgetUrl = "https://yourapp.com/widget.js"; // Replace with actual widget URL
+interface FinishOnboardingProps {
+  token: string;
+  botId?: string;
+  widgetUrl?: string;
+}
 
-  const codeSnippet = `<script src="${widgetUrl}" data-assistant-id="${assistantId}"></script>`;
+const FinishOnboarding: React.FC<FinishOnboardingProps> = ({
+  token,
+  botId = "your-bot-id",
+  widgetUrl = "https://yourapp.com/widget.js",
+}) => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const codeSnippet = `<script src="${widgetUrl}" data-bot-id="${botId}"></script>`;
 
   async function handleFinishOnboarding() {
-    if (!token) return;
-    const response = await finishOnboarding({ token });
-    if (response.statusCode === 202) {
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-      redirect("/dashboard");
+    if (!token) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const response = await finishOnboarding({ token });
+
+      if (response.statusCode === 202) {
+        router.push("/dashboard");
+      }
+    } catch (err) {
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -31,7 +50,7 @@ const FinishOnboarding = ({ token }: { token: string }) => {
       <div className="space-y-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl lg:text-5xl dark:text-white">
-            🎉 Your AI Assistant is Ready!
+            🎉 Your AI bot is Ready!
           </h1>
         </div>
         <div>
@@ -48,12 +67,18 @@ const FinishOnboarding = ({ token }: { token: string }) => {
           <CodeSyntax codeSnippet={codeSnippet} language="html" />
         </div>
         <p className="font-medium">
-          💡 Paste this code before the head tag of your site.
+          💡 Paste this code before the closing &lt;/head&gt; tag of your site.
         </p>
       </div>
 
       <div>
-        <Button onClick={handleFinishOnboarding}>Go to Dashboard</Button>
+        <Button onClick={handleFinishOnboarding} disabled={isLoading || !token}>
+          {isLoading ? (
+            <Loader type="ScaleLoader" height={10} color="#ffffff" />
+          ) : (
+            "Go to Dashboard"
+          )}
+        </Button>
       </div>
     </div>
   );

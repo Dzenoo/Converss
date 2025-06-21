@@ -8,9 +8,11 @@ import {
 import { Injectable } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 import { ConfigService } from "@nestjs/config";
+import { ClerkClient, createClerkClient } from "@clerk/backend";
 
 import { User, UserDocument } from "./schema/user.schema";
-import { ClerkClient, createClerkClient } from "@clerk/backend";
+
+import { ClerkUserType } from "@/types";
 
 @Injectable()
 export class UserService {
@@ -52,7 +54,7 @@ export class UserService {
     return await this.userModel.create(body);
   }
 
-  async syncUserFromClerk(clerkJwtPayload: any) {
+  async syncUserFromClerk(clerkJwtPayload: ClerkUserType) {
     const clerkId = clerkJwtPayload.sub;
 
     let user = await this.userModel.findOne({ clerkId });
