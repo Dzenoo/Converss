@@ -40,6 +40,12 @@ export class User {
   isOnboarding: boolean;
 
   @Prop({
+    type: Boolean,
+    default: false,
+  })
+  onboardingCompleted: boolean;
+
+  @Prop({
     type: [{ type: Types.ObjectId, ref: "Bot" }],
     default: [],
   })

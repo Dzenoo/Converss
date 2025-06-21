@@ -44,6 +44,9 @@ const OnboardingForm = () => {
     onSuccess: (response) => {
       form.reset();
       toast.success(response.message);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     },
     onError: (error: any) => {
       toast(error.response.data.message);

@@ -1,14 +1,30 @@
-import Link from "next/link";
+"use client";
 
-import { Button } from "@/components/ui/buttons/button";
+import { redirect } from "next/navigation";
+
+import { finishOnboarding } from "@/lib/actions/bot.actions";
+
 import CodeSyntax from "../shared/CodeSyntax";
 
-const FinishOnboarding = () => {
+import { Button } from "@/components/ui/buttons/button";
+
+const FinishOnboarding = ({ token }: { token: string }) => {
   // This would typically come from props or context in a real app
   const assistantId = "xyz"; // Replace with actual assistant ID
   const widgetUrl = "https://yourapp.com/widget.js"; // Replace with actual widget URL
 
   const codeSnippet = `<script src="${widgetUrl}" data-assistant-id="${assistantId}"></script>`;
+
+  async function handleFinishOnboarding() {
+    if (!token) return;
+    const response = await finishOnboarding({ token });
+    if (response.statusCode === 202) {
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
+      redirect("/dashboard");
+    }
+  }
 
   return (
     <div className="flex h-full flex-col items-center justify-center gap-16 p-10 text-center max-md:p-5">
@@ -36,17 +52,8 @@ const FinishOnboarding = () => {
         </p>
       </div>
 
-      <div className="flex items-center gap-5">
-        <div>
-          <Link href="/">
-            <Button variant="outline">Test Your Bot</Button>
-          </Link>
-        </div>
-        <div>
-          <Link href="/">
-            <Button>Go to Dashboard</Button>
-          </Link>
-        </div>
+      <div>
+        <Button onClick={handleFinishOnboarding}>Go to Dashboard</Button>
       </div>
     </div>
   );

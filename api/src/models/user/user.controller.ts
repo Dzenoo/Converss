@@ -11,6 +11,9 @@ export class UserController {
   async syncUser(@Req() req) {
     const clerkUser = req["clerkUser"];
     const user = await this.userService.syncUserFromClerk(clerkUser);
-    return { isOnboarding: user.isOnboarding };
+    return {
+      isOnboarding: user.isOnboarding,
+      onboardingCompleted: user.onboardingCompleted,
+    };
   }
 }

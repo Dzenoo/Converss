@@ -11,3 +11,16 @@ export const createBot = async (data: {
       Authorization: `Bearer ${data.token}`,
     },
   });
+
+export const finishOnboarding = async (data: {
+  token: string;
+}): Promise<ServerResponse<{}>> =>
+  postApiHandler(
+    "bots/finish-onboarding",
+    {},
+    {
+      headers: {
+        Authorization: `Bearer ${data.token}`,
+      },
+    },
+  );

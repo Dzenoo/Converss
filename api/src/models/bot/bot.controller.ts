@@ -1,9 +1,8 @@
-import { Body, Controller, Post, UseGuards } from "@nestjs/common";
+import { Body, Controller, Post, Req, UseGuards } from "@nestjs/common";
 
 import { BotService } from "./bot.service";
 import { CreateBotDto } from "./dto/create-bot.dto";
 
-import { CurrentUser } from "@/common/decorators/current-user.decorator";
 import { ClerkAuthGuard } from "@/common/guards/clerk-auth.guard";
 
 @Controller("bots")
@@ -12,7 +11,15 @@ export class BotController {
 
   @Post("create")
   @UseGuards(ClerkAuthGuard)
-  async createBot(@CurrentUser() user: any, @Body() body: CreateBotDto) {
-    return await this.botService.createBot(user._id, body);
+  async createBot(@Req() req, @Body() body: CreateBotDto) {
+    const clerkUser = req["clerkUser"];
+    return await this.botService.createBot(clerkUser.sub, body);
+  }
+
+  @Post("finish-onboarding")
+  @UseGuards(ClerkAuthGuard)
+  async finishOnboarding(@Req() req) {
+    const clerkUser = req["clerkUser"];
+    return await this.botService.finishOnboarding(clerkUser.sub);
   }
 }

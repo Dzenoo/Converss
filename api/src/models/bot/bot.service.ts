@@ -1,6 +1,11 @@
 import { Model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
-import { HttpStatus, Injectable } from "@nestjs/common";
+import {
+  HttpStatus,
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
 import { Bot } from "./schema/bot.schema";
@@ -14,11 +19,19 @@ export class BotService {
     private readonly userService: UserService
   ) {}
 
-  async createBot(userId: string, body: CreateBotDto) {
+  async createBot(clerkUserId: string, body: CreateBotDto) {
+    const user = await this.userService.findOne({ clerkId: clerkUserId });
+
+    if (!user) {
+      throw new NotFoundException("User doesn't exist");
+    }
+
+    const mongoUserId = user._id;
+
     const widgetId = uuidv4();
 
     const bot = await this.botModel.create({
-      userId,
+      userId: mongoUserId,
       widgetId,
       businesName: body.businessName,
       businessDescription: body.businessDescription,
@@ -32,17 +45,43 @@ export class BotService {
 
     await this.userService.findAndUpdateOne(
       {
-        _id: userId,
+        _id: mongoUserId,
       },
       {
         $push: { bots: bot._id },
-        isOnboarding: false,
+        onboardingCompleted: true,
       }
     );
 
     return {
       message: "Bot successfully created!",
       status: HttpStatus.CREATED,
+    };
+  }
+
+  async finishOnboarding(clerkUserId: string) {
+    const user = await this.userService.findOne({ clerkId: clerkUserId });
+
+    if (!user) {
+      throw new NotFoundException("User doesn't exist");
+    }
+
+    if (!user.onboardingCompleted) {
+      throw new NotAcceptableException("Please finish onboarding!");
+    }
+
+    await this.userService.findAndUpdateOne(
+      {
+        _id: user._id,
+      },
+      {
+        isOnboarding: false,
+      }
+    );
+
+    return {
+      message: "Onboarding finished!",
+      status: HttpStatus.ACCEPTED,
     };
   }
 
