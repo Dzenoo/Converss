@@ -29,6 +29,7 @@ export class User {
     maxlength: 155,
     trim: true,
     unique: true,
+    index: true,
   })
   email: string;
 
@@ -37,6 +38,12 @@ export class User {
     default: true,
   })
   isOnboarding: boolean;
+
+  @Prop({
+    type: [{ type: Types.ObjectId, ref: "Bot" }],
+    default: [],
+  })
+  bots: Types.ObjectId[];
 }
 
 export type UserDocument = HydratedDocument<User>;
