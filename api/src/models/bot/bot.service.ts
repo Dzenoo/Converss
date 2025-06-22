@@ -66,6 +66,10 @@ export class BotService {
       throw new NotFoundException("User doesn't exist");
     }
 
+    if (!user.isOnboarding) {
+      throw new NotAcceptableException("User already finished onboarding");
+    }
+
     if (!user.onboardingCompleted) {
       throw new NotAcceptableException("Please finish onboarding!");
     }

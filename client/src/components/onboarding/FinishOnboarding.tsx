@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 import { finishOnboarding } from "@/lib/actions/bot.actions";
@@ -8,7 +7,6 @@ import { finishOnboarding } from "@/lib/actions/bot.actions";
 import CodeSyntax from "@/components/shared/CodeSyntax";
 
 import { Button } from "@/components/ui/buttons/button";
-import { Loader } from "@/components/ui/info/loader";
 
 interface FinishOnboardingProps {
   token: string;
@@ -22,26 +20,16 @@ const FinishOnboarding: React.FC<FinishOnboardingProps> = ({
   widgetUrl = "https://yourapp.com/widget.js",
 }) => {
   const router = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
-
   const codeSnippet = `<script src="${widgetUrl}" data-bot-id="${botId}"></script>`;
 
   async function handleFinishOnboarding() {
-    if (!token) {
-      return;
-    }
-
-    setIsLoading(true);
+    if (!token) return;
 
     try {
-      const response = await finishOnboarding({ token });
-
-      if (response.statusCode === 202) {
-        router.push("/dashboard");
-      }
+      await finishOnboarding({ token });
+      router.refresh();
     } catch (err) {
-    } finally {
-      setIsLoading(false);
+      console.error("Error finishing onboarding:", err);
     }
   }
 
@@ -72,12 +60,8 @@ const FinishOnboarding: React.FC<FinishOnboardingProps> = ({
       </div>
 
       <div>
-        <Button onClick={handleFinishOnboarding} disabled={isLoading || !token}>
-          {isLoading ? (
-            <Loader type="ScaleLoader" height={10} color="#ffffff" />
-          ) : (
-            "Go to Dashboard"
-          )}
+        <Button onClick={handleFinishOnboarding} disabled={!token}>
+          Go to Dashboard
         </Button>
       </div>
     </div>
