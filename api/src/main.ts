@@ -7,7 +7,9 @@ import { ValidationPipe } from "@nestjs/common";
 import { AppModule } from "./app.module";
 
 async function initializeServer() {
-  const app = await NestFactory.create(AppModule);
+  const app = await NestFactory.create(AppModule, {
+    rawBody: true,
+  });
 
   app.enableCors({
     origin: ["http://localhost:3000"],
@@ -32,8 +34,6 @@ async function initializeServer() {
 
   app.setGlobalPrefix("api");
 
-  await app.listen(process.env.PORT || 8080, () =>
-    console.log(`Server is running on http://localhost:${process.env.PORT}/api`)
-  );
+  await app.listen(process.env.PORT || 8080);
 }
 initializeServer();

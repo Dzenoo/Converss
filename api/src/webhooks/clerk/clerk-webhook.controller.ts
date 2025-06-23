@@ -5,6 +5,7 @@ import {
   Headers,
   HttpStatus,
   HttpException,
+  RawBodyRequest,
 } from "@nestjs/common";
 import { Request } from "express";
 import { Webhook } from "svix";
@@ -18,7 +19,7 @@ export class ClerkWebhookController {
   @Post()
   async handleWebhook(
     @Headers() headers: Record<string, string>,
-    @Req() req: Request
+    @Req() request: RawBodyRequest<Request>
   ) {
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET as string;
 
@@ -30,25 +31,29 @@ export class ClerkWebhookController {
       );
     }
 
+    const payload = request.rawBody?.toString("utf8");
+
     try {
       const wh = new Webhook(WEBHOOK_SECRET);
-      const payload = wh.verify(req.body, {
+      const response = wh.verify(payload as any, {
         "svix-id": headers["svix-id"],
         "svix-timestamp": headers["svix-timestamp"],
         "svix-signature": headers["svix-signature"],
       }) as any;
 
-      switch (payload.type) {
+      switch (response.type) {
         case "user.created":
-          await this.clerkWebhookService.handleUserCreated(payload.data);
+          await this.clerkWebhookService.handleUserCreated(response.data);
           break;
         // Add other cases as needed
         default:
-          console.log(`Unhandled event type: ${payload.type}`);
+          console.log(`Unhandled event type: ${response.type}`);
       }
 
       return { success: true };
     } catch (err) {
+      console.log(err);
+
       throw new HttpException("Invalid signature", HttpStatus.UNAUTHORIZED);
     }
   }
