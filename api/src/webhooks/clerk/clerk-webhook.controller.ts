@@ -31,11 +31,11 @@ export class ClerkWebhookController {
       );
     }
 
-    const payload = request.rawBody?.toString("utf8");
+    const payload = request.rawBody?.toString("utf8") as string;
 
     try {
       const wh = new Webhook(WEBHOOK_SECRET);
-      const response = wh.verify(payload as any, {
+      const response = wh.verify(payload, {
         "svix-id": headers["svix-id"],
         "svix-timestamp": headers["svix-timestamp"],
         "svix-signature": headers["svix-signature"],
@@ -45,15 +45,12 @@ export class ClerkWebhookController {
         case "user.created":
           await this.clerkWebhookService.handleUserCreated(response.data);
           break;
-        // Add other cases as needed
         default:
           console.log(`Unhandled event type: ${response.type}`);
       }
 
       return { success: true };
     } catch (err) {
-      console.log(err);
-
       throw new HttpException("Invalid signature", HttpStatus.UNAUTHORIZED);
     }
   }

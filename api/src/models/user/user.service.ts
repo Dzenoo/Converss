@@ -5,10 +5,12 @@ import {
   UpdateQuery,
   UpdateWriteOpResult,
 } from "mongoose";
-import { Injectable } from "@nestjs/common";
+import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectConnection, InjectModel } from "@nestjs/mongoose";
 
 import { User, UserDocument } from "./schema/user.schema";
+
+import { ClerkUserType } from "@/types";
 
 @Injectable()
 export class UserService {
@@ -41,5 +43,24 @@ export class UserService {
 
   async createOne(body: Partial<User>): Promise<UserDocument | null> {
     return await this.userModel.create(body);
+  }
+
+  async getCurrentUser(clerkUser: ClerkUserType) {
+    const user = await this.userModel.findOne({
+      clerkId: clerkUser.sub,
+    });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    return {
+      data: {
+        isOnboarding: user.isOnboarding,
+        onboardingCompleted: user.onboardingCompleted,
+      },
+      message: "Successfully found!",
+      statusCode: HttpStatus.OK,
+    };
   }
 }
