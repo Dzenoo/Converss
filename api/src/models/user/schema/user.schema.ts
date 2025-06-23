@@ -1,8 +1,6 @@
 import { HydratedDocument, Types } from "mongoose";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 
-import { nameRegex } from "@/common/constants";
-
 @Schema({
   timestamps: true,
 })
@@ -17,8 +15,6 @@ export class User {
     maxlength: 15,
     trim: true,
     unique: true,
-    match: nameRegex,
-    index: true,
   })
   username: string;
 
@@ -29,7 +25,6 @@ export class User {
     maxlength: 155,
     trim: true,
     unique: true,
-    index: true,
   })
   email: string;
 

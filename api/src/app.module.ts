@@ -4,6 +4,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { UserModule } from "./models/user/user.module";
 import { BotModule } from "./models/bot/bot.module";
 import { ConversationModule } from "./models/conversation/conversation.module";
+import { ClerkWebhookModule } from "./webhooks/clerk/clerk-webhook.module";
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ConversationModule } from "./models/conversation/conversation.module";
     UserModule,
     BotModule,
     ConversationModule,
+    ClerkWebhookModule,
   ],
 })
 export class AppModule {}

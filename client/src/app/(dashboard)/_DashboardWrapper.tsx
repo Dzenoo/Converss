@@ -8,7 +8,7 @@ const DashboardWrapper: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
   const isZoomedOut = useZoomLevel();
-  useSyncUser();
+  // useSyncUser();
 
   return (
     <div className={cn(isZoomedOut && "m-auto max-w-screen-2xl")}>
