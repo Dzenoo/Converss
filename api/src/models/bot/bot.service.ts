@@ -236,18 +236,4 @@ export class BotService {
 
     return { bot, user };
   }
-
-  private buildSystemPrompt(bot: Bot): string {
-    let prompt = `
-      You are a helpful AI assistant for ${bot.businessName}. 
-      This is business description and industry: ${bot.businessDescription} ${bot.industry}.
-      Here are some frequently asked questions and topics you should be knowledgeable about: ${bot.faqs}.
-      Your primary role is: ${bot.primaryRole}. Respond in this ${bot.tone} tone.
-      Your greeting message is: ${bot.greetingMessage}.
-      Your fallback message is: ${bot.fallbackMessage}.
-      Always be helpful, accurate, and stay focused on topics related to ${bot.businessName}.
-      If asked about something unrelated to the business, politely redirect the conversation back to how you can help with ${bot.businessName} services.
-    `;
-    return prompt;
-  }
 }
