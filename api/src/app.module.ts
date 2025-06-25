@@ -4,7 +4,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 
 import { UserModule } from "./models/user/user.module";
 import { BotModule } from "./models/bot/bot.module";
-import { ConversationModule } from "./models/conversation/conversation.module";
+import { ChatModule } from "./models/chat/chat.module";
 import { ClerkWebhookModule } from "./webhooks/clerk/clerk-webhook.module";
 
 @Module({
@@ -25,7 +25,7 @@ import { ClerkWebhookModule } from "./webhooks/clerk/clerk-webhook.module";
     }),
     UserModule,
     BotModule,
-    ConversationModule,
+    ChatModule,
     ClerkWebhookModule,
   ],
 })

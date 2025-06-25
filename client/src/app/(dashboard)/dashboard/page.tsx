@@ -1,5 +1,4 @@
 import { redirect } from "next/navigation";
-import { UserButton } from "@clerk/nextjs";
 import { auth } from "@clerk/nextjs/server";
 
 import { getCurrentUser } from "@/lib/actions/user.actions";
@@ -15,11 +14,7 @@ const DashboardPage = async () => {
     }
   }
 
-  return (
-    <div>
-      <UserButton />
-    </div>
-  );
+  return <div></div>;
 };
 
 export default DashboardPage;

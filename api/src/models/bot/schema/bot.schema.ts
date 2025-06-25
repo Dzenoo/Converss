@@ -12,7 +12,7 @@ export class Bot {
     trim: true,
     maxlength: 100,
   })
-  businesName: string;
+  businessName: string;
 
   @Prop({
     type: String,

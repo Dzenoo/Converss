@@ -18,7 +18,7 @@ export class BotController {
     @ClerkUser() clerkUser: ClerkUserType,
     @Body() body: CreateBotDto
   ) {
-    return await this.botService.createBot(clerkUser.sub, body);
+    return await this.botService.create(clerkUser.sub, body);
   }
 
   @Post("finish-onboarding")

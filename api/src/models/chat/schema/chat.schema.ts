@@ -4,7 +4,7 @@ import { HydratedDocument, Types } from "mongoose";
 @Schema({
   timestamps: true,
 })
-export class Conversation {
+export class Chat {
   @Prop([
     {
       role: {
@@ -35,13 +35,7 @@ export class Conversation {
     index: true,
   })
   botId: Types.ObjectId;
-
-  @Prop({
-    required: true,
-    index: true,
-  })
-  sessionId: string;
 }
 
-export type ConversationDocument = HydratedDocument<Conversation>;
-export const ConversationSchema = SchemaFactory.createForClass(Conversation);
+export type ChatDocument = HydratedDocument<Chat>;
+export const ChatSchema = SchemaFactory.createForClass(Chat);
