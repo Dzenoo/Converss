@@ -1,17 +1,18 @@
 import { Model } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import {
-  ForbiddenException,
   HttpStatus,
   Injectable,
   NotAcceptableException,
   NotFoundException,
+  UnauthorizedException,
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
 import { Bot } from "./schema/bot.schema";
 import { UserService } from "../user/user.service";
 import { CreateBotDto } from "./dto/create-bot.dto";
+import { GetBotsDto } from "./dto/get-bots.dto";
 
 @Injectable()
 export class BotService {
@@ -20,8 +21,11 @@ export class BotService {
     private readonly userService: UserService
   ) {}
 
-  async create(clerkUserId: string, body: CreateBotDto) {
-    const user = await this.userService.findOne({ clerkId: clerkUserId });
+  async create(data: {
+    clerkUserId: string;
+    body: CreateBotDto;
+  }): Promise<ResponseObject> {
+    const user = await this.userService.findOne({ clerkId: data.clerkUserId });
 
     if (!user) {
       throw new NotFoundException("User doesn't exist");
@@ -34,14 +38,14 @@ export class BotService {
     const bot = await this.botModel.create({
       userId: mongoUserId,
       widgetId,
-      businessName: body.businessName,
-      businessDescription: body.businessDescription,
-      industry: body.industry,
-      faqs: body.faqs,
-      tone: body.tone,
-      primaryRole: body.primaryRole,
-      greetingMessage: body.greetingMessage,
-      fallbackMessage: body.fallbackMessage,
+      businessName: data.body.businessName,
+      businessDescription: data.body.businessDescription,
+      industry: data.body.industry,
+      faqs: data.body.faqs,
+      tone: data.body.tone,
+      primaryRole: data.body.primaryRole,
+      greetingMessage: data.body.greetingMessage,
+      fallbackMessage: data.body.fallbackMessage,
     });
 
     await this.userService.findAndUpdateOne(
@@ -56,12 +60,14 @@ export class BotService {
 
     return {
       message: "Bot successfully created!",
-      status: HttpStatus.CREATED,
+      statusCode: HttpStatus.CREATED,
     };
   }
 
-  async finishOnboarding(clerkUserId: string) {
-    const user = await this.userService.findOne({ clerkId: clerkUserId });
+  async finishOnboarding(data: {
+    clerkUserId: string;
+  }): Promise<ResponseObject> {
+    const user = await this.userService.findOne({ clerkId: data.clerkUserId });
 
     if (!user) {
       throw new NotFoundException("User doesn't exist");
@@ -86,102 +92,149 @@ export class BotService {
 
     return {
       message: "Onboarding finished!",
-      status: HttpStatus.ACCEPTED,
+      statusCode: HttpStatus.ACCEPTED,
     };
   }
 
-  async getAllByUser(userId: string) {
-    const bots = await this.botModel.find({ userId }).sort({ createdAt: -1 });
-    return bots;
+  async getAllByUser(data: {
+    clerkUserId: string;
+    query: GetBotsDto;
+  }): Promise<ResponseObject> {
+    const { page = 1, limit = 10, search, sort } = data.query;
+
+    const user = await this.userService.findOne({ clerkId: data.clerkUserId });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const conditions: any = {
+      userId: user._id,
+    };
+
+    if (search) {
+      const regexSearch = new RegExp(String(search), "i");
+      conditions.$or = [
+        { businessName: { $regex: regexSearch } },
+        { businessDescription: { $regex: regexSearch } },
+      ];
+    }
+
+    const sortOptions: any = { createdAt: sort === "desc" ? -1 : 1 };
+
+    const bots = await this.botModel
+      .find(conditions)
+      .sort(sortOptions)
+      .skip((page - 1) * limit)
+      .limit(limit)
+      .lean()
+      .exec();
+
+    const totalBots = await this.botModel.countDocuments(conditions);
+
+    return {
+      data: {
+        bots,
+        totalBots,
+      },
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async getById(id: string, userId: string) {
-    const bot = await this.botModel.findById(id);
+  async getByUserAndId(data: {
+    id: string;
+    clerkUserId: string;
+  }): Promise<ResponseObject> {
+    const bot = await this.getBotByUserAndCheckAccess({
+      botId: data.id,
+      clerkUserId: data.clerkUserId,
+    });
+
+    return {
+      data: {
+        bot,
+      },
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  async update(data: {
+    id: string;
+    body: any;
+    clerkUserId: string;
+  }): Promise<ResponseObject> {
+    await this.getBotByUserAndCheckAccess({
+      botId: data.id,
+      clerkUserId: data.clerkUserId,
+    });
+
+    const bot = await this.botModel.findByIdAndUpdate(
+      data.id,
+      { $set: data.body },
+      {
+        new: true,
+        runValidators: true,
+        strict: true,
+      }
+    );
 
     if (!bot) {
-      throw new NotFoundException("Bot not found");
+      throw new NotAcceptableException("Bot could not be updated.");
     }
 
-    if (bot.userId.toString() !== userId) {
-      throw new ForbiddenException("Access denied");
-    }
-
-    return bot;
+    return {
+      message: "Bot updated successfully.",
+      statusCode: HttpStatus.OK,
+    };
   }
 
-  async getByWidgetId(widgetId: string) {
-    const bot = await this.botModel.findOne({ widgetId, isActive: true });
+  async remove(data: {
+    id: string;
+    clerkUserId: string;
+  }): Promise<ResponseObject> {
+    const { bot, user } = await this.getBotByUserAndCheckAccess({
+      botId: data.id,
+      clerkUserId: data.clerkUserId,
+    });
+
+    await Promise.all([
+      this.botModel.findByIdAndDelete(bot._id),
+      this.userService.findAndUpdateMany(
+        { _id: user._id },
+        { $pull: { bots: bot._id } }
+      ),
+    ]);
+
+    return {
+      message: "Bot successfully deleted.",
+      statusCode: HttpStatus.ACCEPTED,
+    };
+  }
+
+  private async getBotByUserAndCheckAccess(data: {
+    botId: string;
+    clerkUserId: string;
+  }) {
+    const user = await this.userService.findOne({ clerkId: data.clerkUserId });
+
+    if (!user) {
+      throw new NotFoundException("User not found");
+    }
+
+    const bot = await this.botModel.findOne({
+      _id: data.botId,
+      userId: user._id,
+    });
 
     if (!bot) {
-      throw new NotFoundException("Bot not found or inactive");
+      throw new NotAcceptableException("Bot does not exist.");
     }
 
-    return bot;
-  }
-
-  async update(id: string, body: any, userId: string): Promise<Bot> {
-    const bot = await this.botModel.findOne({ _id: id, userId });
-
-    if (!bot) {
-      throw new NotFoundException("Bot not found");
+    if (bot.userId.toString() !== user._id.toString()) {
+      throw new UnauthorizedException();
     }
 
-    Object.assign(bot, body);
-    return bot.save();
-  }
-
-  async remove(id: string, userId: string): Promise<void> {
-    await this.botModel.findByIdAndDelete(id).exec();
-  }
-
-  async chat(botId: string, body: any) {
-    const bot = await this.botModel.findById(botId);
-
-    if (!bot) {
-      throw new NotFoundException("Bot not found");
-    }
-
-    // Check domain restrictions if configured
-    // This would require additional logic for domain checking
-
-    // Create conversation or get existing one
-    // const conversation =
-    //   await this.conversationsService.createOrGetConversation(botId);
-
-    // Build context for OpenAI
-    // const systemPrompt = this.buildSystemPrompt(bot);
-    // const conversationHistory =
-    //   await this.conversationsService.getRecentMessages(
-    //     conversation._id.toString(),
-    //     10
-    //   );
-
-    // Get AI response
-    // const aiResponse = await this.openaiService.generateResponse(
-    //   systemPrompt,
-    //   body.message,
-    //   conversationHistory
-    // );
-
-    // Save messages
-    // await this.conversationsService.addMessage(
-    //   conversation._id.toString(),
-    //   "user",
-    //   body.message
-    // );
-
-    // await this.conversationsService.addMessage(
-    //   conversation._id.toString(),
-    //   "assistant",
-    //   aiResponse
-    // );
-
-    // return {
-    //   message: aiResponse,
-    //   conversationId: conversation._id.toString(),
-    // };
-
-    return bot;
+    return { bot, user };
   }
 
   private buildSystemPrompt(bot: Bot): string {
