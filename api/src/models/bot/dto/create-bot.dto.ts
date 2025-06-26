@@ -34,6 +34,11 @@ export class CreateBotDto {
 
   @IsString()
   @IsNotEmpty()
+  @MaxLength(100)
+  businessWebsite: string;
+
+  @IsString()
+  @IsNotEmpty()
   industry: string;
 
   @IsArray()

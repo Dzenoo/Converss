@@ -31,6 +31,7 @@ const OnboardingForm = () => {
     defaultValues: {
       businessName: "",
       businessDescription: "",
+      businessWebsite: "",
       industry: "",
       faqs: [],
       tone: "",
@@ -154,7 +155,7 @@ const stepDetails = [
 ];
 
 const stepFields = [
-  ["businessName", "businessDescription", "industry"],
+  ["businessName", "businessDescription", "businessWebsite", "industry"],
   ["faqs"],
   ["assistantTone", "primaryRole", "greetingMessage", "fallbackMessage"],
 ];

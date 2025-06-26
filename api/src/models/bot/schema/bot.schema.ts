@@ -25,6 +25,14 @@ export class Bot {
   @Prop({
     type: String,
     required: true,
+    trim: true,
+    maxlength: 100,
+  })
+  businessWebsite: string;
+
+  @Prop({
+    type: String,
+    required: true,
   })
   industry: string;
 

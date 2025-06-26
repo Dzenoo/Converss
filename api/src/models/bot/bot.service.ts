@@ -40,6 +40,7 @@ export class BotService {
       widgetId,
       businessName: data.body.businessName,
       businessDescription: data.body.businessDescription,
+      businessWebsite: data.body.businessWebsite,
       industry: data.body.industry,
       faqs: data.body.faqs,
       tone: data.body.tone,

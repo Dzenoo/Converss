@@ -77,6 +77,19 @@ const BasicInfo: React.FC<BasicInfoProps> = ({ control }) => {
       />
       <FormField
         control={control}
+        name="businessWebsite"
+        render={({ field }) => (
+          <FormItem className="space-y-2">
+            <FormLabel>Business Website</FormLabel>
+            <FormControl>
+              <Input placeholder="Enter your business website..." {...field} />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={control}
         name="industry"
         render={({ field }) => (
           <FormItem>
