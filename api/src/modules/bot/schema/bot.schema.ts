@@ -111,6 +111,35 @@ export class Bot {
     index: true,
   })
   widgetId: string;
+
+  @Prop({
+    type: {
+      totalConversations: { type: Number, default: 0 },
+      lastActive: { type: Date },
+      messagesThisMonth: { type: Number, default: 0 },
+      topQuestions: [
+        {
+          question: String,
+          count: Number,
+        },
+      ],
+      responseTimes: {
+        count: { type: Number, default: 0 },
+        lastUpdated: { type: Date },
+      },
+    },
+    default: {},
+  })
+  analytics: {
+    totalConversations: number;
+    lastActive: Date;
+    messagesThisMonth: number;
+    topQuestions: { question: string; count: number }[];
+    responseTimes: {
+      count: number;
+      lastUpdated: Date;
+    };
+  };
 }
 
 export type BotDocument = HydratedDocument<Bot>;

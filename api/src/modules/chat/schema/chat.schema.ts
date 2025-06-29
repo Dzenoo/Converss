@@ -25,7 +25,7 @@ export class Chat {
   messages: Array<{
     role: "user" | "assistant";
     content: string;
-    timestamp: Date;
+    timestamp?: Date;
   }>;
 
   @Prop({

@@ -2,10 +2,10 @@ import { Module } from "@nestjs/common";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { MongooseModule } from "@nestjs/mongoose";
 
-import { UserModule } from "./models/user/user.module";
-import { BotModule } from "./models/bot/bot.module";
-import { ChatModule } from "./models/chat/chat.module";
-import { ClerkWebhookModule } from "./webhooks/clerk/clerk-webhook.module";
+import { UserModule } from "./modules/user/user.module";
+import { BotModule } from "./modules/bot/bot.module";
+import { ChatModule } from "./modules/chat/chat.module";
+import { ClerkWebhookModule } from "./modules/clerk/clerk-webhook.module";
 
 @Module({
   imports: [

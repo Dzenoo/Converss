@@ -1,4 +1,4 @@
-import { Model } from "mongoose";
+import { FilterQuery, Model, Types, UpdateQuery } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import {
   HttpStatus,
@@ -9,7 +9,7 @@ import {
 } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
-import { Bot } from "./schema/bot.schema";
+import { Bot, BotDocument } from "./schema/bot.schema";
 import { UserService } from "../user/user.service";
 import { CreateBotDto } from "./dto/create-bot.dto";
 import { GetBotsDto } from "./dto/get-bots.dto";
@@ -20,6 +20,21 @@ export class BotService {
     @InjectModel(Bot.name) private readonly botModel: Model<Bot>,
     private readonly userService: UserService
   ) {}
+
+  async find(query: FilterQuery<Bot> = {}): Promise<Bot[]> {
+    return await this.botModel.find(query).lean().exec();
+  }
+
+  async findOne(query: FilterQuery<Bot> = {}): Promise<BotDocument | null> {
+    return await this.botModel.findOne(query).exec();
+  }
+
+  async findOneByIdAndUpdate(
+    id: Types.ObjectId,
+    update: UpdateQuery<Bot> = {}
+  ): Promise<void> {
+    await this.botModel.findByIdAndUpdate(id, update).exec();
+  }
 
   async create(data: {
     clerkUserId: string;

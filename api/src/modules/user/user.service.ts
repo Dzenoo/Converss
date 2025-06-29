@@ -45,7 +45,7 @@ export class UserService {
     return await this.userModel.create(body);
   }
 
-  async getCurrentUser(clerkUser: ClerkUserType) {
+  async getCurrentUser(clerkUser: ClerkUserType): Promise<ResponseObject> {
     const user = await this.userModel.findOne({
       clerkId: clerkUser.sub,
     });

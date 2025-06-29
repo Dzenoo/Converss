@@ -1,6 +1,6 @@
 import { Injectable, Logger } from "@nestjs/common";
 
-import { UserService } from "@/models/user/user.service";
+import { UserService } from "@/modules/user/user.service";
 
 @Injectable()
 export class ClerkWebhookService {
