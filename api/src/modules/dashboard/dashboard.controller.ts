@@ -10,7 +10,7 @@ import { ClerkAuthGuard } from "@/common/guards/clerk-auth.guard";
 export class DashboardController {
   constructor(private readonly dashboardService: DashboardService) {}
 
-  @Get()
+  @Get("user")
   @UseGuards(ClerkAuthGuard)
   async getUserDashboard(@ClerkUser() clerkUser: ClerkUserType) {
     return await this.dashboardService.getUserDashboard({
