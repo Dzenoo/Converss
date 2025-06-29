@@ -1,10 +1,16 @@
 import { FilterQuery, Model, Types } from "mongoose";
-import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
+import {
+  HttpStatus,
+  Injectable,
+  NotFoundException,
+  UnauthorizedException,
+} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 
 import { Chat } from "./schema/chat.schema";
 
 import { BotService } from "../bot/bot.service";
+import { UserService } from "../user/user.service";
 import { AiService } from "@/modules/ai/ai.service";
 
 @Injectable()
@@ -12,6 +18,7 @@ export class ChatService {
   constructor(
     @InjectModel(Chat.name) private readonly chatModel: Model<Chat>,
     private readonly botService: BotService,
+    private readonly userService: UserService,
     private readonly aiService: AiService
   ) {}
 
@@ -148,6 +155,58 @@ export class ChatService {
       data: {
         response: aiResponse,
       },
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  async getAllChatsByBot(data: {
+    botId: string;
+    userId: string;
+  }): Promise<ResponseObject> {
+    const user = await this.userService.findOne({ clerkId: data.userId });
+    if (!user) throw new NotFoundException("User not found");
+
+    const bot = await this.botService.findOne({
+      _id: data.botId,
+      userId: user._id,
+    });
+    if (!bot) throw new UnauthorizedException();
+
+    const chats = await this.chatModel
+      .find({
+        botId: bot._id,
+      })
+      .lean()
+      .exec();
+
+    return {
+      data: { chats },
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  async getChatByBot(data: {
+    botId: string;
+    userId: string;
+  }): Promise<ResponseObject> {
+    const user = await this.userService.findOne({ clerkId: data.userId });
+    if (!user) throw new NotFoundException("User not found");
+
+    const bot = await this.botService.findOne({
+      _id: data.botId,
+      userId: user._id,
+    });
+    if (!bot) throw new UnauthorizedException();
+
+    const chat = await this.chatModel
+      .findOne({
+        botId: bot._id,
+      })
+      .lean()
+      .exec();
+
+    return {
+      data: { chat },
       statusCode: HttpStatus.OK,
     };
   }

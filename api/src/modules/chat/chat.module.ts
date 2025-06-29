@@ -6,12 +6,15 @@ import { ChatController } from "./chat.controller";
 import { ChatService } from "./chat.service";
 
 import { BotModule } from "../bot/bot.module";
+import { UserModule } from "../user/user.module";
+
 import { AiService } from "@/modules/ai/ai.service";
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Chat.name, schema: ChatSchema }]),
     BotModule,
+    UserModule,
   ],
   controllers: [ChatController],
   providers: [ChatService, AiService],
