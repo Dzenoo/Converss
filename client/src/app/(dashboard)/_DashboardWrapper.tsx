@@ -12,8 +12,7 @@ const DashboardWrapper: React.FC<{
     <SidebarProvider>
       <DashboardSidebar />
       <SidebarInset>
-        Header
-        <main className="flex-1 p-4 pt-0">{children}</main>
+        <article className="flex-1 p-5">{children}</article>
       </SidebarInset>
     </SidebarProvider>
   );

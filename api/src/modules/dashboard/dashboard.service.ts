@@ -13,12 +13,10 @@ export class DashboardService {
   ) {}
 
   async getUserDashboard(data: { userId: string }): Promise<ResponseObject> {
-    const [user, bots] = await Promise.all([
-      this.userService.findOne({ clerkId: data.userId }),
-      this.botService.find({ userId: data.userId }),
-    ]);
-
+    const user = await this.userService.findOne({ clerkId: data.userId });
     if (!user) throw new Error("User not found");
+
+    const bots = await this.botService.find({ userId: user._id });
     if (bots.length === 0)
       return {
         data: this.emptyDashboard(user),

@@ -19,16 +19,15 @@ export class ClerkAuthGuard implements CanActivate {
 
     const token = authHeader.replace("Bearer ", "").trim();
 
-    try {
-      const payload = await verifyToken(token, {
-        secretKey: this.configService.get<string>("CLERK_SECRET_KEY"),
-      });
-      request["clerkUser"] = payload;
+    // try {
+    const payload = await verifyToken(token, {
+      secretKey: this.configService.get<string>("CLERK_SECRET_KEY"),
+    });
+    request["clerkUser"] = payload;
 
-      return true;
-    } catch (err) {
-      console.error("Clerk token verification failed:", err);
-      throw new UnauthorizedException("Invalid or expired token");
-    }
+    return true;
+    // } catch (err) {
+    //   console.error("Clerk token verification failed:", err);
+    // }
   }
 }

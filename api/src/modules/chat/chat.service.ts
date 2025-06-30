@@ -26,7 +26,7 @@ export class ChatService {
     return await this.chatModel.find(query).lean().exec();
   }
 
-  async getRecentActivity(botIds: Types.ObjectId[], limit = 10) {
+  async getRecentActivity(botIds: Types.ObjectId[], limit = 5) {
     return this.chatModel.aggregate([
       { $match: { botId: { $in: botIds } } },
       { $unwind: "$messages" },
@@ -62,7 +62,7 @@ export class ChatService {
     ]);
   }
 
-  async getTopQuestions(botIds: Types.ObjectId[], limit = 10) {
+  async getTopQuestions(botIds: Types.ObjectId[], limit = 5) {
     return this.chatModel.aggregate([
       { $match: { botId: { $in: botIds } } },
       { $unwind: "$messages" },

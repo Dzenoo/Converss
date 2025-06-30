@@ -1,3 +1,5 @@
+export interface IBot {}
+
 export type CreateBotDto = {
   businessName: string;
   businessDescription: string;

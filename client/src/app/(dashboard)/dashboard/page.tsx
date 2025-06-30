@@ -3,6 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { getCurrentUser } from "@/lib/actions/user.actions";
 
+import Dashboard from "@/components/dashboard/Dashboard";
+
 const DashboardPage = async () => {
   const { getToken } = await auth();
   const token = await getToken();
@@ -14,7 +16,11 @@ const DashboardPage = async () => {
     }
   }
 
-  return <div></div>;
+  if (!token) {
+    return;
+  }
+
+  return <Dashboard token={token} />;
 };
 
 export default DashboardPage;

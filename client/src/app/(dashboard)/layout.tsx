@@ -1,9 +1,10 @@
 import { Metadata } from "next";
 import { GeistSans } from "geist/font/sans";
 import { ClerkProvider } from "@clerk/nextjs";
+import { QueryContextProvider } from "@/context/react-query-client";
+import DashboardWrapper from "./_DashboardWrapper";
 
 import "../globals.css";
-import DashboardWrapper from "./_DashboardWrapper";
 
 export const metadata: Metadata = {
   icons: "favicon.ico",
@@ -22,7 +23,9 @@ export default function DashboardLayout({
     <ClerkProvider>
       <html lang="en">
         <body className={GeistSans.className}>
-          <DashboardWrapper>{children}</DashboardWrapper>
+          <QueryContextProvider>
+            <DashboardWrapper>{children}</DashboardWrapper>
+          </QueryContextProvider>
         </body>
       </html>
     </ClerkProvider>
