@@ -54,7 +54,7 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({
   const isSingleBot = chartData.length === 1;
 
   return (
-    <Card>
+    <Card className="border border-[var(--tertiary-gray)] shadow-none">
       <CardHeader>
         <CardTitle>Recent Activity</CardTitle>
         <CardDescription>Messages sent per bot</CardDescription>
