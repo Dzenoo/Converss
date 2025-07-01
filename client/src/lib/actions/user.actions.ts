@@ -1,5 +1,4 @@
 import { getApiHandler } from "../api";
-import { IUser } from "@/types";
 
 export const getCurrentUser = async (data: {
   token: string;
@@ -22,7 +21,6 @@ export const getUserDashboard = async (data: {
 }): Promise<
   ServerResponse<{
     data: {
-      user: IUser;
       summary: {
         totalBots: number;
         activeBots: number;
@@ -31,12 +29,9 @@ export const getUserDashboard = async (data: {
       };
       recentActivity: {
         _id: string;
-        content: string;
-        role: "user" | "assistant";
-        timestamp: string;
-        botName: string;
-        botId: string;
-        widgetId: string;
+        date: string;
+        user: number;
+        assistant: number;
       }[];
       botPerformance: {
         id: string;

@@ -26,39 +26,81 @@ export class ChatService {
     return await this.chatModel.find(query).lean().exec();
   }
 
-  async getRecentActivity(botIds: Types.ObjectId[], limit = 5) {
+  async getRecentActivity(botIds: Types.ObjectId[], days = 30) {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
     return this.chatModel.aggregate([
       { $match: { botId: { $in: botIds } } },
       { $unwind: "$messages" },
-      { $sort: { "messages.timestamp": -1 } },
-      { $limit: limit },
+      { $match: { "messages.timestamp": { $gte: startDate } } },
+      {
+        $group: {
+          _id: {
+            date: {
+              $dateToString: {
+                format: "%Y-%m-%d",
+                date: "$messages.timestamp",
+              },
+            },
+            role: "$messages.role",
+          },
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $group: {
+          _id: "$_id.date",
+          counts: {
+            $push: {
+              role: "$_id.role",
+              count: "$count",
+            },
+          },
+        },
+      },
       {
         $project: {
-          botId: 1,
-          content: "$messages.content",
-          role: "$messages.role",
-          timestamp: "$messages.timestamp",
+          date: "$_id",
+          user: {
+            $let: {
+              vars: {
+                userCount: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: "$counts",
+                        cond: { $eq: ["$$this.role", "user"] },
+                      },
+                    },
+                    0,
+                  ],
+                },
+              },
+              in: { $ifNull: ["$$userCount.count", 0] },
+            },
+          },
+          assistant: {
+            $let: {
+              vars: {
+                assistantCount: {
+                  $arrayElemAt: [
+                    {
+                      $filter: {
+                        input: "$counts",
+                        cond: { $eq: ["$$this.role", "assistant"] },
+                      },
+                    },
+                    0,
+                  ],
+                },
+              },
+              in: { $ifNull: ["$$assistantCount.count", 0] },
+            },
+          },
         },
       },
-      {
-        $lookup: {
-          from: "bots",
-          localField: "botId",
-          foreignField: "_id",
-          as: "bot",
-        },
-      },
-      { $unwind: "$bot" },
-      {
-        $project: {
-          botName: "$bot.businessName",
-          botId: "$bot._id",
-          widgetId: "$bot.widgetId",
-          content: 1,
-          role: 1,
-          timestamp: 1,
-        },
-      },
+      { $sort: { date: 1 } },
     ]);
   }
 

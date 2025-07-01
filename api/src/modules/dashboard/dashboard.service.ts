@@ -32,7 +32,6 @@ export class DashboardService {
 
     return {
       data: {
-        user: this.formatUser(user),
         summary: this.calculateSummary(bots),
         recentActivity: recentChats,
         botPerformance: this.formatBotPerformance(bots),
@@ -81,7 +80,6 @@ export class DashboardService {
   // Helper methods
   private emptyDashboard(user: any) {
     return {
-      user: this.formatUser(user),
       summary: {
         totalBots: 0,
         activeBots: 0,
@@ -91,14 +89,6 @@ export class DashboardService {
       recentActivity: [],
       botPerformance: [],
       topQuestions: [],
-    };
-  }
-
-  private formatUser(user: any) {
-    return {
-      username: user.username,
-      email: user.email,
-      onboardingCompleted: user.onboardingCompleted,
     };
   }
 
