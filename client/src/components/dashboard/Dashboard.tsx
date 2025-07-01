@@ -40,10 +40,10 @@ const Dashboard: React.FC<DashboardProps> = ({ token }) => {
           <RecentActivity recentActivity={data.data.recentActivity} />
         </div>
         <div>
-          <BotPerformance botPerformance={data.data.botPerformance} />
+          <TopQuestions topQuestions={data.data.topQuestions} />
         </div>
         <div className="col-span-2">
-          <TopQuestions topQuestions={data.data.topQuestions} />
+          <BotPerformance botPerformance={data.data.botPerformance} />
         </div>
       </div>
     </div>

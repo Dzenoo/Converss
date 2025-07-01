@@ -38,7 +38,7 @@ export const getUserDashboard = async (data: {
         name: string;
         isActive: boolean;
         conversations: number;
-        lastActive: Date;
+        lastActive: string;
         widgetId: string;
       }[];
       topQuestions: { question: string; count: number; lastAsked: string }[];
