@@ -26,8 +26,8 @@ export const getUserDashboard = async (data: {
       summary: {
         totalBots: number;
         activeBots: number;
-        totalConversations: any;
-        messagesThisMonth: any;
+        totalConversations: number;
+        messagesThisMonth: number;
       };
       recentActivity: {
         _id: string;
@@ -39,12 +39,12 @@ export const getUserDashboard = async (data: {
         widgetId: string;
       }[];
       botPerformance: {
-        id: any;
-        name: any;
-        isActive: any;
-        conversations: any;
-        lastActive: any;
-        widgetId: any;
+        id: string;
+        name: string;
+        isActive: boolean;
+        conversations: number;
+        lastActive: Date;
+        widgetId: string;
       }[];
       topQuestions: { question: string; count: number; lastAsked: string }[];
     };

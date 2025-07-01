@@ -1,11 +1,11 @@
 type BotPerformanceProps = {
   botPerformance: {
-    id: any;
-    name: any;
-    isActive: any;
-    conversations: any;
-    lastActive: any;
-    widgetId: any;
+    id: string;
+    name: string;
+    isActive: boolean;
+    conversations: number;
+    lastActive: string;
+    widgetId: string;
   }[];
 };
 
