@@ -43,7 +43,7 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({
   return (
     <Card className="border border-gray-200 shadow-none">
       <CardHeader>
-        <CardTitle>User vs Assistant Activity</CardTitle>
+        <CardTitle>User vs Assistant Activity (All Bots)</CardTitle>
         <CardDescription>
           Messages sent daily over the last 30 days
         </CardDescription>

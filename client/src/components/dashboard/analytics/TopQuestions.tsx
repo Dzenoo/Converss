@@ -49,7 +49,10 @@ export const TopQuestionsPieChart: React.FC<TopQuestionsProps> = ({
       <CardContent>
         <ChartContainer config={chartConfig}>
           <PieChart>
-            <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+            <ChartTooltip
+              cursor={false}
+              content={<ChartTooltipContent indicator="dashed" />}
+            />
 
             <Pie data={chartData} dataKey="count" nameKey="question" label />
           </PieChart>
