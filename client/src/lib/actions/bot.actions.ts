@@ -5,30 +5,13 @@ import { getApiHandler, postApiHandler } from "../api";
 import { CreateBotDto, GetUserBotsDto, IBot } from "@/types";
 
 export const createBot = async (data: {
-  token: string;
   body: CreateBotDto;
-}): Promise<ServerResponse<{}>> =>
-  postApiHandler("bots/create", data.body, {
-    headers: {
-      Authorization: `Bearer ${data.token}`,
-    },
-  });
+}): Promise<ServerResponse> => postApiHandler("bots/create", data.body);
 
-export const finishOnboarding = async (data: {
-  token: string;
-}): Promise<ServerResponse<{}>> =>
-  postApiHandler(
-    "bots/finish-onboarding",
-    {},
-    {
-      headers: {
-        Authorization: `Bearer ${data.token}`,
-      },
-    },
-  );
+export const finishOnboarding = async (): Promise<ServerResponse> =>
+  postApiHandler("bots/finish-onboarding", {});
 
 export const getBotsByUser = async (data: {
-  token: string;
   query: GetUserBotsDto;
 }): Promise<
   ServerResponse<{
@@ -39,10 +22,5 @@ export const getBotsByUser = async (data: {
   }>
 > => {
   const queryString = qs.stringify(data.query, { skipNulls: true });
-
-  return await getApiHandler(`bots/by-user?${queryString}`, {
-    headers: {
-      Authorization: `Bearer ${data.token}`,
-    },
-  });
+  return await getApiHandler(`bots/by-user?${queryString}`);
 };

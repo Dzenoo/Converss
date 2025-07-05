@@ -5,14 +5,10 @@ import { BotQueryType, useBotQuery } from "@/hooks/queries/bot.query";
 import BotsList from "./BotsList";
 import NotFound from "@/components/shared/NotFounds";
 
-type BotsProps = {
-  token: string;
-};
-
-const Bots: React.FC<BotsProps> = ({ token }) => {
+const Bots = () => {
   const { data, isLoading } = useBotQuery({
     type: BotQueryType.GET_BOTS_BY_USER,
-    params: { token, query: {} },
+    params: { query: {} },
   });
 
   if (isLoading) {

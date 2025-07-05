@@ -4,7 +4,7 @@ type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
 const DEFAULT_API_URL = process.env.NEXT_PUBLIC_API_URL;
 
-const apiClient = axios.create({
+export const apiClient = axios.create({
   baseURL: DEFAULT_API_URL,
   headers: {
     "Content-Type": "application/json",
