@@ -16,11 +16,7 @@ const DashboardPage = async () => {
     }
   }
 
-  if (!token) {
-    return;
-  }
-
-  return <Dashboard token={token} />;
+  return <Dashboard />;
 };
 
 export default DashboardPage;

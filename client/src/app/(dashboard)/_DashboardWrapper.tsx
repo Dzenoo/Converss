@@ -1,6 +1,5 @@
 "use client";
 
-import { useAuthInterceptor } from "@/hooks/core/useAuthInterceptor.hook";
 import DashboardSidebar from "@/components/dashboard/sidebar/DashboardSidebar";
 
 import {
@@ -11,8 +10,6 @@ import {
 const DashboardWrapper: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  useAuthInterceptor();
-
   return (
     <SidebarProvider>
       <DashboardSidebar />

@@ -1,15 +1,24 @@
 import { getApiHandler } from "../api";
 
-export const getCurrentUser = async (): Promise<
+export const getCurrentUser = async (data: {
+  token: string;
+}): Promise<
   ServerResponse<{
     data: {
       isOnboarding: boolean;
       onboardingCompleted: boolean;
     };
   }>
-> => getApiHandler("user");
+> =>
+  getApiHandler("user", {
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+  });
 
-export const getUserDashboard = async (): Promise<
+export const getUserDashboard = async (data: {
+  token: string;
+}): Promise<
   ServerResponse<{
     data: {
       summary: {
@@ -35,4 +44,9 @@ export const getUserDashboard = async (): Promise<
       topQuestions: { question: string; count: number; lastAsked: string }[];
     };
   }>
-> => getApiHandler("dashboard/user");
+> =>
+  getApiHandler("dashboard/user", {
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+  });

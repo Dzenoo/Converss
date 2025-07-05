@@ -3,8 +3,8 @@ import { getBotsByUser } from "@/lib/actions/bot.actions";
 import { GetUserBotsDto } from "@/types";
 
 const BotQueryFunctions = {
-  GET_BOTS_BY_USER: (params: { query: GetUserBotsDto }) =>
-    getBotsByUser({ query: params.query }),
+  GET_BOTS_BY_USER: (params: { token: string; query: GetUserBotsDto }) =>
+    getBotsByUser({ token: params.token, query: params.query }),
 } as const;
 
 enum BotQueryType {

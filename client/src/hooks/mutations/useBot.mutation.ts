@@ -1,4 +1,5 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
 import { toast } from "sonner";
 
 import { createBot } from "@/lib/actions/bot.actions";
@@ -21,10 +22,15 @@ const useBotMutation = (
     "mutationFn"
   >,
 ) => {
+  const { getToken } = useAuth();
+
   const mutationFn = async (payload: BotMutationPayload) => {
+    const token = await getToken();
+    if (!token) throw new Error("Unauthorized!");
+
     switch (payload.type) {
       case BotMutationType.CREATE:
-        return createBot({ body: payload.data.body });
+        return createBot({ body: payload.data.body, token: token });
       default:
         throw new Error("Invalid mutation type");
     }
