@@ -23,7 +23,7 @@ const Branding = () => {
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">Converss</span>
             <span className="truncate text-xs">
-              {user?.firstName + "'s"} Dashboard
+              {user && user.firstName + "'s"} Dashboard
             </span>
           </div>
         </SidebarMenuButton>

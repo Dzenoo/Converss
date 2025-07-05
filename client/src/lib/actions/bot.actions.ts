@@ -1,10 +1,12 @@
-import { postApiHandler } from "../api";
+import qs from "qs";
 
-import { CreateBotDto } from "@/types";
+import { getApiHandler, postApiHandler } from "../api";
+
+import { CreateBotDto, GetUserBotsDto, IBot } from "@/types";
 
 export const createBot = async (data: {
-  body: CreateBotDto;
   token: string;
+  body: CreateBotDto;
 }): Promise<ServerResponse<{}>> =>
   postApiHandler("bots/create", data.body, {
     headers: {
@@ -24,3 +26,23 @@ export const finishOnboarding = async (data: {
       },
     },
   );
+
+export const getBotsByUser = async (data: {
+  token: string;
+  query: GetUserBotsDto;
+}): Promise<
+  ServerResponse<{
+    data: {
+      bots: IBot[];
+      totalBots: number;
+    };
+  }>
+> => {
+  const queryString = qs.stringify(data.query, { skipNulls: true });
+
+  return await getApiHandler(`bots/by-user?${queryString}`, {
+    headers: {
+      Authorization: `Bearer ${data.token}`,
+    },
+  });
+};

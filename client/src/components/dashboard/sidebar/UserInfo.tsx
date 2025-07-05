@@ -21,6 +21,7 @@ import {
   AvatarFallback,
   AvatarImage,
 } from "@/components/ui/info/avatar";
+import { Loader } from "@/components/ui/info/loader";
 
 const UserInfo: React.FC = () => {
   const { signOut } = useAuth();
@@ -40,7 +41,9 @@ const UserInfo: React.FC = () => {
             >
               <Avatar className="h-8 w-8 rounded-full">
                 <AvatarImage src={"/assets/images/avatar.png"} alt="Avatar" />
-                <AvatarFallback className="rounded-full">CN</AvatarFallback>
+                <AvatarFallback className="rounded-full">
+                  <Loader type="ScaleLoader" height={10} />
+                </AvatarFallback>
               </Avatar>
               <div className="grid flex-1 text-left text-sm leading-tight">
                 <span className="truncate font-semibold">{userName}</span>
@@ -59,7 +62,9 @@ const UserInfo: React.FC = () => {
               <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
                 <Avatar className="h-8 w-8 rounded-full">
                   <AvatarImage src="/assets/images/avatar.png" alt="Avatar" />
-                  <AvatarFallback className="rounded-full">CN</AvatarFallback>
+                  <AvatarFallback className="rounded-full">
+                    <Loader type="ScaleLoader" height={10} />
+                  </AvatarFallback>
                 </Avatar>
                 <div className="grid flex-1 text-left text-sm leading-tight">
                   <span className="truncate font-semibold">{userName}</span>

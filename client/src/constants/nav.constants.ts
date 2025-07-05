@@ -17,7 +17,7 @@ export const DashboardSidebarActions = [
         id: 2.1,
         icon: List,
         text: "My bots",
-        href: "/dashboard/bots",
+        href: "/dashboard/my-bots",
       },
       {
         id: 2.2,

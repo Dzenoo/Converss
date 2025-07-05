@@ -54,7 +54,7 @@ export class BotController {
 
   @Get("by-user/:botId")
   @UseGuards(ClerkAuthGuard)
-  async getBotById(
+  async getBotByUserAndId(
     @ClerkUser() clerkUser: ClerkUserType,
     @Param("botId") botId: string
   ) {
