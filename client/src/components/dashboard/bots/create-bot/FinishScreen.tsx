@@ -14,7 +14,7 @@ interface FinishOnboardingProps {
   widgetUrl?: string;
 }
 
-const FinishOnboarding: React.FC<FinishOnboardingProps> = ({
+const FinishScreen: React.FC<FinishOnboardingProps> = ({
   token,
   botId = "your-bot-id",
   widgetUrl = "https://yourapp.com/widget.js",
@@ -68,4 +68,4 @@ const FinishOnboarding: React.FC<FinishOnboardingProps> = ({
   );
 };
 
-export default FinishOnboarding;
+export default FinishScreen;

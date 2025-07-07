@@ -3,8 +3,8 @@ import { auth } from "@clerk/nextjs/server";
 
 import { getCurrentUser } from "@/lib/actions/user.actions";
 
-import OnboardingForm from "@/components/onboarding/forms/OnboardingForm";
-import FinishOnboarding from "@/components/onboarding/FinishOnboarding";
+import CreateBotForm from "@/components/dashboard/bots/create-bot/forms/CreateBotForm";
+import FinishScreen from "@/components/dashboard/bots/create-bot/FinishScreen";
 
 const OnboardingPage = async () => {
   const { getToken } = await auth();
@@ -18,9 +18,9 @@ const OnboardingPage = async () => {
     }
 
     if (user.isOnboarding && user.onboardingCompleted) {
-      return <FinishOnboarding token={token} />;
+      return <FinishScreen token={token} />;
     } else {
-      return <OnboardingForm />;
+      return <CreateBotForm isOnboarding={true} />;
     }
   }
 };

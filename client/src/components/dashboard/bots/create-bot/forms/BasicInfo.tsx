@@ -1,7 +1,7 @@
 import { Control } from "react-hook-form";
 
 import { industries } from "@/constants";
-import { OnboardingValues } from "./forms/OnboardingForm";
+import { CreateBotValues } from "./CreateBotForm";
 
 import { Textarea } from "@/components/ui/form/textarea";
 import { Input } from "@/components/ui/form/input";
@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/form/select";
 
 type BasicInfoProps = {
-  control: Control<OnboardingValues>;
+  control: Control<CreateBotValues>;
 };
 
 const BasicInfo: React.FC<BasicInfoProps> = ({ control }) => {

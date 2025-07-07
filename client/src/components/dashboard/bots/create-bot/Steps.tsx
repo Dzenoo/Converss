@@ -2,10 +2,10 @@
 
 import { LucideCheck } from "lucide-react";
 
-import { useOnboardingStore } from "@/stores/onboarding-store";
+import { useCreateBotStore } from "@/stores/create-bot-store";
 import { cn } from "@/lib/utils";
 
-const OnboardingStepsData = [
+const StepsData = [
   {
     id: 0,
     title: "Business Info",
@@ -23,12 +23,12 @@ const OnboardingStepsData = [
   },
 ];
 
-const OnboardingSteps = () => {
-  const { currentStep } = useOnboardingStore();
+const Steps = () => {
+  const { currentStep } = useCreateBotStore();
 
   return (
     <div className="space-y-8">
-      {OnboardingStepsData.map((step, i) => (
+      {StepsData.map((step, i) => (
         <Step
           key={step.id}
           title={step.title}
@@ -103,4 +103,4 @@ const Step = ({
   );
 };
 
-export default OnboardingSteps;
+export default Steps;

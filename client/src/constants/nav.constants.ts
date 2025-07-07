@@ -23,7 +23,7 @@ export const DashboardSidebarActions = [
         id: 2.2,
         icon: Plus,
         text: "Create bot",
-        href: "/dashboard/bots/create",
+        href: "/dashboard/create-bot",
       },
     ],
   },

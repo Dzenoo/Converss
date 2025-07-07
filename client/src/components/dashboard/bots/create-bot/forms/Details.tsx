@@ -4,15 +4,15 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { useFieldArray, Control } from "react-hook-form";
 import { Trash2 } from "lucide-react";
 
-import { OnboardingValues } from "./forms/OnboardingForm";
+import { CreateBotValues } from "./CreateBotForm";
 
-import { Label } from "../ui/form/label";
+import { Label } from "../../../../ui/form/label";
 import { Input } from "@/components/ui/form/input";
 import { Textarea } from "@/components/ui/form/textarea";
 import { Button } from "@/components/ui/buttons/button";
 
 type DetailsProps = {
-  control: Control<OnboardingValues>;
+  control: Control<CreateBotValues>;
 };
 
 const Details: React.FC<DetailsProps> = ({ control }) => {

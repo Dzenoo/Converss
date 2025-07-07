@@ -1,33 +1,38 @@
 "use client";
 
 import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { toast } from "sonner";
 
-import { useOnboardingStore } from "@/stores/onboarding-store";
-import { OnboardingCreateAssistantSchema } from "@/lib/zod/onboarding";
+import { useCreateBotStore } from "@/stores/create-bot-store";
+import { CreateBotSchema } from "@/lib/zod/bots";
+import { cn } from "@/lib/utils";
 import {
   useBotMutation,
   BotMutationType,
 } from "@/hooks/mutations/useBot.mutation";
 
-import BasicInfo from "../BasicInfo";
-import Details from "../Details";
-import AssistantCustomizer from "../AssistantCustomizer";
+import BasicInfo from "./BasicInfo";
+import Details from "./Details";
+import AssistantCustomizer from "./AssistantCustomizer";
 
 import { Button } from "@/components/ui/buttons/button";
 import { Form } from "@/components/ui/form/form";
 import { Loader } from "@/components/ui/info/loader";
 
-export type OnboardingValues = z.infer<typeof OnboardingCreateAssistantSchema>;
+export type CreateBotValues = z.infer<typeof CreateBotSchema>;
 
-const OnboardingForm = () => {
-  const { currentStep, nextStep, prevStep } = useOnboardingStore();
+const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
+  isOnboarding,
+}) => {
+  const { currentStep, nextStep, prevStep } = useCreateBotStore();
+  const router = useRouter();
 
-  const form = useForm<OnboardingValues>({
+  const form = useForm<CreateBotValues>({
     mode: "all",
-    resolver: zodResolver(OnboardingCreateAssistantSchema),
+    resolver: zodResolver(CreateBotSchema),
     defaultValues: {
       businessName: "",
       businessDescription: "",
@@ -45,9 +50,14 @@ const OnboardingForm = () => {
     onSuccess: (response) => {
       form.reset();
       toast.success(response.message);
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+
+      if (isOnboarding) {
+        setTimeout(() => {
+          window.location.reload();
+        }, 1000);
+      } else {
+        router.push("/dashboard/my-bots");
+      }
     },
     onError: (error: any) => {
       toast(error.response.data.message);
@@ -72,7 +82,7 @@ const OnboardingForm = () => {
     return components[currentStep];
   }
 
-  async function handleFinishOnboarding(values: OnboardingValues) {
+  async function handleCreateBot(values: CreateBotValues) {
     return await botMutation.mutateAsync({
       type: BotMutationType.CREATE,
       data: { body: values },
@@ -80,8 +90,14 @@ const OnboardingForm = () => {
   }
 
   return (
-    <div className="relative flex h-full flex-col justify-between p-10 max-md:p-5">
-      <div className="hide-scrollbar max-h-[75vh] min-h-[75vh] space-y-12 overflow-auto px-52 max-[1480px]:px-16 max-xl:px-8 max-lg:px-4 max-sm:px-1">
+    <div className="relative flex h-full flex-col justify-between">
+      <div
+        className={cn(
+          "space-y-12",
+          isOnboarding &&
+            "hide-scrollbar max-h-[75vh] min-h-[75vh] overflow-auto px-52 max-[1480px]:px-16 max-xl:px-8 max-lg:px-4 max-sm:px-1",
+        )}
+      >
         <div className="space-y-2">
           <h1 className="text-4xl font-semibold max-md:text-2xl">
             {stepDetails[currentStep].title}
@@ -93,7 +109,7 @@ const OnboardingForm = () => {
 
         <Form {...form}>
           <form
-            onSubmit={form.handleSubmit(handleFinishOnboarding)}
+            onSubmit={form.handleSubmit(handleCreateBot)}
             className="space-y-10"
           >
             {renderComponent()}
@@ -160,4 +176,4 @@ const stepFields = [
   ["assistantTone", "primaryRole", "greetingMessage", "fallbackMessage"],
 ];
 
-export default OnboardingForm;
+export default CreateBotForm;

@@ -2,7 +2,7 @@ import { z } from "zod";
 
 import { industries, tones } from "@/constants";
 
-export const OnboardingCreateAssistantSchema = z.object({
+export const CreateBotSchema = z.object({
   businessName: z.string().min(1, "Business name is required"),
   businessDescription: z.string().min(10, "Please provide a brief description"),
   businessWebsite: z.string().min(10, "Please provide a link to the website"),

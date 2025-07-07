@@ -3,18 +3,19 @@ import { CirclePower } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 
-import OnboardingSteps from "./OnboardingSteps";
+import Steps from "@/components/dashboard/bots/create-bot/Steps";
 
 import { Button } from "@/components/ui/buttons/button";
 
-const Sidebar = () => {
+const Sidebar: React.FC<{ className?: string }> = ({ className }) => {
   return (
     <aside
       className={cn(
         "flex min-w-[350px] basis-[25%] flex-col justify-between gap-10 border-l border-[var(--tertiary-gray)] p-10 max-lg:hidden",
+        className,
       )}
     >
-      <OnboardingSteps />
+      <Steps />
 
       <div className="space-y-2">
         <div>

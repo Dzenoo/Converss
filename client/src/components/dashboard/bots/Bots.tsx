@@ -41,7 +41,7 @@ const Bots: React.FC<BotsProps> = ({ token }) => {
   const totalBots = data.data.totalBots;
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-5 p-5">
       <div>
         <h1 className="text-xl font-semibold">Your Bots</h1>
       </div>

@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-type OnboardingStore = {
+type CreateBotStore = {
   currentStep: number;
   totalSteps: number;
 
@@ -8,7 +8,7 @@ type OnboardingStore = {
   prevStep: () => void;
 };
 
-export const useOnboardingStore = create<OnboardingStore>((set, get) => ({
+export const useCreateBotStore = create<CreateBotStore>((set, get) => ({
   currentStep: 0,
   totalSteps: 3,
 

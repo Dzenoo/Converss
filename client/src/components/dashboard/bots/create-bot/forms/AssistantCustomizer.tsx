@@ -3,7 +3,7 @@ import { Control } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { AssistantTonesData } from "@/constants";
 
-import { OnboardingValues } from "./forms/OnboardingForm";
+import { CreateBotValues } from "./CreateBotForm";
 
 import { Input } from "@/components/ui/form/input";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form/form";
 
 type AssistantCustomizerProps = {
-  control: Control<OnboardingValues>;
+  control: Control<CreateBotValues>;
 };
 
 const AssistantCustomizer: React.FC<AssistantCustomizerProps> = ({
