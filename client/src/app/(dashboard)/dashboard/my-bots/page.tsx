@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
@@ -11,7 +12,11 @@ const MyBotsPage = async () => {
     redirect("/sign-in");
   }
 
-  return <Bots token={token} />;
+  return (
+    <Suspense fallback="Loading...">
+      <Bots token={token} />
+    </Suspense>
+  );
 };
 
 export default MyBotsPage;

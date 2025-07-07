@@ -39,16 +39,16 @@ const BotsItem: React.FC<BotsItemProps> = ({ bot }) => {
         <p>{bot.businessDescription}</p>
         <div className="space-y-2">
           <p>
-            <strong>Role:</strong> {bot.primaryRole}
+            <strong>Assistant Role:</strong> {bot.primaryRole}
           </p>
           <p className="capitalize">
-            <strong>Tone:</strong> {bot.tone}
+            <strong>Assistant Tone:</strong> {bot.tone}
           </p>
           <p>
-            <strong>Greeting:</strong> {bot.greetingMessage}
+            <strong>Greeting Message:</strong> {bot.greetingMessage}
           </p>
           <p>
-            <strong>Fallback:</strong> {bot.fallbackMessage}
+            <strong>Fallback Message:</strong> {bot.fallbackMessage}
           </p>
         </div>
       </CardContent>

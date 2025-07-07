@@ -1,3 +1,4 @@
+import { Suspense } from "react";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs/server";
 
@@ -19,7 +20,11 @@ const DashboardPage = async () => {
     redirect("/onboarding");
   }
 
-  return <Dashboard token={token} />;
+  return (
+    <Suspense fallback="Loading...">
+      <Dashboard token={token} />;
+    </Suspense>
+  );
 };
 
 export default DashboardPage;
