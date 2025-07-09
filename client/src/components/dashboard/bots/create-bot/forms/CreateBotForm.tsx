@@ -114,8 +114,18 @@ const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
           >
             {renderComponent()}
             {currentStep === 2 && (
-              <div className="absolute right-10 bottom-10 flex justify-end gap-3">
-                <Button type="submit" variant="default" size="lg">
+              <div
+                className={cn(
+                  "absolute right-0 bottom-0 flex justify-end gap-3",
+                  isOnboarding && "right-10 bottom-10",
+                )}
+              >
+                <Button
+                  type="submit"
+                  variant="default"
+                  size="lg"
+                  disabled={!form.formState.isValid}
+                >
                   {isLoading ? (
                     <Loader type="ScaleLoader" height={10} color="#ffffff" />
                   ) : (

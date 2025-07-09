@@ -24,7 +24,7 @@ const SidebarNav = () => {
             const Button = (
               <SidebarMenuButton asChild>
                 {hasSubActions ? (
-                  <Link href={item.href}>
+                  <Link href={item.href ? item.href : ""}>
                     <item.icon />
                     <span>{item.text}</span>
                   </Link>

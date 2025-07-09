@@ -9,13 +9,11 @@ import CodeSyntax from "@/components/shared/CodeSyntax";
 import { Button } from "@/components/ui/buttons/button";
 
 interface FinishOnboardingProps {
-  token: string;
   botId?: string;
   widgetUrl?: string;
 }
 
 const FinishScreen: React.FC<FinishOnboardingProps> = ({
-  token,
   botId = "your-bot-id",
   widgetUrl = "https://yourapp.com/widget.js",
 }) => {
@@ -23,10 +21,8 @@ const FinishScreen: React.FC<FinishOnboardingProps> = ({
   const codeSnippet = `<script src="${widgetUrl}" data-bot-id="${botId}"></script>`;
 
   async function handleFinishOnboarding() {
-    if (!token) return;
-
     try {
-      await finishOnboarding({ token });
+      await finishOnboarding();
       router.refresh();
     } catch (err) {
       console.error("Error finishing onboarding:", err);
@@ -60,9 +56,7 @@ const FinishScreen: React.FC<FinishOnboardingProps> = ({
       </div>
 
       <div>
-        <Button onClick={handleFinishOnboarding} disabled={!token}>
-          Go to Dashboard
-        </Button>
+        <Button onClick={handleFinishOnboarding}>Go to Dashboard</Button>
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
+import { getCookieValue } from "./utils";
 
 type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
@@ -9,6 +10,16 @@ const apiClient = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+});
+
+apiClient.interceptors.request.use((config) => {
+  const token = getCookieValue("__session");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
 });
 
 async function request<T>(

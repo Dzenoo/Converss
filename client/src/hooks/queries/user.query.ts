@@ -2,8 +2,7 @@ import { createGenericQueryHook } from "./createGenericQueryHook";
 import { getUserDashboard } from "@/lib/actions/user.actions";
 
 const UserQueryFunctions = {
-  GET_DASHBOARD: (params: { token: string }) =>
-    getUserDashboard({ token: params.token }),
+  GET_DASHBOARD: () => getUserDashboard(),
 } as const;
 
 enum UserQueryType {

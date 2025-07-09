@@ -8,14 +8,10 @@ import SearchBots from "./filters/SearchBots";
 import BotsList from "./BotsList";
 
 import QueryParamController from "@/components/shared/QueryParamController";
-import NotFound from "@/components/shared/NotFounds";
+import NotFound from "@/components/shared/NotFound";
 import PaginateList from "@/components/ui/pagination/paginate-list";
 
-type BotsProps = {
-  token: string;
-};
-
-const Bots: React.FC<BotsProps> = ({ token }) => {
+const Bots = () => {
   const searchParams = useSearchParams();
 
   const query = {
@@ -27,42 +23,45 @@ const Bots: React.FC<BotsProps> = ({ token }) => {
 
   const { data, isLoading } = useBotQuery({
     type: BotQueryType.GET_BOTS_BY_USER,
-    params: { token, query },
+    params: { query },
   });
-
-  if (isLoading) {
-    return "Loading...";
-  }
-
-  if (!data) {
-    return <NotFound href="/dashboard" />;
-  }
-
-  const totalBots = data.data.totalBots;
 
   return (
     <div className="space-y-5 p-5">
       <div>
         <h1 className="text-xl font-semibold">Your Bots</h1>
       </div>
+
       <div>
         <SearchBots />
       </div>
-      <div>
-        <BotsList bots={data.data.bots} />
+
+      <div className="relative">
+        {isLoading && "Loading..."}
+
+        {!data && !isLoading ? (
+          <NotFound href="/dashboard" />
+        ) : (
+          data && (
+            <div className="space-y-5">
+              <BotsList bots={data.data.bots} />
+
+              {data.data.totalBots > query.limit && (
+                <QueryParamController<string> paramKey="page" defaultValue="1">
+                  {({ value, onChange }) => (
+                    <PaginateList
+                      onPageChange={(value) => onChange(String(value))}
+                      totalItems={data.data.totalBots}
+                      itemsPerPage={query.limit}
+                      currentPage={Number(value)}
+                    />
+                  )}
+                </QueryParamController>
+              )}
+            </div>
+          )
+        )}
       </div>
-      {totalBots > query.limit && (
-        <QueryParamController<string> paramKey="page" defaultValue="1">
-          {({ value, onChange }) => (
-            <PaginateList
-              onPageChange={(value) => onChange(String(value))}
-              totalItems={totalBots}
-              itemsPerPage={query.limit}
-              currentPage={Number(value)}
-            />
-          )}
-        </QueryParamController>
-      )}
     </div>
   );
 };

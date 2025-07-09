@@ -6,16 +6,11 @@ import Summary from "./analytics/Summary";
 import RecentActivity from "./analytics/RecentActivity";
 import BotPerformance from "./analytics/BotPerformance";
 import TopQuestions from "./analytics/TopQuestions";
-import NotFound from "../shared/NotFounds";
+import NotFound from "../shared/NotFound";
 
-type DashboardProps = {
-  token: string;
-};
-
-const Dashboard: React.FC<DashboardProps> = ({ token }) => {
+const Dashboard = () => {
   const { data, isLoading } = useUserQuery({
     type: UserQueryType.GET_DASHBOARD,
-    params: { token },
   });
 
   if (isLoading) {

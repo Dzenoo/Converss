@@ -2,6 +2,7 @@ import {
   CanActivate,
   ExecutionContext,
   Injectable,
+  NotAcceptableException,
   UnauthorizedException,
 } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
@@ -19,15 +20,18 @@ export class ClerkAuthGuard implements CanActivate {
 
     const token = authHeader.replace("Bearer ", "").trim();
 
-    // try {
-    const payload = await verifyToken(token, {
-      secretKey: this.configService.get<string>("CLERK_SECRET_KEY"),
-    });
-    request["clerkUser"] = payload;
+    try {
+      const payload = await verifyToken(token, {
+        secretKey: this.configService.get<string>("CLERK_SECRET_KEY"),
+      });
 
-    return true;
-    // } catch (err) {
-    //   console.error("Clerk token verification failed:", err);
-    // }
+      request["clerkUser"] = payload;
+
+      return true;
+    } catch (err) {
+      throw new NotAcceptableException(
+        `Clerk token verification failed: ${err}`
+      );
+    }
   }
 }
