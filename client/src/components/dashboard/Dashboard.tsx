@@ -31,14 +31,14 @@ const Dashboard = () => {
         <Summary summary={data.data.summary} />
       </div>
 
-      <div className="grid grid-cols-2 gap-5">
+      <div className="grid grid-cols-2 gap-5 max-xl:grid-cols-1">
         <div>
           <RecentActivity recentActivity={data.data.recentActivity} />
         </div>
         <div>
           <TopQuestions topQuestions={data.data.topQuestions} />
         </div>
-        <div className="col-span-2">
+        <div className="xl:col-span-2">
           <BotPerformance botPerformance={data.data.botPerformance} />
         </div>
       </div>
