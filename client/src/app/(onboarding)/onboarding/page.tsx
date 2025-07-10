@@ -6,7 +6,6 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 
 import CreateBotForm from "@/components/dashboard/bots/create-bot/forms/CreateBotForm";
-import FinishScreen from "@/components/dashboard/bots/create-bot/FinishScreen";
 
 const OnboardingPage = () => {
   useEffect(() => {
@@ -17,11 +16,7 @@ const OnboardingPage = () => {
         return redirect("/dashboard");
       }
 
-      if (user.isOnboarding && user.onboardingCompleted) {
-        return <FinishScreen />;
-      } else {
-        return <CreateBotForm isOnboarding={true} />;
-      }
+      return <CreateBotForm isOnboarding={true} />;
     }
 
     fetchUser();

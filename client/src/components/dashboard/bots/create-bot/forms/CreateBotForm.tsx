@@ -50,14 +50,7 @@ const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
     onSuccess: (response) => {
       form.reset();
       toast.success(response.message);
-
-      if (isOnboarding) {
-        setTimeout(() => {
-          window.location.reload();
-        }, 1000);
-      } else {
-        router.push("/dashboard/my-bots");
-      }
+      router.push("/dashboard/my-bots");
     },
     onError: (error: any) => {
       toast(error.response.data.message);
