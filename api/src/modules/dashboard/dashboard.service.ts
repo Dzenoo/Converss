@@ -19,7 +19,7 @@ export class DashboardService {
     const bots = await this.botService.find({ userId: user._id });
     if (bots.length === 0)
       return {
-        data: this.emptyDashboard(user),
+        data: this.emptyDashboard(),
         statusCode: HttpStatus.NOT_FOUND,
       };
 
@@ -64,7 +64,7 @@ export class DashboardService {
 
     return {
       data: {
-        bot: this.formatBot(bot),
+        bot: bot,
         stats: {
           totalConversations: bot.analytics?.totalConversations || 0,
           messagesThisMonth: bot.analytics?.messagesThisMonth || 0,
@@ -78,7 +78,7 @@ export class DashboardService {
   }
 
   // Helper methods
-  private emptyDashboard(user: any) {
+  private emptyDashboard() {
     return {
       summary: {
         totalBots: 0,
@@ -116,20 +116,6 @@ export class DashboardService {
       lastActive: bot.analytics?.lastActive || null,
       widgetId: bot.widgetId,
     }));
-  }
-
-  private formatBot(bot: any) {
-    return {
-      businessName: bot.businessName,
-      businessDescription: bot.businessDescription,
-      isActive: bot.isActive,
-      widgetId: bot.widgetId,
-      analytics: {
-        totalConversations: bot.analytics?.totalConversations || 0,
-        messagesThisMonth: bot.analytics?.messagesThisMonth || 0,
-        topQuestions: bot.analytics?.topQuestions || [],
-      },
-    };
   }
 
   private formatChat(chat: any) {

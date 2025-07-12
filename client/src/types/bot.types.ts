@@ -1,24 +1,55 @@
+// ENUMS
+
+// INTERFACES
+
+export interface IFAQ {
+  question: string;
+  answer: string;
+}
+
+export interface ITopQuestion {
+  question: string;
+  count: number;
+}
+
+export interface IResponseTimes {
+  count: number;
+  lastUpdated: Date;
+}
+
+export interface IAnalytics {
+  totalConversations: number;
+  lastActive?: Date;
+  messagesThisMonth: number;
+  topQuestions: ITopQuestion[];
+  responseTimes: IResponseTimes;
+}
+
 export interface IBot {
-  _id: string;
+  businessName: string;
   businessDescription: string;
+  businessWebsite: string;
   industry: string;
-  faqs: Array<{
-    question: string;
-    answer: string;
-    _id: string;
-  }>;
-  tone: string;
+  faqs: IFAQ[];
+  tone:
+    | "friendly"
+    | "formal"
+    | "funny"
+    | "professional"
+    | "empathetic"
+    | "supportive";
   primaryRole: string;
   greetingMessage: string;
   fallbackMessage: string;
-  isActive: boolean;
+  isActive?: boolean;
   userId: string;
   widgetId: string;
-  createdAt: string;
-  updatedAt: string;
-  businessName: string;
-  businessWebsite: string;
+  analytics: IAnalytics;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
+
+// TYPES
 
 export type CreateBotDto = {
   businessName: string;
