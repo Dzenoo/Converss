@@ -23,6 +23,15 @@ export function sanitizeInput(
   return sanitizeHtml(value, options || defaultOptions).trim();
 }
 
+/**
+ * Retrieves the value of a specified cookie from the browser's `document.cookie`.
+ *
+ * @param name - The name of the cookie to retrieve.
+ * @returns The value of the cookie if found, otherwise `null`.
+ *
+ * @remarks
+ * Returns `null` if executed in a non-browser environment (e.g., server-side).
+ */
 export const getCookieValue = (name: string): string | null => {
   if (typeof document === "undefined") return null;
 

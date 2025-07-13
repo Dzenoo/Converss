@@ -24,29 +24,29 @@ const BotDetails: React.FC<{ botId: string; activeTab: string }> = ({
   console.log(data);
 
   return (
-    <div className="space-y-5 p-5">
-      <div>
-        <Navigation botId={botId} activeTab={activeTab} />
+    <>
+      <Navigation botId={botId} activeTab={activeTab} />
+
+      <div className="p-5">
+        {isLoading && "Loading..."}
+
+        {!data && !isLoading ? (
+          <NotFound href="/dashboard" />
+        ) : (
+          data && (
+            <>
+              {activeTab === "overview" && <Overview />}
+              {activeTab === "conversations" && <Conversations />}
+              {activeTab === "faq" && <FAQ />}
+              {activeTab === "customize-ai" && <CustomizeAi />}
+              {activeTab === "bot-testing" && <BotTesting />}
+              {activeTab === "deployment" && <Deployment />}
+              {activeTab === "settings" && <Settings />}
+            </>
+          )
+        )}
       </div>
-
-      {isLoading && "Loading..."}
-
-      {!data && !isLoading ? (
-        <NotFound href="/dashboard" />
-      ) : (
-        data && (
-          <div>
-            {activeTab === "overview" && <Overview />}
-            {activeTab === "conversations" && <Conversations />}
-            {activeTab === "faq" && <FAQ />}
-            {activeTab === "customize-ai" && <CustomizeAi />}
-            {activeTab === "bot-testing" && <BotTesting />}
-            {activeTab === "deployment" && <Deployment />}
-            {activeTab === "settings" && <Settings />}
-          </div>
-        )
-      )}
-    </div>
+    </>
   );
 };
 

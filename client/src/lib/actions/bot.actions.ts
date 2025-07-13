@@ -6,7 +6,11 @@ import { CreateBotDto, GetUserBotsDto, IBot, ITopQuestion } from "@/types";
 
 export const createBot = async (data: {
   body: CreateBotDto;
-}): Promise<ServerResponse> => postApiHandler("bots/create", data.body);
+}): Promise<
+  ServerResponse<{
+    botId: string;
+  }>
+> => postApiHandler("bots/create", data.body);
 
 export const finishOnboarding = async (): Promise<ServerResponse> =>
   postApiHandler("bots/finish-onboarding", {});

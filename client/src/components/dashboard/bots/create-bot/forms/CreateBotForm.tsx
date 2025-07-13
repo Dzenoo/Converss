@@ -50,7 +50,7 @@ const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
     onSuccess: (response) => {
       form.reset();
       toast.success(response.message);
-      router.push("/dashboard/my-bots");
+      router.push(`/dashboard/my-bots/${response.botId}/deployment`);
     },
     onError: (error: any) => {
       toast(error.response.data.message);

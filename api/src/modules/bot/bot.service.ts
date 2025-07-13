@@ -75,6 +75,9 @@ export class BotService {
     );
 
     return {
+      data: {
+        botId: bot._id
+      },
       message: "Bot successfully created!",
       statusCode: HttpStatus.CREATED,
     };

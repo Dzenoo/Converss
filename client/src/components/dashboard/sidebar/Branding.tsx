@@ -16,7 +16,7 @@ const Branding = () => {
           size="lg"
           className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
         >
-          <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-full">
+          <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-full bg-[var(--primary-blue)]">
             {user?.firstName?.charAt(0)}
             {user?.lastName?.charAt(0)}
           </div>
