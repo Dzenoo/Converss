@@ -1,6 +1,7 @@
 "use client";
 
 import { BotQueryType, useBotQuery } from "@/hooks/queries/bot.query";
+import { DashboardBotDetailsTab } from "@/types";
 
 import Navigation from "./Navigation";
 import BotTesting from "./tabs/BotTesting";
@@ -12,16 +13,27 @@ import Overview from "./tabs/Overview";
 import Settings from "./tabs/Settings";
 import NotFound from "@/components/shared/NotFound";
 
-const BotDetails: React.FC<{ botId: string; activeTab: string }> = ({
-  botId,
-  activeTab,
-}) => {
+const BotDetails: React.FC<{
+  botId: string;
+  activeTab: DashboardBotDetailsTab | null;
+}> = ({ botId, activeTab }) => {
   const { data, isLoading } = useBotQuery({
     type: BotQueryType.GET_BOTS_DASHBOARD,
     params: { botId },
   });
 
-  console.log(data);
+  const components: Record<
+    DashboardBotDetailsTab,
+    (props: { data: typeof data }) => React.JSX.Element
+  > = {
+    overview: ({ data }) => <Overview />,
+    conversations: ({ data }) => <Conversations />,
+    faq: ({ data }) => <FAQ />,
+    "customize-ai": ({ data }) => <CustomizeAi />,
+    "bot-testing": ({ data }) => <BotTesting />,
+    deployment: ({ data }) => <Deployment />,
+    settings: ({ data }) => <Settings />,
+  };
 
   return (
     <>
@@ -32,18 +44,10 @@ const BotDetails: React.FC<{ botId: string; activeTab: string }> = ({
 
         {!data && !isLoading ? (
           <NotFound href="/dashboard" />
+        ) : !activeTab || !(activeTab in components) ? (
+          <NotFound href={`/dashboard/my-bots`} />
         ) : (
-          data && (
-            <>
-              {activeTab === "overview" && <Overview />}
-              {activeTab === "conversations" && <Conversations />}
-              {activeTab === "faq" && <FAQ />}
-              {activeTab === "customize-ai" && <CustomizeAi />}
-              {activeTab === "bot-testing" && <BotTesting />}
-              {activeTab === "deployment" && <Deployment />}
-              {activeTab === "settings" && <Settings />}
-            </>
-          )
+          data && components[activeTab]({ data })
         )}
       </div>
     </>

@@ -1,4 +1,13 @@
-// ENUMS
+// TYPES
+
+export type DashboardBotDetailsTab =
+  | "overview"
+  | "conversations"
+  | "faq"
+  | "customize-ai"
+  | "bot-testing"
+  | "deployment"
+  | "settings";
 
 // INTERFACES
 
@@ -49,7 +58,7 @@ export interface IBot {
   updatedAt?: Date;
 }
 
-// TYPES
+// DTOS
 
 export type CreateBotDto = {
   businessName: string;

@@ -10,11 +10,12 @@ import {
 import Link from "next/link";
 
 import { cn } from "@/lib/utils";
+import { DashboardBotDetailsTab } from "@/types";
 
-const Navigation: React.FC<{ botId: string; activeTab: string }> = ({
-  botId,
-  activeTab,
-}) => {
+const Navigation: React.FC<{
+  botId: string;
+  activeTab: DashboardBotDetailsTab | null;
+}> = ({ botId, activeTab }) => {
   return (
     <div className="hide-scrollbar grid grid-cols-7 border-b border-gray-200">
       {NavigationData.map((item) => (
@@ -23,7 +24,7 @@ const Navigation: React.FC<{ botId: string; activeTab: string }> = ({
           href={`/dashboard/my-bots/${botId}/${item.slug}`}
           className={cn(
             "flex w-full items-center justify-center gap-3 border-r p-5 text-sm font-medium transition-all hover:bg-blue-50",
-            item.slug === activeTab
+            activeTab && item.slug === activeTab
               ? "bg-blue-100 text-[var(--primary-blue)]"
               : "",
           )}
