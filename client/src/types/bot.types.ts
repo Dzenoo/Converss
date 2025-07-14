@@ -35,6 +35,7 @@ export interface IAnalytics {
 }
 
 export interface IBot {
+  _id: string;
   businessName: string;
   businessDescription: string;
   businessWebsite: string;
@@ -50,11 +51,11 @@ export interface IBot {
   primaryRole: string;
   greetingMessage: string;
   fallbackMessage: string;
-  isActive?: boolean;
+  isActive: boolean;
   userId: string;
   widgetId: string;
   analytics: IAnalytics;
-  createdAt?: Date;
+  createdAt: Date;
   updatedAt?: Date;
 }
 

@@ -39,24 +39,35 @@ const BotPerformance: React.FC<BotPerformanceProps> = ({ botPerformance }) => {
       </TableHeader>
 
       <TableBody>
-        {botPerformance.map((bot) => (
-          <TableRow key={bot.id}>
-            <TableCell className="font-medium">{bot.name}</TableCell>
-            <TableCell>
-              <Badge variant={bot.isActive ? "default" : "outline"}>
-                {bot.isActive ? "Active" : "Inactive"}
-              </Badge>
-            </TableCell>
-            <TableCell>{bot.conversations}</TableCell>
-            <TableCell>
-              {bot.lastActive
-                ? formatDistanceToNowStrict(parseISO(bot.lastActive), {
-                    addSuffix: true,
-                  })
-                : "N/A"}
+        {botPerformance.length === 0 ? (
+          <TableRow>
+            <TableCell
+              colSpan={4}
+              className="text-muted-foreground py-8 text-center"
+            >
+              No bot activity recorded in the last 30 days.
             </TableCell>
           </TableRow>
-        ))}
+        ) : (
+          botPerformance.map((bot) => (
+            <TableRow key={bot.id}>
+              <TableCell className="font-medium">{bot.name}</TableCell>
+              <TableCell>
+                <Badge variant={bot.isActive ? "default" : "outline"}>
+                  {bot.isActive ? "Active" : "Inactive"}
+                </Badge>
+              </TableCell>
+              <TableCell>{bot.conversations}</TableCell>
+              <TableCell>
+                {bot.lastActive
+                  ? formatDistanceToNowStrict(parseISO(bot.lastActive), {
+                      addSuffix: true,
+                    })
+                  : "N/A"}
+              </TableCell>
+            </TableRow>
+          ))
+        )}
       </TableBody>
     </Table>
   );
