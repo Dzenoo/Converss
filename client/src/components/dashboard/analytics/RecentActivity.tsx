@@ -40,6 +40,8 @@ const chartConfig = {
 export const RecentActivity: React.FC<RecentActivityProps> = ({
   recentActivity,
 }) => {
+  const isEmpty = recentActivity.length === 0;
+
   return (
     <Card className="border border-gray-200 shadow-none">
       <CardHeader>
@@ -50,33 +52,39 @@ export const RecentActivity: React.FC<RecentActivityProps> = ({
       </CardHeader>
 
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <BarChart data={recentActivity}>
-            <CartesianGrid vertical={false} />
+        {isEmpty ? (
+          <div className="text-muted-foreground flex h-96 items-center justify-center text-sm">
+            No activity data available for the last 30 days.
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig}>
+            <BarChart data={recentActivity}>
+              <CartesianGrid vertical={false} />
 
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              tickMargin={10}
-              axisLine={false}
-              tickFormatter={(val) => val.slice(5)}
-            />
-            <YAxis
-              tickLine={false}
-              axisLine={false}
-              width={20}
-              tickFormatter={(val) => String(Math.round(val))}
-            />
+              <XAxis
+                dataKey="date"
+                tickLine={false}
+                tickMargin={10}
+                axisLine={false}
+                tickFormatter={(val) => val.slice(5)}
+              />
+              <YAxis
+                tickLine={false}
+                axisLine={false}
+                width={20}
+                tickFormatter={(val) => String(Math.round(val))}
+              />
 
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="line" />}
-            />
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="line" />}
+              />
 
-            <Bar dataKey="user" fill="var(--chart-1)" radius={10} />
-            <Bar dataKey="assistant" fill="var(--chart-2)" radius={10} />
-          </BarChart>
-        </ChartContainer>
+              <Bar dataKey="user" fill="var(--chart-1)" radius={10} />
+              <Bar dataKey="assistant" fill="var(--chart-2)" radius={10} />
+            </BarChart>
+          </ChartContainer>
+        )}
       </CardContent>
 
       <CardFooter className="flex-col items-start gap-2 text-sm">

@@ -83,12 +83,17 @@ const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
   }
 
   return (
-    <div className="relative flex h-full flex-col justify-between">
+    <div
+      className={cn(
+        "relative flex h-full flex-col justify-between",
+        isOnboarding && "gap-5 p-12",
+      )}
+    >
       <div
         className={cn(
           "space-y-12",
           isOnboarding &&
-            "hide-scrollbar max-h-[75vh] min-h-[75vh] overflow-auto px-52 max-[1480px]:px-16 max-xl:px-8 max-lg:px-4 max-sm:px-1",
+            "hide-scrollbar max-h-[75vh] min-h-[75vh] overflow-auto",
         )}
       >
         <div className="space-y-2">

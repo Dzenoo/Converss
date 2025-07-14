@@ -15,12 +15,12 @@ const OnboardingPage = () => {
       if (!user.isOnboarding) {
         return redirect("/dashboard");
       }
-
-      return <CreateBotForm isOnboarding={true} />;
     }
 
     fetchUser();
   }, []);
+
+  return <CreateBotForm isOnboarding={true} />;
 };
 
 export default OnboardingPage;

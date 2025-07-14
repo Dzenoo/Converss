@@ -1,5 +1,10 @@
 "use client";
 
+import { useEffect } from "react";
+import { redirect } from "next/navigation";
+
+import { getCurrentUser } from "@/lib/actions/user.actions";
+
 import DashboardSidebar from "@/components/dashboard/sidebar/DashboardSidebar";
 
 import {
@@ -10,6 +15,18 @@ import {
 const DashboardWrapper: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
+  useEffect(() => {
+    async function fetchUser() {
+      const { data: user } = await getCurrentUser();
+
+      if (user.isOnboarding) {
+        redirect("/onboarding");
+      }
+    }
+
+    fetchUser();
+  }, []);
+
   return (
     <SidebarProvider>
       <DashboardSidebar />

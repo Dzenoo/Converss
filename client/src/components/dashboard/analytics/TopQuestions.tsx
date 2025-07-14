@@ -29,6 +29,8 @@ const chartConfig = {
 export const TopQuestionsPieChart: React.FC<TopQuestionsProps> = ({
   topQuestions,
 }) => {
+  const isEmpty = topQuestions.length === 0;
+
   const chartData = React.useMemo(() => {
     return topQuestions.map((q, i) => ({
       question: q.question,
@@ -47,16 +49,22 @@ export const TopQuestionsPieChart: React.FC<TopQuestionsProps> = ({
       </CardHeader>
 
       <CardContent>
-        <ChartContainer config={chartConfig}>
-          <PieChart>
-            <ChartTooltip
-              cursor={false}
-              content={<ChartTooltipContent indicator="dashed" />}
-            />
+        {isEmpty ? (
+          <div className="text-muted-foreground flex h-96 items-center justify-center text-sm">
+            No question data available for the last 30 days.
+          </div>
+        ) : (
+          <ChartContainer config={chartConfig}>
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent indicator="dashed" />}
+              />
 
-            <Pie data={chartData} dataKey="count" nameKey="question" label />
-          </PieChart>
-        </ChartContainer>
+              <Pie data={chartData} dataKey="count" nameKey="question" label />
+            </PieChart>
+          </ChartContainer>
+        )}
       </CardContent>
 
       <CardFooter className="flex-col items-start gap-2 text-sm">
