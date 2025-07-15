@@ -10,6 +10,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/info/table";
+import Link from "next/link";
 
 type BotPerformanceProps = {
   botPerformance: {
@@ -51,7 +52,11 @@ const BotPerformance: React.FC<BotPerformanceProps> = ({ botPerformance }) => {
         ) : (
           botPerformance.map((bot) => (
             <TableRow key={bot.id}>
-              <TableCell className="font-medium">{bot.name}</TableCell>
+              <TableCell className="font-medium">
+                <Link href={`/dashboard/my-bots/${bot.id}/overview`}>
+                  {bot.name}
+                </Link>
+              </TableCell>
               <TableCell>
                 <Badge variant={bot.isActive ? "success" : "outline"}>
                   {bot.isActive ? "Active" : "Inactive"}

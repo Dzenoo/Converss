@@ -1,7 +1,7 @@
 "use client";
 
 import { BotQueryType, useBotQuery } from "@/hooks/queries/bot.query";
-import { DashboardBotDetailsTab } from "@/types";
+import { DashboardBotDetailsTab, GetBotDashboardResponse } from "@/types";
 
 import Navigation from "./Navigation";
 import BotTesting from "./tabs/BotTesting";
@@ -24,9 +24,11 @@ const BotDetails: React.FC<{
 
   const components: Record<
     DashboardBotDetailsTab,
-    (props: { data: typeof data }) => React.JSX.Element
+    (props: { data: GetBotDashboardResponse }) => React.JSX.Element
   > = {
-    overview: ({ data }) => <Overview />,
+    overview: ({ data }) => (
+      <Overview data={{ bot: data.data.bot, stats: data.data.stats }} />
+    ),
     conversations: ({ data }) => <Conversations />,
     faq: ({ data }) => <FAQ />,
     "customize-ai": ({ data }) => <CustomizeAi />,

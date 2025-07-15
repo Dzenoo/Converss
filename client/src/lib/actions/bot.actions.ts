@@ -2,7 +2,12 @@ import qs from "qs";
 
 import { getApiHandler, postApiHandler } from "../api";
 
-import { CreateBotDto, GetUserBotsDto, IBot, ITopQuestion } from "@/types";
+import {
+  CreateBotDto,
+  GetBotDashboardResponse,
+  GetUserBotsDto,
+  IBot,
+} from "@/types";
 
 export const createBot = async (data: {
   body: CreateBotDto;
@@ -31,22 +36,5 @@ export const getBotsByUser = async (data: {
 
 export const getBotDashboard = async (data: {
   botId: string;
-}): Promise<
-  ServerResponse<{
-    data: {
-      bot: IBot;
-      stats: {
-        totalConversations: number;
-        messagesThisMonth: number;
-        avgResponseTime: number;
-        topQuestions: ITopQuestion;
-      };
-      recentChats: {
-        id: string;
-        messageCount: number;
-        lastMessage: string;
-        updatedAt: Date;
-      }[];
-    };
-  }>
-> => getApiHandler(`dashboard/bot/${data.botId}`);
+}): Promise<ServerResponse<GetBotDashboardResponse>> =>
+  getApiHandler(`dashboard/bot/${data.botId}`);

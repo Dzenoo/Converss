@@ -9,6 +9,24 @@ export type DashboardBotDetailsTab =
   | "deployment"
   | "settings";
 
+export type GetBotDashboardResponse = {
+  data: {
+    bot: IBot;
+    stats: {
+      totalConversations: number;
+      messagesThisMonth: number;
+      avgResponseTime: number;
+      topQuestions: ITopQuestion[];
+    };
+    recentChats: {
+      id: string;
+      messageCount: number;
+      lastMessage: string;
+      updatedAt: Date;
+    }[];
+  };
+};
+
 // INTERFACES
 
 export interface IFAQ {
