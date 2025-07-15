@@ -57,7 +57,6 @@ export class UserService {
     return {
       data: {
         isOnboarding: user.isOnboarding,
-        onboardingCompleted: user.onboardingCompleted,
       },
       message: "Successfully found!",
       statusCode: HttpStatus.OK,

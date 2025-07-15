@@ -76,7 +76,7 @@ export class BotService {
 
     return {
       data: {
-        botId: bot._id
+        botId: bot._id,
       },
       message: "Bot successfully created!",
       statusCode: HttpStatus.CREATED,
@@ -94,10 +94,6 @@ export class BotService {
 
     if (!user.isOnboarding) {
       throw new NotAcceptableException("User already finished onboarding");
-    }
-
-    if (!user.onboardingCompleted) {
-      throw new NotAcceptableException("Please finish onboarding!");
     }
 
     await this.userService.findAndUpdateOne(
