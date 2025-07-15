@@ -23,7 +23,7 @@ const Navigation: React.FC<{
           key={item.id}
           href={`/dashboard/my-bots/${botId}/${item.slug}`}
           className={cn(
-            "flex w-full items-center justify-center gap-3 border-r p-5 text-sm font-medium transition-all hover:bg-blue-50",
+            "flex w-full items-center justify-center gap-3 border-r p-3 text-sm font-medium transition-all hover:bg-blue-50",
             activeTab && item.slug === activeTab
               ? "bg-blue-100 text-[var(--primary-blue)]"
               : "",

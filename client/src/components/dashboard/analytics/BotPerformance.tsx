@@ -53,7 +53,7 @@ const BotPerformance: React.FC<BotPerformanceProps> = ({ botPerformance }) => {
             <TableRow key={bot.id}>
               <TableCell className="font-medium">{bot.name}</TableCell>
               <TableCell>
-                <Badge variant={bot.isActive ? "default" : "outline"}>
+                <Badge variant={bot.isActive ? "success" : "outline"}>
                   {bot.isActive ? "Active" : "Inactive"}
                 </Badge>
               </TableCell>

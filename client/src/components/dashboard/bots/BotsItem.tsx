@@ -24,7 +24,7 @@ const BotsItem: React.FC<BotsItemProps> = ({ bot }) => {
           <Link href={`/dashboard/my-bots/${bot._id}/overview`}>
             {bot.businessName}
           </Link>
-          {bot.isActive && <Badge variant="default">Active</Badge>}
+          {bot.isActive && <Badge variant="success">Active</Badge>}
         </CardTitle>
 
         <CardDescription className="flex items-center justify-between gap-2">
