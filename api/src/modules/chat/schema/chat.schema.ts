@@ -20,12 +20,17 @@ export class Chat {
         type: Date,
         default: Date.now,
       },
+      responseTime: {
+        type: Number,
+        required: false,
+      },
     },
   ])
   messages: Array<{
     role: "user" | "assistant";
     content: string;
     timestamp?: Date;
+    responseTime?: number;
   }>;
 
   @Prop({

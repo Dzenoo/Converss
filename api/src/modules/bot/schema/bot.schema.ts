@@ -125,6 +125,8 @@ export class Bot {
       ],
       responseTimes: {
         count: { type: Number, default: 0 },
+        totalTime: { type: Number, default: 0 },
+        avgTime: { type: Number, default: 0 },
         lastUpdated: { type: Date },
       },
     },
@@ -137,6 +139,8 @@ export class Bot {
     topQuestions: { question: string; count: number }[];
     responseTimes: {
       count: number;
+      totalTime: number;
+      avgTime: number;
       lastUpdated: Date;
     };
   };

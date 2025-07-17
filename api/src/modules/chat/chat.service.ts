@@ -129,25 +129,6 @@ export class ChatService {
     ]);
   }
 
-  async calculateResponseTimes(botId: string) {
-    const result = await this.chatModel.aggregate([
-      { $match: { botId } },
-      { $unwind: "$messages" },
-      {
-        $group: {
-          _id: null,
-          avg: { $avg: "$messages.responseTime" },
-          count: { $sum: 1 },
-        },
-      },
-    ]);
-
-    return {
-      avg: result[0]?.avg || 0,
-      count: result[0]?.count || 0,
-    };
-  }
-
   async processMessage(data: {
     widgetId: string;
     message: string;
@@ -158,31 +139,55 @@ export class ChatService {
     });
     if (!bot) throw new NotFoundException("Bot not found");
 
+    const userMessageTime = new Date();
+
     const aiResponse = await this.aiService.generateBotResponse({
       userMessage: data.message,
       bot: bot,
     });
 
+    const botResponseTime = new Date();
+    const responseTime = botResponseTime.getTime() - userMessageTime.getTime();
+
     let chat = await this.chatModel.findOne({ botId: bot._id });
+    let isNewConversation = false;
     if (!chat) {
       chat = await this.chatModel.create({ botId: bot._id, messages: [] });
+      isNewConversation = true;
     }
 
     chat.messages.push(
-      { role: "user", content: data.message, timestamp: new Date() },
-      { role: "assistant", content: aiResponse, timestamp: new Date() }
+      { role: "user", content: data.message, timestamp: userMessageTime },
+      {
+        role: "assistant",
+        content: aiResponse,
+        timestamp: botResponseTime,
+        responseTime: responseTime,
+      }
     );
 
     await chat.save();
 
-    await this.botService.findOneByIdAndUpdate(bot._id, {
+    // ANALYTICS
+    const currentResponseTimes = bot.analytics?.responseTimes || {
+      count: 0,
+      totalTime: 0,
+      avgTime: 0,
+    };
+    const newCount = currentResponseTimes.count + 1;
+    const newTotalTime = (currentResponseTimes.totalTime || 0) + responseTime;
+    const newAvgTime = newTotalTime / newCount;
+
+    const updateQuery: any = {
       $inc: {
-        "analytics.totalConversations": 1,
         "analytics.messagesThisMonth": 1,
-        "analytics.responseTimes.count": 1,
       },
       $set: {
         "analytics.lastActive": new Date(),
+        "analytics.responseTimes.count": newCount,
+        "analytics.responseTimes.totalTime": newTotalTime,
+        "analytics.responseTimes.avgTime": newAvgTime,
+        "analytics.responseTimes.lastUpdated": new Date(),
       },
       $push: {
         "analytics.topQuestions": {
@@ -191,11 +196,18 @@ export class ChatService {
           $slice: 10,
         },
       },
-    });
+    };
+
+    if (isNewConversation) {
+      updateQuery.$inc["analytics.totalConversations"] = 1;
+    }
+
+    await this.botService.findOneByIdAndUpdate(bot._id, updateQuery);
 
     return {
       data: {
         response: aiResponse,
+        responseTime: responseTime,
       },
       statusCode: HttpStatus.OK,
     };

@@ -41,6 +41,8 @@ export interface ITopQuestion {
 
 export interface IResponseTimes {
   count: number;
+  totalTime: number;
+  avgTime: number;
   lastUpdated: Date;
 }
 

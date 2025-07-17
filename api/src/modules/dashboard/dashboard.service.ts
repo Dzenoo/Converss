@@ -1,5 +1,7 @@
 import { HttpStatus, Injectable, NotFoundException } from "@nestjs/common";
 
+import { formatResponseTime } from "@/common/utils";
+
 import { UserService } from "../user/user.service";
 import { BotService } from "../bot/bot.service";
 import { ChatService } from "../chat/chat.service";
@@ -19,7 +21,17 @@ export class DashboardService {
     const bots = await this.botService.find({ userId: user._id });
     if (bots.length === 0)
       return {
-        data: this.emptyDashboard(),
+        data: {
+          summary: {
+            totalBots: 0,
+            activeBots: 0,
+            totalConversations: 0,
+            messagesThisMonth: 0,
+          },
+          recentActivity: [],
+          botPerformance: [],
+          topQuestions: [],
+        },
         statusCode: HttpStatus.NOT_FOUND,
       };
 
@@ -32,9 +44,27 @@ export class DashboardService {
 
     return {
       data: {
-        summary: this.calculateSummary(bots),
+        summary: {
+          totalBots: bots.length,
+          activeBots: bots.filter((bot) => bot.isActive).length,
+          totalConversations: bots.reduce(
+            (sum, bot) => sum + (bot.analytics?.totalConversations || 0),
+            0
+          ),
+          messagesThisMonth: bots.reduce(
+            (sum, bot) => sum + (bot.analytics?.messagesThisMonth || 0),
+            0
+          ),
+        },
         recentActivity: recentChats,
-        botPerformance: this.formatBotPerformance(bots),
+        botPerformance: bots.map((bot: any) => ({
+          id: bot._id,
+          name: bot.businessName,
+          isActive: bot.isActive,
+          conversations: bot.analytics?.totalConversations || 0,
+          lastActive: bot.analytics?.lastActive || null,
+          widgetId: bot.widgetId,
+        })),
         topQuestions: topQuestions.slice(0, 5),
       },
       statusCode: HttpStatus.OK,
@@ -58,72 +88,25 @@ export class DashboardService {
 
     if (!bot) throw new Error("Bot not found");
 
-    const responseTimes = await this.chatService.calculateResponseTimes(
-      data.botId
-    );
-
     return {
       data: {
         bot: bot,
         stats: {
-          totalConversations: bot.analytics?.totalConversations || 0,
-          messagesThisMonth: bot.analytics?.messagesThisMonth || 0,
-          avgResponseTime: responseTimes.avg,
-          topQuestions: bot.analytics?.topQuestions || [],
+          totalConversations: bot.analytics.totalConversations,
+          messagesThisMonth: bot.analytics.messagesThisMonth,
+          avgResponseTime: formatResponseTime(
+            bot.analytics.responseTimes.avgTime
+          ),
+          topQuestions: bot.analytics.topQuestions,
         },
-        recentChats: chats.map((chat) => this.formatChat(chat)),
+        recentChats: chats.map((chat: any) => ({
+          id: chat._id,
+          messageCount: chat.messages.length,
+          lastMessage: chat.messages[chat.messages.length - 1]?.content || "",
+          updatedAt: chat.updatedAt,
+        })),
       },
       statusCode: HttpStatus.OK,
-    };
-  }
-
-  // Helper methods
-  private emptyDashboard() {
-    return {
-      summary: {
-        totalBots: 0,
-        activeBots: 0,
-        totalConversations: 0,
-        messagesThisMonth: 0,
-      },
-      recentActivity: [],
-      botPerformance: [],
-      topQuestions: [],
-    };
-  }
-
-  private calculateSummary(bots: any[]) {
-    return {
-      totalBots: bots.length,
-      activeBots: bots.filter((bot) => bot.isActive).length,
-      totalConversations: bots.reduce(
-        (sum, bot) => sum + (bot.analytics?.totalConversations || 0),
-        0
-      ),
-      messagesThisMonth: bots.reduce(
-        (sum, bot) => sum + (bot.analytics?.messagesThisMonth || 0),
-        0
-      ),
-    };
-  }
-
-  private formatBotPerformance(bots: any[]) {
-    return bots.map((bot) => ({
-      id: bot._id,
-      name: bot.businessName,
-      isActive: bot.isActive,
-      conversations: bot.analytics?.totalConversations || 0,
-      lastActive: bot.analytics?.lastActive || null,
-      widgetId: bot.widgetId,
-    }));
-  }
-
-  private formatChat(chat: any) {
-    return {
-      id: chat._id,
-      messageCount: chat.messages.length,
-      lastMessage: chat.messages[chat.messages.length - 1]?.content || "",
-      updatedAt: chat.updatedAt,
     };
   }
 }
