@@ -29,7 +29,7 @@ const BotDetails: React.FC<{
     overview: ({ data }) => (
       <Overview data={{ bot: data.data.bot, stats: data.data.stats }} />
     ),
-    conversations: ({ data }) => <Conversations />,
+    conversations: ({ data }) => <Conversations botId={data.data.bot._id} />,
     faq: ({ data }) => <FAQ />,
     "customize-ai": ({ data }) => <CustomizeAi />,
     "bot-testing": ({ data }) => <BotTesting />,
