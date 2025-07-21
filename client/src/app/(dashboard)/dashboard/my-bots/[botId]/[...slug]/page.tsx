@@ -24,7 +24,7 @@ const BotDetailsPage = async ({
     ? (maybeTab as DashboardBotDetailsTab)
     : null;
 
-  return <BotDetails botId={botId} activeTab={activeTab} />;
+  return <BotDetails botId={botId} activeTab={activeTab} slug={slug} />;
 };
 
 export default BotDetailsPage;

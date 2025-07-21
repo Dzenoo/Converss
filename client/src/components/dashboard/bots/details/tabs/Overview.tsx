@@ -46,36 +46,6 @@ const Overview: React.FC<{
     },
   ];
 
-  const topQuestionsSample = {
-    questions: [
-      {
-        question: "What are your business hours?",
-        count: 42,
-        lastAsked: "2025-07-14T13:45:00Z",
-      },
-      {
-        question: "How can I track my order?",
-        count: 35,
-        lastAsked: "2025-07-15T09:22:00Z",
-      },
-      {
-        question: "Do you offer international shipping?",
-        count: 27,
-        lastAsked: "2025-07-13T17:00:00Z",
-      },
-      {
-        question: "Can I return a product after 30 days?",
-        count: 18,
-        lastAsked: "2025-07-10T12:30:00Z",
-      },
-      {
-        question: "Is there a student discount available?",
-        count: 11,
-        lastAsked: "2025-07-12T10:15:00Z",
-      },
-    ],
-  };
-
   return (
     <div className="space-y-10">
       <div className="space-y-5">

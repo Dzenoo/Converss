@@ -6,6 +6,7 @@ import { DashboardBotDetailsTab, GetBotDashboardResponse } from "@/types";
 import Navigation from "./Navigation";
 import BotTesting from "./tabs/BotTesting";
 import Conversations from "./tabs/Conversations";
+import ConversationDetails from "./tabs/ConversationDetails";
 import CustomizeAi from "./tabs/CustomizeAi";
 import Deployment from "./tabs/Deployment";
 import FAQ from "./tabs/FAQ";
@@ -16,11 +17,16 @@ import NotFound from "@/components/shared/NotFound";
 const BotDetails: React.FC<{
   botId: string;
   activeTab: DashboardBotDetailsTab | null;
-}> = ({ botId, activeTab }) => {
+  slug?: string[];
+}> = ({ botId, activeTab, slug }) => {
   const { data, isLoading } = useBotQuery({
     type: BotQueryType.GET_BOTS_DASHBOARD,
     params: { botId },
   });
+
+  const isChatDetail =
+    activeTab === "conversations" && slug && slug.length === 2;
+  const chatId = isChatDetail ? slug[1] : null;
 
   const components: Record<
     DashboardBotDetailsTab,
@@ -29,7 +35,12 @@ const BotDetails: React.FC<{
     overview: ({ data }) => (
       <Overview data={{ bot: data.data.bot, stats: data.data.stats }} />
     ),
-    conversations: ({ data }) => <Conversations botId={data.data.bot._id} />,
+    conversations: ({ data }) =>
+      isChatDetail && chatId ? (
+        <ConversationDetails botId={data.data.bot._id} />
+      ) : (
+        <Conversations botId={data.data.bot._id} />
+      ),
     faq: ({ data }) => <FAQ />,
     "customize-ai": ({ data }) => <CustomizeAi />,
     "bot-testing": ({ data }) => <BotTesting />,
