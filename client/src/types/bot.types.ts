@@ -95,6 +95,8 @@ export type CreateBotDto = {
   fallbackMessage: string;
 };
 
+export type UpdateBotDto = Partial<CreateBotDto>;
+
 export type GetUserBotsDto = {
   page?: number;
   limit?: number;

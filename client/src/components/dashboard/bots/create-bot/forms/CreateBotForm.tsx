@@ -3,11 +3,10 @@
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
 import { toast } from "sonner";
 
 import { useCreateBotStore } from "@/stores/create-bot-store";
-import { CreateBotSchema } from "@/lib/zod/bots";
+import { CreateBotSchema, CreateBotValues } from "@/lib/zod/bots";
 import { cn } from "@/lib/utils";
 import {
   useBotMutation,
@@ -21,8 +20,6 @@ import AssistantCustomizer from "./AssistantCustomizer";
 import { Button } from "@/components/ui/buttons/button";
 import { Form } from "@/components/ui/form/form";
 import { Loader } from "@/components/ui/info/loader";
-
-export type CreateBotValues = z.infer<typeof CreateBotSchema>;
 
 const CreateBotForm: React.FC<{ isOnboarding: boolean }> = ({
   isOnboarding,

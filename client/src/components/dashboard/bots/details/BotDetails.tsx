@@ -26,7 +26,6 @@ const BotDetails: React.FC<{
 
   const isChatDetail =
     activeTab === "conversations" && slug && slug.length === 2;
-  const chatId = isChatDetail ? slug[1] : null;
 
   const components: Record<
     DashboardBotDetailsTab,
@@ -36,12 +35,14 @@ const BotDetails: React.FC<{
       <Overview data={{ bot: data.data.bot, stats: data.data.stats }} />
     ),
     conversations: ({ data }) =>
-      isChatDetail && chatId ? (
+      isChatDetail ? (
         <ConversationDetails botId={data.data.bot._id} />
       ) : (
         <Conversations botId={data.data.bot._id} />
       ),
-    faq: ({ data }) => <FAQ />,
+    faq: ({ data }) => (
+      <FAQ botId={data.data.bot._id} faqs={data.data.bot.faqs} />
+    ),
     "customize-ai": ({ data }) => <CustomizeAi />,
     "bot-testing": ({ data }) => <BotTesting />,
     deployment: ({ data }) => <Deployment />,

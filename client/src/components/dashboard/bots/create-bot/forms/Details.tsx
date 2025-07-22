@@ -4,15 +4,13 @@ import { ChangeEvent, useCallback, useState } from "react";
 import { useFieldArray, Control } from "react-hook-form";
 import { Trash2 } from "lucide-react";
 
-import { CreateBotValues } from "./CreateBotForm";
-
 import { Label } from "../../../../ui/form/label";
 import { Input } from "@/components/ui/form/input";
 import { Textarea } from "@/components/ui/form/textarea";
 import { Button } from "@/components/ui/buttons/button";
 
 type DetailsProps = {
-  control: Control<CreateBotValues>;
+  control: Control<any>;
 };
 
 const Details: React.FC<DetailsProps> = ({ control }) => {
@@ -101,7 +99,7 @@ const Details: React.FC<DetailsProps> = ({ control }) => {
       </div>
 
       <div className="h-full max-h-52 space-y-4 overflow-y-auto">
-        {fields.map((field, index) => (
+        {fields.map((field: any, index) => (
           <div key={field.id} className="group relative rounded-md border p-4">
             <div className="mb-1">
               <h2 className="text-sm font-medium">Q: {field.question}</h2>

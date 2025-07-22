@@ -1,19 +1,28 @@
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { toast } from "sonner";
 
-import { createBot } from "@/lib/actions/bot.actions";
-import { CreateBotDto } from "@/types";
+import { createBot, updateBot } from "@/lib/actions/bot.actions";
+import { CreateBotDto, UpdateBotDto } from "@/types";
 
 enum BotMutationType {
   CREATE = "CREATE",
+  UPDATE = "UPDATE",
 }
 
-type BotMutationPayload = {
-  type: BotMutationType.CREATE;
-  data: {
-    body: CreateBotDto;
-  };
-};
+type BotMutationPayload =
+  | {
+      type: BotMutationType.CREATE;
+      data: {
+        body: CreateBotDto;
+      };
+    }
+  | {
+      type: BotMutationType.UPDATE;
+      data: {
+        botId: string;
+        body: UpdateBotDto;
+      };
+    };
 
 const useBotMutation = (
   options?: Omit<
@@ -25,6 +34,11 @@ const useBotMutation = (
     switch (payload.type) {
       case BotMutationType.CREATE:
         return createBot({ body: payload.data.body });
+      case BotMutationType.UPDATE:
+        return updateBot({
+          botId: payload.data.botId,
+          body: payload.data.body,
+        });
       default:
         throw new Error("Invalid mutation type");
     }
