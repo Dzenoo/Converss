@@ -6,6 +6,7 @@ import { redirect } from "next/navigation";
 import { getCurrentUser } from "@/lib/actions/user.actions";
 
 import DashboardSidebar from "@/components/dashboard/sidebar/DashboardSidebar";
+import { Toaster } from "@/components/ui/info/sonner";
 
 import {
   SidebarInset,
@@ -32,6 +33,7 @@ const DashboardWrapper: React.FC<{
       <DashboardSidebar />
       <SidebarInset>
         <article className="flex-1">{children}</article>
+        <Toaster />
       </SidebarInset>
     </SidebarProvider>
   );

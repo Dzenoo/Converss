@@ -1,7 +1,7 @@
 import { Control } from "react-hook-form";
 
 import { industries } from "@/constants";
-import { CreateBotValues } from "./CreateBotForm";
+import { CreateBotValues } from "@/lib/zod/bots";
 
 import { Textarea } from "@/components/ui/form/textarea";
 import { Input } from "@/components/ui/form/input";

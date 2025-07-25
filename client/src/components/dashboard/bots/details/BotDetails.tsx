@@ -36,14 +36,12 @@ const BotDetails: React.FC<{
     ),
     conversations: ({ data }) =>
       isChatDetail ? (
-        <ConversationDetails botId={data.data.bot._id} />
+        <ConversationDetails data={{ botId: data.data.bot._id }} />
       ) : (
-        <Conversations botId={data.data.bot._id} />
+        <Conversations data={{ botId: data.data.bot._id }} />
       ),
-    faq: ({ data }) => (
-      <FAQ botId={data.data.bot._id} faqs={data.data.bot.faqs} />
-    ),
-    "customize-ai": ({ data }) => <CustomizeAi />,
+    faq: ({ data }) => <FAQ data={{ bot: data.data.bot }} />,
+    "customize-ai": ({ data }) => <CustomizeAi data={{ bot: data.data.bot }} />,
     "bot-testing": ({ data }) => <BotTesting />,
     deployment: ({ data }) => <Deployment />,
     settings: ({ data }) => <Settings />,

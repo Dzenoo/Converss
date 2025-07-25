@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { useZoomLevel } from "@/hooks/core/useZoomLevel.hook";
 import Header from "@/components/layout/onboarding/header/Header";
 import Sidebar from "@/components/layout/onboarding/sidebar/Sidebar";
+import { Toaster } from "@/components/ui/info/sonner";
 
 const OnboardingWrapper: React.FC<{
   children: React.ReactNode;
@@ -23,6 +24,7 @@ const OnboardingWrapper: React.FC<{
           {children}
         </article>
         <Sidebar />
+        <Toaster />
       </main>
     </div>
   );

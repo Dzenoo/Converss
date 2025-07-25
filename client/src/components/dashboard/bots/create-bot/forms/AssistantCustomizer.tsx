@@ -3,7 +3,7 @@ import { Control } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { AssistantTonesData } from "@/constants";
 
-import { CreateBotValues } from "./CreateBotForm";
+import { CreateBotValues } from "@/lib/zod/bots";
 
 import { Input } from "@/components/ui/form/input";
 import {
@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form/form";
 
 type AssistantCustomizerProps = {
-  control: Control<CreateBotValues>;
+  control: Control<any>;
 };
 
 const AssistantCustomizer: React.FC<AssistantCustomizerProps> = ({
@@ -45,7 +45,10 @@ const AssistantCustomizer: React.FC<AssistantCustomizerProps> = ({
                           ? "border-blue-500 bg-blue-50"
                           : "border-gray-200 hover:border-gray-300",
                       )}
-                      onClick={() => field.onChange(toneLabel)}
+                      onClick={() => {
+                        field.onChange(toneLabel);
+                        field.onBlur();
+                      }}
                     >
                       <div className="flex items-center gap-3">
                         <div

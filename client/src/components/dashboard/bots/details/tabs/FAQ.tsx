@@ -2,36 +2,42 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { toast } from "sonner";
 
 import {
   BotMutationType,
   useBotMutation,
 } from "@/hooks/mutations/useBot.mutation";
 import { UpdateBotSchema, UpdateBotValues } from "@/lib/zod/bots";
-import { IFAQ } from "@/types";
+import { IBot } from "@/types";
 
 import Details from "../../create-bot/forms/Details";
 
 import { Form } from "@/components/ui/form/form";
 import { Button } from "@/components/ui/buttons/button";
+import { Loader } from "@/components/ui/info/loader";
 
 const FAQ: React.FC<{
-  botId: string;
-  faqs: IFAQ[];
-}> = ({ botId, faqs }) => {
-  const botMutation = useBotMutation({});
+  data: { bot: IBot };
+}> = ({ data: { bot } }) => {
+  const botMutation = useBotMutation({
+    onSuccess: (response) => {
+      toast.success(response.message);
+    },
+  });
+  const isLoading = botMutation.status === "pending";
 
   const form = useForm<UpdateBotValues>({
     resolver: zodResolver(UpdateBotSchema),
     defaultValues: {
-      faqs: faqs,
+      faqs: bot.faqs,
     },
   });
 
   async function handleUpdateFaqs(values: UpdateBotValues) {
     await botMutation.mutateAsync({
       type: BotMutationType.UPDATE,
-      data: { botId, body: values },
+      data: { botId: bot._id, body: values },
     });
   }
 
@@ -53,9 +59,13 @@ const FAQ: React.FC<{
                 type="submit"
                 variant="default"
                 size="lg"
-                disabled={!form.formState.isValid}
+                disabled={!form.formState.isValid || isLoading}
               >
-                Save
+                {isLoading ? (
+                  <Loader type="ScaleLoader" height={10} color="#ffffff" />
+                ) : (
+                  "Save"
+                )}
               </Button>
             </form>
           </Form>

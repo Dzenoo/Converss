@@ -15,7 +15,9 @@ import {
   TableRow,
 } from "@/components/ui/info/table";
 
-const Conversations: React.FC<{ botId: string }> = ({ botId }) => {
+const Conversations: React.FC<{ data: { botId: string } }> = ({
+  data: { botId },
+}) => {
   const { data } = useChatQuery({
     type: ChatQueryType.GET_CHATS_BY_BOT,
     params: { botId },
