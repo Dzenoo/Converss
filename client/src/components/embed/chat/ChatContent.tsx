@@ -26,9 +26,14 @@ const ChatContent: React.FC<{
   });
 
   useEffect(() => {
-    chatData && setMessages(chatData.data.messages);
+    if (chatData) {
+      setMessages(chatData.data.messages);
+    }
+  }, [chatData]);
+
+  useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [chatData, messages]);
+  }, [messages]);
 
   function isUser(role: string) {
     return role === "user" ? true : false;
