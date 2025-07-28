@@ -10,4 +10,9 @@ export class ProcessMessageDto {
   @MaxLength(100)
   @Transform(({ value }) => sanitizeInput(value))
   message: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @Transform(({ value }) => sanitizeInput(value))
+  chatSessionId: string;
 }

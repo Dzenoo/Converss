@@ -36,6 +36,19 @@ export class BotService {
     await this.botModel.findByIdAndUpdate(id, update).exec();
   }
 
+  async getBotByWidgetId(data: { widgetId: string }): Promise<ResponseObject> {
+    const bot = await this.botModel.findOne({
+      widgetId: data.widgetId,
+    });
+
+    if (!bot) throw new NotFoundException("Bot not found");
+
+    return {
+      data: { bot },
+      statusCode: HttpStatus.OK,
+    };
+  }
+
   async create(data: {
     clerkUserId: string;
     body: CreateBotDto;

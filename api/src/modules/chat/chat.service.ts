@@ -132,6 +132,7 @@ export class ChatService {
   async processMessage(data: {
     widgetId: string;
     message: string;
+    chatSessionId: string;
   }): Promise<ResponseObject> {
     const bot = await this.botService.findOne({
       widgetId: data.widgetId,
@@ -149,10 +150,17 @@ export class ChatService {
     const botResponseTime = new Date();
     const responseTime = botResponseTime.getTime() - userMessageTime.getTime();
 
-    let chat = await this.chatModel.findOne({ botId: bot._id });
+    let chat = await this.chatModel.findOne({
+      botId: bot._id,
+      sessionId: data.chatSessionId,
+    });
     let isNewConversation = false;
     if (!chat) {
-      chat = await this.chatModel.create({ botId: bot._id, messages: [] });
+      chat = await this.chatModel.create({
+        botId: bot._id,
+        sessionId: data.chatSessionId,
+        messages: [],
+      });
       isNewConversation = true;
     }
 
@@ -209,6 +217,27 @@ export class ChatService {
         response: aiResponse,
         responseTime: responseTime,
       },
+      statusCode: HttpStatus.OK,
+    };
+  }
+
+  async getChatBySession(data: {
+    widgetId: string;
+    chatSessionId: string;
+  }): Promise<ResponseObject> {
+    const bot = await this.botService.findOne({
+      widgetId: data.widgetId,
+      isActive: true,
+    });
+    if (!bot) throw new NotFoundException("Bot not found");
+
+    const chat = await this.chatModel.findOne({
+      botId: bot._id,
+      sessionId: data.chatSessionId,
+    });
+
+    return {
+      data: { messages: chat?.messages ?? [] },
       statusCode: HttpStatus.OK,
     };
   }

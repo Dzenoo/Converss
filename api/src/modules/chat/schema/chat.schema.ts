@@ -40,6 +40,9 @@ export class Chat {
     index: true,
   })
   botId: Types.ObjectId;
+
+  @Prop({ required: true })
+  sessionId: string;
 }
 
 export type ChatDocument = HydratedDocument<Chat>;

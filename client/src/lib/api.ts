@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios, { AxiosResponse, InternalAxiosRequestConfig } from "axios";
 import { getCookieValue } from "./utils";
 import { CustomAxiosRequestConfig, HttpMethod } from "@/types";
 
@@ -11,8 +11,12 @@ const apiClient = axios.create({
   },
 });
 
-apiClient.interceptors.request.use((config: CustomAxiosRequestConfig) => {
-  if (config.skipAuth) {
+apiClient.interceptors.request.use((config) => {
+  const customConfig = config as InternalAxiosRequestConfig & {
+    skipAuth?: boolean;
+  };
+
+  if (customConfig.skipAuth) {
     return config;
   }
 

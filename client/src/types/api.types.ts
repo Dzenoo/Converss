@@ -1,8 +1,7 @@
-import { InternalAxiosRequestConfig } from "axios";
+import { AxiosRequestConfig } from "axios";
 
 export type HttpMethod = "GET" | "POST" | "PATCH" | "DELETE";
 
-export interface CustomAxiosRequestConfig
-  extends InternalAxiosRequestConfig<any> {
+export interface CustomAxiosRequestConfig extends AxiosRequestConfig {
   skipAuth?: boolean;
 }

@@ -10,6 +10,14 @@ import {
   UpdateBotDto,
 } from "@/types";
 
+export const getBotByWidgetId = async (data: {
+  widgetId: string;
+}): Promise<
+  ServerResponse<{
+    data: { bot: IBot };
+  }>
+> => getApiHandler(`bots/${data.widgetId}`, { skipAuth: true });
+
 export const createBot = async (data: {
   body: CreateBotDto;
 }): Promise<

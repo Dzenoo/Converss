@@ -42,3 +42,15 @@ export const getCookieValue = (name: string): string | null => {
   }
   return null;
 };
+
+export const getOrCreateChatSessionId = (widgetId: string): string => {
+  const key = `chatSessionId-${widgetId}`;
+  let sessionId = localStorage.getItem(key);
+
+  if (!sessionId) {
+    sessionId = crypto.randomUUID(); // or use nanoid
+    localStorage.setItem(key, sessionId);
+  }
+
+  return sessionId;
+};

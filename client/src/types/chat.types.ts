@@ -2,7 +2,7 @@ export interface IMessage {
   role: "user" | "assistant";
   content: string;
   timestamp: Date;
-  responseTime: number;
+  responseTime?: number;
 }
 
 export interface IChat {
@@ -12,3 +12,8 @@ export interface IChat {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type HandleMessageDto = {
+  chatSessionId: string;
+  message: string;
+};

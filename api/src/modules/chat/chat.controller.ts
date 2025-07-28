@@ -19,6 +19,18 @@ export class ChatController {
     return await this.chatService.processMessage({
       widgetId,
       message: body.message,
+      chatSessionId: body.chatSessionId,
+    });
+  }
+
+  @Get(":widgetId/session/:chatSessionId")
+  async getChatBySession(
+    @Param("widgetId") widgetId: string,
+    @Param("chatSessionId") chatSessionId: string
+  ) {
+    return await this.chatService.getChatBySession({
+      widgetId,
+      chatSessionId,
     });
   }
 

@@ -23,6 +23,7 @@ import { ClerkUserType } from "@/types";
 export class BotController {
   constructor(private readonly botService: BotService) {}
 
+  // PROTECTED
   @Post("create")
   @UseGuards(ClerkAuthGuard)
   async createBot(
@@ -88,5 +89,11 @@ export class BotController {
       clerkUserId: clerkUser.sub,
       id: botId,
     });
+  }
+
+  // PUBLIC
+  @Get(":widgetId")
+  async getBotByWidgetId(@Param("widgetId") widgetId: string) {
+    return await this.botService.getBotByWidgetId({ widgetId });
   }
 }
