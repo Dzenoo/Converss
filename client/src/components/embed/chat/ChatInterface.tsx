@@ -35,15 +35,22 @@ const ChatInterface: React.FC<{
   return (
     <div className={cn("flex h-full min-h-96 flex-col gap-4 p-5", className)}>
       <div>
-        <ChatHeader data={{ bot: botData.data.bot }} />
+        <ChatHeader
+          data={{ bot: botData.data.bot, widgetId: data.widgetId, messages }}
+          setMessages={setMessages}
+        />
       </div>
       <div className="hide-scrollbar flex-grow overflow-y-auto">
         <ChatContent
-          data={{ widgetId: data.widgetId, messages, setMessages }}
+          data={{ widgetId: data.widgetId, bot: botData.data.bot, messages }}
+          setMessages={setMessages}
         />
       </div>
       <div>
-        <ChatInput data={{ widgetId: data.widgetId, setMessages }} />
+        <ChatInput
+          data={{ widgetId: data.widgetId }}
+          setMessages={setMessages}
+        />
       </div>
     </div>
   );

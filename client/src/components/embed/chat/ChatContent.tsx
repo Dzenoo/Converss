@@ -3,7 +3,7 @@
 import { useEffect, useRef } from "react";
 import { Bot, User } from "lucide-react";
 
-import { IMessage } from "@/types";
+import { IBot, IMessage } from "@/types";
 import { ChatQueryType, useChatQuery } from "@/hooks/queries/chat.query";
 import { getOrCreateChatSessionId } from "@/lib/utils";
 
@@ -11,13 +11,13 @@ import { Loader } from "@/components/ui/info/loader";
 
 const ChatContent: React.FC<{
   data: {
+    bot: IBot;
     widgetId: string;
     messages: IMessage[];
-    setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
   };
-}> = ({ data: { widgetId, messages, setMessages } }) => {
+  setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
+}> = ({ data: { bot, widgetId, messages }, setMessages }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-
   const chatSessionId = getOrCreateChatSessionId(widgetId);
 
   const { data: chatData } = useChatQuery({
@@ -26,8 +26,15 @@ const ChatContent: React.FC<{
   });
 
   useEffect(() => {
-    if (chatData) {
-      setMessages(chatData.data.messages);
+    if (chatData && messages.length === 0) {
+      setMessages([
+        {
+          content: bot.greetingMessage,
+          role: "assistant",
+          timestamp: new Date(),
+        },
+        ...chatData.data.messages,
+      ]);
     }
   }, [chatData]);
 

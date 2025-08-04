@@ -26,9 +26,9 @@ import {
 const ChatInput: React.FC<{
   data: {
     widgetId: string;
-    setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
   };
-}> = ({ data: { widgetId, setMessages } }) => {
+  setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
+}> = ({ data: { widgetId }, setMessages }) => {
   const form = useForm<z.infer<typeof ChatSchema>>({
     resolver: zodResolver(ChatSchema),
     defaultValues: {
