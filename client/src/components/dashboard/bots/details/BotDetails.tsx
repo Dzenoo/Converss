@@ -42,7 +42,7 @@ const BotDetails: React.FC<{
       ),
     faq: ({ data }) => <FAQ data={{ bot: data.data.bot }} />,
     "customize-ai": ({ data }) => <CustomizeAi data={{ bot: data.data.bot }} />,
-    "bot-testing": ({ data }) => <BotTesting />,
+    "bot-testing": ({ data }) => <BotTesting data={{ bot: data.data.bot }} />,
     deployment: ({ data }) => <Deployment />,
     settings: ({ data }) => <Settings />,
   };
