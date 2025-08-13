@@ -16,11 +16,14 @@ export class ChatController {
     @Param("widgetId") widgetId: string,
     @Body() body: ProcessMessageDto
   ) {
-    return await this.chatService.processMessage({
-      widgetId,
-      message: body.message,
-      chatSessionId: body.chatSessionId,
-    });
+    return await this.chatService.processMessage(
+      {
+        widgetId,
+        message: body.message,
+        chatSessionId: body.chatSessionId,
+      },
+      body.isTesting
+    );
   }
 
   @Get(":widgetId/session/:chatSessionId")
@@ -46,15 +49,17 @@ export class ChatController {
     });
   }
 
-  @Get(":botId")
+  @Get(":botId/:chatId")
   @UseGuards(ClerkAuthGuard)
   async getChat(
     @ClerkUser() clerkUser: ClerkUserType,
-    @Param("botId") botId: string
+    @Param("botId") botId: string,
+    @Param("chatId") chatId: string
   ) {
     return await this.chatService.getChatByBot({
       botId: botId,
       userId: clerkUser.sub,
+      chatId,
     });
   }
 }

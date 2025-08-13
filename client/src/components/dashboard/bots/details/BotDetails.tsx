@@ -24,6 +24,8 @@ const BotDetails: React.FC<{
     params: { botId },
   });
 
+  console.log(slug);
+
   const isChatDetail =
     activeTab === "conversations" && slug && slug.length === 2;
 
@@ -36,7 +38,9 @@ const BotDetails: React.FC<{
     ),
     conversations: ({ data }) =>
       isChatDetail ? (
-        <ConversationDetails data={{ botId: data.data.bot._id }} />
+        <ConversationDetails
+          data={{ botId: data.data.bot._id, chatId: isChatDetail && slug[1] }}
+        />
       ) : (
         <Conversations data={{ botId: data.data.bot._id }} />
       ),

@@ -1,4 +1,10 @@
-import { IsNotEmpty, IsString, MaxLength, MinLength } from "class-validator";
+import {
+  IsBoolean,
+  IsNotEmpty,
+  IsString,
+  MaxLength,
+  MinLength,
+} from "class-validator";
 import { Transform } from "class-transformer";
 
 import { sanitizeInput } from "@/common/utils";
@@ -15,4 +21,8 @@ export class ProcessMessageDto {
   @IsNotEmpty()
   @Transform(({ value }) => sanitizeInput(value))
   chatSessionId: string;
+
+  @IsBoolean()
+  @IsNotEmpty()
+  isTesting: boolean;
 }

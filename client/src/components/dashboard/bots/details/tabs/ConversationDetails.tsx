@@ -5,12 +5,12 @@ import { Bot, User } from "lucide-react";
 import { ChatQueryType, useChatQuery } from "@/hooks/queries/chat.query";
 import { formatDate } from "@/lib/utils";
 
-const ConversationDetails: React.FC<{ data: { botId: string } }> = ({
-  data: { botId },
-}) => {
+const ConversationDetails: React.FC<{
+  data: { botId: string; chatId: string };
+}> = ({ data: { botId, chatId } }) => {
   const { data, isLoading } = useChatQuery({
     type: ChatQueryType.GET_CHAT_BY_BOT,
-    params: { botId },
+    params: { botId, chatId },
   });
 
   if (isLoading) return "Loading...";

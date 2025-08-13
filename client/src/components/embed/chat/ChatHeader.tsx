@@ -1,11 +1,18 @@
+"use client";
+
 import { Bot } from "lucide-react";
 
 import { IBot, IMessage } from "@/types";
 
 import { Button } from "@/components/ui/buttons/button";
+import { useEffect } from "react";
 
 const ChatHeader: React.FC<{
-  data: { bot: IBot; widgetId: string; messages: IMessage[] };
+  data: {
+    bot: IBot;
+    widgetId: string;
+    messages: IMessage[];
+  };
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
 }> = ({ data: { bot, widgetId, messages }, setMessages }) => {
   const isEmptyChat = messages.length === 0;

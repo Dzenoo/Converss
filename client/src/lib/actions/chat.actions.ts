@@ -41,6 +41,7 @@ export const getChats = async (data: {
 
 export const getChat = async (data: {
   botId: string;
+  chatId: string;
 }): Promise<
   ServerResponse<{
     data: {
@@ -48,5 +49,5 @@ export const getChat = async (data: {
     };
   }>
 > => {
-  return await getApiHandler(`chat/${data.botId}`);
+  return await getApiHandler(`chat/${data.botId}/${data.chatId}`);
 };

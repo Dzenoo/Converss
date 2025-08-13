@@ -1,8 +1,16 @@
+"use client";
+
+import { useEffect } from "react";
+
 import { IBot } from "@/types";
 
 import ChatInterface from "@/components/embed/chat/ChatInterface";
 
 const BotTesting: React.FC<{ data: { bot: IBot } }> = ({ data: { bot } }) => {
+  useEffect(() => {
+    localStorage.removeItem(`chatSessionId-${bot.widgetId}`);
+  }, [bot.widgetId]);
+
   return (
     <div className="space-y-10">
       <div className="space-y-2">
@@ -15,7 +23,7 @@ const BotTesting: React.FC<{ data: { bot: IBot } }> = ({ data: { bot } }) => {
 
       <div>
         <ChatInterface
-          data={{ widgetId: bot.widgetId }}
+          data={{ widgetId: bot.widgetId, isTesting: true }}
           className="max-h-[725px] min-h-[725px] rounded-lg border shadow-lg"
         />
       </div>

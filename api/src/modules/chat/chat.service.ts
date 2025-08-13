@@ -129,11 +129,14 @@ export class ChatService {
     ]);
   }
 
-  async processMessage(data: {
-    widgetId: string;
-    message: string;
-    chatSessionId: string;
-  }): Promise<ResponseObject> {
+  async processMessage(
+    data: {
+      widgetId: string;
+      message: string;
+      chatSessionId: string;
+    },
+    isTesting: boolean
+  ): Promise<ResponseObject> {
     const bot = await this.botService.findOne({
       widgetId: data.widgetId,
       isActive: true,
@@ -160,6 +163,7 @@ export class ChatService {
         botId: bot._id,
         sessionId: data.chatSessionId,
         messages: [],
+        isTesting,
       });
       isNewConversation = true;
     }
@@ -271,6 +275,7 @@ export class ChatService {
   async getChatByBot(data: {
     botId: string;
     userId: string;
+    chatId: string;
   }): Promise<ResponseObject> {
     const user = await this.userService.findOne({ clerkId: data.userId });
     if (!user) throw new NotFoundException("User not found");
@@ -283,6 +288,7 @@ export class ChatService {
 
     const chat = await this.chatModel
       .findOne({
+        _id: data.chatId,
         botId: bot._id,
       })
       .lean()

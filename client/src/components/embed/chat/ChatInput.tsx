@@ -26,9 +26,10 @@ import {
 const ChatInput: React.FC<{
   data: {
     widgetId: string;
+    isTesting: boolean;
   };
   setMessages: React.Dispatch<React.SetStateAction<IMessage[]>>;
-}> = ({ data: { widgetId }, setMessages }) => {
+}> = ({ data: { widgetId, isTesting }, setMessages }) => {
   const form = useForm<z.infer<typeof ChatSchema>>({
     resolver: zodResolver(ChatSchema),
     defaultValues: {
@@ -59,7 +60,10 @@ const ChatInput: React.FC<{
     try {
       const res = await chatMutation.mutateAsync({
         type: ChatMutationType.HANDLE_MESSAGE,
-        data: { widgetId, body: { chatSessionId, message: values.question } },
+        data: {
+          widgetId,
+          body: { chatSessionId, message: values.question, isTesting },
+        },
       });
 
       const aiMessage: IMessage = {

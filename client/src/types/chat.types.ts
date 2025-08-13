@@ -9,6 +9,7 @@ export interface IChat {
   _id: string;
   messages: Array<IMessage>;
   botId: string;
+  isTesting: boolean;
   createdAt: Date;
   updatedAt: Date;
 }
@@ -16,4 +17,5 @@ export interface IChat {
 export type HandleMessageDto = {
   chatSessionId: string;
   message: string;
+  isTesting: boolean;
 };

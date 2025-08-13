@@ -43,6 +43,11 @@ export class Chat {
 
   @Prop({ required: true })
   sessionId: string;
+
+  @Prop({
+    required: true,
+  })
+  isTesting: boolean;
 }
 
 export type ChatDocument = HydratedDocument<Chat>;

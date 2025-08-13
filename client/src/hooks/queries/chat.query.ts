@@ -16,8 +16,8 @@ const ChatQueryFunctions = {
     }),
   GET_CHATS_BY_BOT: (params: { botId: string }) =>
     getChats({ botId: params.botId }),
-  GET_CHAT_BY_BOT: (params: { botId: string }) =>
-    getChat({ botId: params.botId }),
+  GET_CHAT_BY_BOT: (params: { botId: string; chatId: string }) =>
+    getChat({ botId: params.botId, chatId: params.chatId }),
 } as const;
 
 enum ChatQueryType {
