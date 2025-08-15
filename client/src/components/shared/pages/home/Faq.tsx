@@ -66,7 +66,7 @@ const Faq = () => {
         </div>
         <div>
           <Button className="px-6 font-medium" variant="outline">
-            <a href="mailto:jobernify@gmail.com">Contact Us</a>
+            <a href="mailto:converss@gmail.com">Contact Us</a>
           </Button>
         </div>
       </div>

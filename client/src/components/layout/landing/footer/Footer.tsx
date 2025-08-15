@@ -37,7 +37,7 @@ const Footer = () => {
           </div> */}
           <div>
             <span className="text-center text-sm font-light text-[var(--primary-gray)]">
-              &copy; 2024 Copyright, Jobernify. All rights reserved
+              &copy; 2024 Copyright, Converss. All rights reserved
             </span>
           </div>
         </div>

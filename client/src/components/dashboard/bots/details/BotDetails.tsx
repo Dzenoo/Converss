@@ -24,8 +24,6 @@ const BotDetails: React.FC<{
     params: { botId },
   });
 
-  console.log(slug);
-
   const isChatDetail =
     activeTab === "conversations" && slug && slug.length === 2;
 
