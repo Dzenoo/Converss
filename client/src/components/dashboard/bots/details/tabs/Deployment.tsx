@@ -39,18 +39,23 @@ const Deployment: React.FC<{ data: { widgetId: string } }> = ({
 
       <div className="flex flex-col gap-10">
         {DeploymentOptions.map((option) => (
-          <div key={option.id} className="flex items-center gap-5">
-            <div className="flex h-48 w-48 items-center justify-center rounded-lg bg-gray-100 p-5 text-5xl text-gray-500">
+          <div
+            key={option.id}
+            className="flex flex-col gap-4 xl:flex-row xl:items-center xl:gap-5"
+          >
+            <div className="flex h-32 w-32 items-center justify-center rounded-lg bg-gray-100 p-5 text-4xl text-gray-500 sm:h-40 sm:w-40 sm:text-5xl lg:h-48 lg:w-48">
               {option.id}
             </div>
-            <div className="space-y-5">
+            <div className="w-full space-y-5 xl:w-auto">
               <div className="space-y-1">
                 <h2 className="font-semibold">{option.title}</h2>
                 <p className="text-sm text-[var(--primary-gray)]">
                   {option.description}
                 </p>
               </div>
-              <CodeSyntax codeSnippet={option.content} />
+              <div className="max-w-full overflow-auto">
+                <CodeSyntax codeSnippet={option.content} />
+              </div>
             </div>
           </div>
         ))}

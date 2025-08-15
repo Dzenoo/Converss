@@ -5,10 +5,8 @@
     return;
   }
 
-  // Prevent multiple widgets
   if (document.getElementById("chat-widget-iframe-wrapper")) return;
 
-  // Create iframe wrapper
   const iframeWrapper = document.createElement("div");
   iframeWrapper.id = "chat-widget-iframe-wrapper";
   Object.assign(iframeWrapper.style, {
@@ -29,7 +27,6 @@
     overflow: "hidden",
   });
 
-  // Create iframe
   const iframe = document.createElement("iframe");
   iframe.src = `http://localhost:3000/embed/${widgetId}`;
   Object.assign(iframe.style, {
@@ -39,7 +36,6 @@
   });
   iframeWrapper.appendChild(iframe);
 
-  // Create bubble button
   const bubble = document.createElement("button");
   bubble.setAttribute("aria-label", "Toggle chat widget");
   bubble.innerText = "💬";
@@ -100,7 +96,6 @@
     isOpen ? closeChat() : openChat();
   });
 
-  // Close chat when clicking outside
   document.addEventListener("click", (event) => {
     if (!isOpen || animating) return;
 
