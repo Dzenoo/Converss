@@ -244,4 +244,29 @@
     scrollbar-width: none;
     -ms-overflow-style: none;
   }
+
+  /* Markdown Styles */
+  .markdown {
+    @apply space-y-5 text-sm;
+  }
+
+  .markdown ul {
+    @apply my-4 list-disc pl-6;
+  }
+
+  .markdown ol {
+    @apply my-4 list-decimal pl-6;
+  }
+
+  .markdown li {
+    @apply my-2;
+  }
+
+  .markdown p {
+    @apply my-1;
+  }
+
+  .markdown a {
+    @apply text-blue-500;
+  }
 }

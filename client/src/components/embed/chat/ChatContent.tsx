@@ -7,6 +7,8 @@ import { IBot, IMessage } from "@/types";
 import { ChatQueryType, useChatQuery } from "@/hooks/queries/chat.query";
 import { getOrCreateChatSessionId } from "@/lib/utils";
 
+import MarkdownRenderer from "@/components/shared/MarkdownRenderer";
+
 import { Loader } from "@/components/ui/info/loader";
 
 const ChatContent: React.FC<{
@@ -61,14 +63,14 @@ const ChatContent: React.FC<{
               {isUserMessage ? <User size={20} /> : <Bot size={20} />}
             </div>
             <div
-              className={`border-input w-fit rounded-xl border p-2.5 text-sm ${
+              className={`markdown border-input w-fit rounded-xl border p-2.5 text-sm ${
                 isUserMessage ? "bg-muted ml-5" : "mr-5"
               }`}
             >
               {isLoading ? (
                 <Loader type="ScaleLoader" height={10} />
               ) : (
-                message.content
+                <MarkdownRenderer content={message.content} />
               )}
             </div>
           </div>

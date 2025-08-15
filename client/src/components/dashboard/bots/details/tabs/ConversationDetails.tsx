@@ -5,6 +5,8 @@ import { Bot, User } from "lucide-react";
 import { ChatQueryType, useChatQuery } from "@/hooks/queries/chat.query";
 import { formatDate } from "@/lib/utils";
 
+import MarkdownRenderer from "@/components/shared/MarkdownRenderer";
+
 const ConversationDetails: React.FC<{
   data: { botId: string; chatId: string };
 }> = ({ data: { botId, chatId } }) => {
@@ -40,11 +42,11 @@ const ConversationDetails: React.FC<{
                 {isUser(message.role) ? <User size={20} /> : <Bot size={20} />}
               </div>
               <div
-                className={`border-input w-fit rounded-xl border p-4 text-sm ${
+                className={`markdown border-input w-fit rounded-xl border p-4 text-sm ${
                   isUser(message.role) ? "bg-muted ml-5" : "mr-5"
                 }`}
               >
-                {message.content}
+                <MarkdownRenderer content={message.content} />
               </div>
               <div className="text-sm text-[var(--primary-gray)]">
                 {formatDate(message.timestamp, "dd/MM/yyyy HH:mm:ss")}
