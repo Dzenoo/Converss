@@ -95,7 +95,7 @@ const ChatInput: React.FC<{
                     }
                   }}
                   placeholder="Type here..."
-                  className="hide-scrollbar max-h-28 resize-none pr-10"
+                  className="hide-scrollbar max-h-28 resize-none pr-10 text-sm"
                   {...field}
                 />
               </FormControl>

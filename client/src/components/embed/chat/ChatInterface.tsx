@@ -34,7 +34,7 @@ const ChatInterface: React.FC<{
 
   return (
     <div className={cn("flex h-full min-h-96 flex-col gap-4 p-5", className)}>
-      <div className="hide-scrollbar overflow-auto whitespace-nowrap">
+      <div className="hide-scrollbar whitespace-nowrap">
         <ChatHeader
           data={{ bot: botData.data.bot, widgetId, messages }}
           setMessages={setMessages}
