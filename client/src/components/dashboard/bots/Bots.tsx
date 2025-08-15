@@ -37,7 +37,7 @@ const Bots = () => {
       </div>
 
       <div className="relative">
-        {isLoading && "Loading..."}
+        {isLoading && <LoadingBots />}
 
         {!data && !isLoading ? (
           <NotFound href="/dashboard" />
@@ -62,6 +62,19 @@ const Bots = () => {
           )
         )}
       </div>
+    </div>
+  );
+};
+
+export const LoadingBots = () => {
+  return (
+    <div className="grid grid-cols-3 gap-5 max-xl:grid-cols-2 max-lg:grid-cols-1">
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
     </div>
   );
 };

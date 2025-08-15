@@ -14,7 +14,7 @@ const Dashboard = () => {
   });
 
   if (isLoading) {
-    return "Loading...";
+    return <LoadingDashboard />;
   }
 
   if (!data) {
@@ -41,6 +41,25 @@ const Dashboard = () => {
         <div className="xl:col-span-2">
           <BotPerformance botPerformance={data.data.botPerformance} />
         </div>
+      </div>
+    </div>
+  );
+};
+
+export const LoadingDashboard = () => {
+  return (
+    <div className="space-y-5 p-5">
+      <div className="h-5 w-52 animate-pulse rounded-xl bg-gray-100"></div>
+      <div className="grid grid-cols-4 gap-5 max-xl:grid-cols-2 max-md:grid-cols-1">
+        <div className="h-32 w-full animate-pulse rounded-xl bg-gray-100"></div>
+        <div className="h-32 w-full animate-pulse rounded-xl bg-gray-100"></div>
+        <div className="h-32 w-full animate-pulse rounded-xl bg-gray-100"></div>
+        <div className="h-32 w-full animate-pulse rounded-xl bg-gray-100"></div>
+      </div>
+      <div className="grid grid-cols-2 gap-5 max-xl:grid-cols-1">
+        <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+        <div className="h-72 w-full animate-pulse rounded-xl bg-gray-100"></div>
+        <div className="h-96 w-full animate-pulse rounded-xl bg-gray-100 xl:col-span-2"></div>
       </div>
     </div>
   );

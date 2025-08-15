@@ -13,6 +13,8 @@ import FAQ from "./tabs/FAQ";
 import Overview from "./tabs/Overview";
 import Settings from "./tabs/Settings";
 import NotFound from "@/components/shared/NotFound";
+import LoadingBotOverview from "@/components/loading-templates/dashboard/LoadingBotOverview";
+import LoadingBotConversations from "@/components/loading-templates/dashboard/LoadingBotConversations";
 
 const BotDetails: React.FC<{
   botId: string;
@@ -51,12 +53,22 @@ const BotDetails: React.FC<{
     settings: ({ data }) => <Settings />,
   };
 
+  const loaders: Record<DashboardBotDetailsTab, React.JSX.Element> = {
+    overview: <LoadingBotOverview />,
+    conversations: <LoadingBotConversations />,
+    faq: <div></div>,
+    "customize-ai": <div></div>,
+    "bot-testing": <div></div>,
+    deployment: <div></div>,
+    settings: <div></div>,
+  };
+
   return (
     <>
       <Navigation botId={botId} activeTab={activeTab} />
 
       <div className="p-5">
-        {isLoading && "Loading..."}
+        {isLoading && loaders[activeTab!]}
 
         {!data && !isLoading ? (
           <NotFound href="/dashboard" />
