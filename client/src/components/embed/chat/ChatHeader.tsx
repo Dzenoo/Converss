@@ -5,7 +5,6 @@ import { Bot } from "lucide-react";
 import { IBot, IMessage } from "@/types";
 
 import { Button } from "@/components/ui/buttons/button";
-import { useEffect } from "react";
 
 const ChatHeader: React.FC<{
   data: {
@@ -29,7 +28,7 @@ const ChatHeader: React.FC<{
         <div>
           <Bot />
         </div>
-        <div>
+        <div className="max-sm:hidden">
           <h1 className="font-semibold">{bot.businessName}</h1>
         </div>
       </div>
