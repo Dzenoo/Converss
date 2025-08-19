@@ -9,21 +9,21 @@ const Deployment: React.FC<{ data: { widgetId: string } }> = ({
       title: "Access via Direct Link",
       description:
         "Share a unique URL to let users interact with your chatbot instantly—no extra setup required.",
-      content: `http://localhost:3000/embed/${widgetId}`,
+      content: `https://converss.vercel.app/embed/${widgetId}`,
     },
     {
       id: 2,
       title: "Embed in Your Website",
       description:
         "Seamlessly integrate the chatbot into your webpage using an iframe for a fully embedded experience.",
-      content: `<iframe style={{ width: 400, height: 600 }} src="http://localhost:3000/embed/${widgetId}"></iframe>`,
+      content: `<iframe style={{ width: 400, height: 600 }} src="https://converss.vercel.app/embed/${widgetId}"></iframe>`,
     },
     {
       id: 3,
       title: "Embed via Script (Floating Chat Widget)",
       description:
         "Add a single script tag to your site to display a floating chatbot widget on every page.",
-      content: `<script src="http://localhost:3000/embed.js" data-widget-id="${widgetId}"></script>`,
+      content: `<script src="https://converss.vercel.app/embed/${widgetId}" data-widget-id="${widgetId}"></script>`,
     },
   ];
 
