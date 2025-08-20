@@ -23,7 +23,7 @@ const Deployment: React.FC<{ data: { widgetId: string } }> = ({
       title: "Embed via Script (Floating Chat Widget)",
       description:
         "Add a single script tag to your site to display a floating chatbot widget on every page.",
-      content: `<script src="https://converss.vercel.app/embed/${widgetId}" data-widget-id="${widgetId}"></script>`,
+      content: `<script src="https://converss.vercel.app/embed.js" data-widget-id="${widgetId}"></script>`,
     },
   ];
 
