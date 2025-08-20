@@ -83,7 +83,7 @@ export class BotService {
       },
       {
         $push: { bots: bot._id },
-        onboardingCompleted: true,
+        isOnboarding: false,
       }
     );
 
@@ -93,34 +93,6 @@ export class BotService {
       },
       message: "Bot successfully created!",
       statusCode: HttpStatus.CREATED,
-    };
-  }
-
-  async finishOnboarding(data: {
-    clerkUserId: string;
-  }): Promise<ResponseObject> {
-    const user = await this.userService.findOne({ clerkId: data.clerkUserId });
-
-    if (!user) {
-      throw new NotFoundException("User doesn't exist");
-    }
-
-    if (!user.isOnboarding) {
-      throw new NotAcceptableException("User already finished onboarding");
-    }
-
-    await this.userService.findAndUpdateOne(
-      {
-        _id: user._id,
-      },
-      {
-        isOnboarding: false,
-      }
-    );
-
-    return {
-      message: "Onboarding finished!",
-      statusCode: HttpStatus.ACCEPTED,
     };
   }
 

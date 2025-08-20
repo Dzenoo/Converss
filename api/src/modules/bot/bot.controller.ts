@@ -33,14 +33,6 @@ export class BotController {
     return await this.botService.create({ clerkUserId: clerkUser.sub, body });
   }
 
-  @Post("finish-onboarding")
-  @UseGuards(ClerkAuthGuard)
-  async finishOnboarding(@ClerkUser() clerkUser: ClerkUserType) {
-    return await this.botService.finishOnboarding({
-      clerkUserId: clerkUser.sub,
-    });
-  }
-
   @Get("by-user")
   @UseGuards(ClerkAuthGuard)
   async getBotsByUser(

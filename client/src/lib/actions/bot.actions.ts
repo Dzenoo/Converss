@@ -32,9 +32,6 @@ export const updateBot = async (data: {
 }): Promise<ServerResponse> =>
   patchApiHandler(`bots/by-user/${data.botId}/update`, data.body);
 
-export const finishOnboarding = async (): Promise<ServerResponse> =>
-  postApiHandler("bots/finish-onboarding", {});
-
 export const getBotsByUser = async (data: {
   query: GetUserBotsDto;
 }): Promise<
