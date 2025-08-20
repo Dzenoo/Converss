@@ -95,7 +95,11 @@ const Overview: React.FC<{
                 <TableCell className="font-bold">
                   {data.bot.businessName}
                 </TableCell>
-                <TableCell className="truncate">
+                <TableCell
+                  className="max-w-xs truncate"
+                  title={data.bot.businessDescription}
+                  aria-label={data.bot.businessDescription}
+                >
                   {data.bot.businessDescription}
                 </TableCell>
                 <TableCell className="cursor-pointer text-[var(--primary-blue)]">

@@ -5,7 +5,6 @@ import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
   timestamps: true,
 })
 export class Bot {
-  // ----------- ONBOARDING ------------ //
   @Prop({
     type: String,
     required: true,
@@ -90,7 +89,6 @@ export class Bot {
     maxlength: 100,
   })
   fallbackMessage: string;
-  // ----------- ONBOARDING ------------ //
 
   @Prop({
     default: true,
@@ -130,6 +128,7 @@ export class Bot {
         lastUpdated: { type: Date },
       },
     },
+    _id: false,
     default: {},
   })
   analytics: {
