@@ -111,11 +111,11 @@ const Hero = () => {
         className="pt-12"
       >
         <Image
-          src="/assets/images/dashboard-pic.png"
+          src="/assets/images/converss-dashboard.png"
           alt="hero-image"
           width={1440}
           height={960}
-          className="rounded-2xl shadow-lg"
+          className="rounded-2xl border shadow-xl"
         />
       </MotionDiv>
     </section>
