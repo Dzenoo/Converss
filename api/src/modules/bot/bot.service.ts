@@ -1,7 +1,9 @@
 import { FilterQuery, Model, Types, UpdateQuery } from "mongoose";
 import { v4 as uuidv4 } from "uuid";
 import {
+  forwardRef,
   HttpStatus,
+  Inject,
   Injectable,
   NotAcceptableException,
   NotFoundException,
@@ -13,12 +15,15 @@ import { Bot, BotDocument } from "./schema/bot.schema";
 import { UserService } from "../user/user.service";
 import { CreateBotDto } from "./dto/create-bot.dto";
 import { GetBotsDto } from "./dto/get-bots.dto";
+import { ChatService } from "../chat/chat.service";
 
 @Injectable()
 export class BotService {
   constructor(
     @InjectModel(Bot.name) private readonly botModel: Model<Bot>,
-    private readonly userService: UserService
+    private readonly userService: UserService,
+    @Inject(forwardRef(() => ChatService))
+    private readonly chatService: ChatService
   ) {}
 
   async find(query: FilterQuery<Bot> = {}): Promise<Bot[]> {
@@ -198,11 +203,12 @@ export class BotService {
     });
 
     await Promise.all([
-      this.botModel.findByIdAndDelete(bot._id),
+      this.chatService.findAndDeleteMany({ botId: bot._id }),
       this.userService.findAndUpdateMany(
         { _id: user._id },
         { $pull: { bots: bot._id } }
       ),
+      this.botModel.findByIdAndDelete(bot._id),
     ]);
 
     return {

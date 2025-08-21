@@ -1,6 +1,11 @@
 import qs from "qs";
 
-import { getApiHandler, patchApiHandler, postApiHandler } from "../api";
+import {
+  deleteApiHandler,
+  getApiHandler,
+  patchApiHandler,
+  postApiHandler,
+} from "../api";
 
 import {
   CreateBotDto,
@@ -31,6 +36,11 @@ export const updateBot = async (data: {
   body: UpdateBotDto;
 }): Promise<ServerResponse> =>
   patchApiHandler(`bots/by-user/${data.botId}/update`, data.body);
+
+export const deleteBot = async (data: {
+  botId: string;
+}): Promise<ServerResponse> =>
+  deleteApiHandler(`bots/by-user/${data.botId}/delete`);
 
 export const getBotsByUser = async (data: {
   query: GetUserBotsDto;

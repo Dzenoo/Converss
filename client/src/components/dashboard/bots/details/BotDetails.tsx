@@ -50,7 +50,7 @@ const BotDetails: React.FC<{
     deployment: ({ data }) => (
       <Deployment data={{ widgetId: data.data.bot.widgetId }} />
     ),
-    settings: ({ data }) => <Settings />,
+    settings: ({ data }) => <Settings data={{ botId: data.data.bot._id }} />,
   };
 
   const loaders: Record<DashboardBotDetailsTab, React.JSX.Element> = {

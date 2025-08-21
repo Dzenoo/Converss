@@ -1,6 +1,8 @@
-import { FilterQuery, Model, Types } from "mongoose";
+import { DeleteResult, FilterQuery, Model, Types } from "mongoose";
 import {
+  forwardRef,
   HttpStatus,
+  Inject,
   Injectable,
   NotFoundException,
   UnauthorizedException,
@@ -17,13 +19,20 @@ import { AiService } from "@/modules/ai/ai.service";
 export class ChatService {
   constructor(
     @InjectModel(Chat.name) private readonly chatModel: Model<Chat>,
-    private readonly botService: BotService,
     private readonly userService: UserService,
-    private readonly aiService: AiService
+    private readonly aiService: AiService,
+    @Inject(forwardRef(() => BotService))
+    private readonly botService: BotService
   ) {}
 
   async find(query: FilterQuery<Chat> = {}): Promise<Chat[]> {
     return await this.chatModel.find(query).lean().exec();
+  }
+
+  async findAndDeleteMany(
+    query: FilterQuery<Chat> = {}
+  ): Promise<DeleteResult> {
+    return await this.chatModel.deleteMany(query).exec();
   }
 
   async getRecentActivity(botIds: Types.ObjectId[], days = 30) {
